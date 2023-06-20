@@ -1,0 +1,67 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://map/water/water.tscn" type="PackedScene" id=1]
+[ext_resource path="res://map/map.gd" type="Script" id=2]
+
+[sub_resource type="ProceduralSky" id=2]
+radiance_size = 0
+sky_top_color = Color( 0.129412, 0.690196, 1, 1 )
+sky_horizon_color = Color( 0.372549, 0.721569, 1, 1 )
+ground_bottom_color = Color( 0, 0.431373, 1, 1 )
+ground_horizon_color = Color( 0.372549, 0.721569, 1, 1 )
+sun_latitude = 16.44
+texture_size = 0
+
+[sub_resource type="Environment" id=8]
+background_mode = 2
+background_sky = SubResource( 2 )
+fog_depth_enabled = false
+fog_height_enabled = true
+fog_height_curve = 0.148651
+dof_blur_far_distance = 25.0
+
+[sub_resource type="ConvexPolygonShape" id=3]
+points = PoolVector3Array( -50, 0, -50, -50, 0, 50, 50, 0, -50, 50, 0, 50 )
+
+[sub_resource type="ConvexPolygonShape" id=6]
+points = PoolVector3Array( 50.2193, -0.219298, 25.2193, -50.2193, -0.219298, -25.2193, -50.2193, -0.219298, 25.2193, 50.2193, -0.219298, -25.2193 )
+
+[sub_resource type="ConvexPolygonShape" id=7]
+points = PoolVector3Array( -25.2178, 0.219298, -50.2193, 25.219, 0.219298, 50.2193, -25.2178, 0.219298, 50.2193, 25.219, 0.219298, -50.2193 )
+
+[node name="map" type="Node"]
+script = ExtResource( 2 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 8 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, -0.418375, 0.908275, 0, -0.908275, -0.418375, 0, 44.1716, 0 )
+light_energy = 0.4
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="wall" type="StaticBody" parent="."]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
+
+[node name="ground" type="CollisionShape" parent="wall"]
+shape = SubResource( 3 )
+
+[node name="south" type="CollisionShape" parent="wall"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 25, 50 )
+shape = SubResource( 6 )
+
+[node name="north" type="CollisionShape" parent="wall"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 25, -50 )
+shape = SubResource( 6 )
+
+[node name="east" type="CollisionShape" parent="wall"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 50, 25, 0 )
+shape = SubResource( 7 )
+
+[node name="west" type="CollisionShape" parent="wall"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -50, 25, 0 )
+shape = SubResource( 7 )
+
+[node name="water" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00865936, -0.403336, 0.198318 )

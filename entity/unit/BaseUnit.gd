@@ -9,6 +9,7 @@ export var move_direction :Vector3
 export var is_bot :bool = false
 export var is_moving :bool = false
 export var enable_gravity :bool = true
+export var margin :float = 0.2
 var move_to :Vector3
 
 var _velocity :Vector3 = Vector3.ZERO
@@ -48,10 +49,8 @@ func master_moving(delta :float) -> void:
 func _bot_move():
 	if is_moving and is_bot:
 		move_direction = translation.direction_to(move_to)
-		if translation.distance_to(move_to) < 0.2:
+		if translation.distance_to(move_to) < margin:
 			is_moving = false
-			
-		_velocity = move_direction * speed
 	
 func puppet_moving(delta :float) -> void:
 	translation = translation.linear_interpolate(_puppet_translation, 2.5 * delta)

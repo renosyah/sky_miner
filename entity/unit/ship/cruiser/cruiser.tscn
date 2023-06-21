@@ -1,20 +1,23 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://entity/unit/ship/cruiser/cruiser.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://entity/unit/ship/cruiser/cruiser.gd" type="Script" id=2]
 [ext_resource path="res://entity/unit/ship/cruiser/engine.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://entity/unit/ship/cruiser/canvas.png" type="Texture" id=4]
 
 [sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.647059, 0.647059, 0.647059, 1 )
+albedo_color = Color( 0.733333, 0.733333, 0.733333, 1 )
+albedo_texture = ExtResource( 4 )
 
 [sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.403922, 0.215686, 0, 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
+flags_unshaded = true
 albedo_color = Color( 0.878431, 0.537255, 0, 1 )
 
 [sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0.470588, 0.470588, 0.470588, 1 )
+albedo_color = Color( 0.423529, 0.368627, 0.329412, 1 )
 
 [sub_resource type="SpatialMaterial" id=6]
 albedo_color = Color( 0.223529, 0.223529, 0.223529, 1 )

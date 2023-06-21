@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/engine.obj-def743a256b4c5160b9c2fe399d6be08.mesh"
+
+[deps]
+
+files=[ "res://.import/engine.obj-def743a256b4c5160b9c2fe399d6be08.mesh" ]
+
+source_file="res://entity/unit/ship/cruiser/engine.obj"
+dest_files=[ "res://.import/engine.obj-def743a256b4c5160b9c2fe399d6be08.mesh", "res://.import/engine.obj-def743a256b4c5160b9c2fe399d6be08.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

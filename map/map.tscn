@@ -15,9 +15,11 @@ texture_size = 0
 [sub_resource type="Environment" id=8]
 background_mode = 2
 background_sky = SubResource( 2 )
-fog_depth_enabled = false
-fog_height_enabled = true
-fog_height_curve = 0.148651
+fog_enabled = true
+fog_color = Color( 0, 0.431373, 1, 1 )
+fog_depth_begin = 40.0
+fog_depth_curve = 0.784583
+fog_height_curve = 59.7141
 dof_blur_far_distance = 25.0
 
 [sub_resource type="ConvexPolygonShape" id=3]

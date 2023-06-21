@@ -63,59 +63,72 @@ func generate_islands():
 	map_data["trees"] = []
 	map_data["ores"] = []
 	
-	for x in range(-1, 3, 1):
+	for x in range(-2, 3, 1):
 		for y in range(-2, 3, 1):
 			randomize()
 			
-			var template = island_templates[rand_range(0, island_templates.size())]
-			var island_name = "island_%s_%s" % [x,y]
-			var pos = Vector3(x * 40, 10, y * 30)
-			var size = rand_range(1, 2)
-			var rotate = rand_range(0, 360)
-			
-			_spawn_position.translation = pos
-			_spawn_position.scale = Vector3.ONE * size
-			_spawn_position.rotation_degrees = Vector3.ZERO
-			_spawn_position.rotate_y(deg2rad(rotate))
-			
-			_spawn_path.curve = load(template + "/curve.tres")
-			
-			map_data["islands"].append({
-				"name" : island_name,
-				"mesh" : template + "/island.obj",
-				"size" : size,
-				"rotate" : rotate,
-				"position" :pos,
-			})
-			
-			var _trees_pos :Array = generate_random_spawn_positions(pos, 6)
-			var index = 0
-			for i in _trees_pos:
-				map_data["trees"].append({
-					"name" : "%s_tree_%s" % [island_name, index],
-					"position" : i,
-				})
-				index += 1
+			if randf() > 0.6:
+				var template = island_templates[rand_range(0, island_templates.size())]
+				var island = _generate_island(x, y, template)
+				map_data["islands"].append(island)
 				
-			index = 0
-			var _ores_pos :Array = generate_random_spawn_positions(pos, 4)
-			for i in _ores_pos:
-				map_data["ores"].append({
-					"name" : "%s_ores_%s" % [island_name, index],
-					"position" : i,
-				})
-				index += 1
+				_spawn_position.translation = island["position"]
+				_spawn_position.scale = Vector3.ONE * island["size"]
+				_spawn_position.rotation_degrees = Vector3.ZERO
+				_spawn_position.rotate_y(deg2rad(island["rotate"]))
+				
+				_spawn_path.curve = load(template + "/curve.tres")
+				
+				map_data["trees"].append_array(
+					_generate_resource(
+						island["position"],island["name"],"tree",rand_range(2, 3) * island["size"]
+					)
+				)
+				
+				map_data["ores"].append_array(
+					_generate_resource(
+						island["position"],island["name"],"ore",rand_range(1, 3) * island["size"]
+					)
+				)
+				
+	map_data["islands"].shuffle()
+	map_data["trees"].shuffle()
+	map_data["ores"].shuffle()
+	
+func _generate_island(x, y :float, template :String) -> Dictionary:
+	var island_name = "island_%s_%s" % [x,y]
+	var pos = Vector3(x * 30, 10, y * 30)
+	var size = rand_range(1, 2)
+	var rotate = rand_range(0, 360)
+	return {
+		"name" : island_name,
+		"mesh" : template + "/island.obj",
+		"size" : size,
+		"rotate" : rotate,
+		"position" :pos,
+	}
+	
+func _generate_resource(_at :Vector3, _island_name :String, _resource_name :String, count :int) -> Array:
+	var resources :Array = []
+	var index = 0
+	var _resource_pos :Array = _generate_random_spawn_positions(_at, count)
+	for i in _resource_pos:
+		resources.append({
+			"name" : "%s_%s_%s" % [_island_name, _resource_name, index],
+			"position" : i,
+		})
+		index += 1
 		
+	return resources
 		
-		
-func generate_random_spawn_positions(_at :Vector3, count :int) -> Array:
+func _generate_random_spawn_positions(_at :Vector3, count :int) -> Array:
 	var _pos :Array = []
-	var _rand_offset = rand_range(1, 4)
 	
 	for i in count:
 		_path_follow.unit_offset = randf()
 		var p = _path_follow.global_transform.origin
-		p += p.direction_to(_at) * _rand_offset
+		var _rand_distance = rand_range(1, p.distance_to(_at) * 0.7)
+		p += p.direction_to(_at) * _rand_distance
 		_pos.append(p)
 	
 	return _pos

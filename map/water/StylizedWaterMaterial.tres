@@ -4,8 +4,8 @@
 
 [resource]
 shader = ExtResource( 1 )
-shader_param/out_color = Color( 0, 0.305882, 0.886275, 1 )
-shader_param/amount = 0.8
+shader_param/out_color = Color( 0, 0.25098, 0.572549, 1 )
+shader_param/amount = 0.864
 shader_param/uv1_scale = null
 shader_param/uv1_offset = null
 shader_param/uv2_scale = null

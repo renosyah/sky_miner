@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://map/floating_island/floating_island.gd" type="Script" id=1]
+[ext_resource path="res://map/floating_island/island_1/island.obj" type="ArrayMesh" id=2]
 
 [node name="floating_island" type="StaticBody"]
 script = ExtResource( 1 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = ExtResource( 2 )

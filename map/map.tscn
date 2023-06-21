@@ -65,3 +65,11 @@ shape = SubResource( 7 )
 
 [node name="water" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00865936, -0.403336, 0.198318 )
+
+[node name="spawn_position" type="Spatial" parent="."]
+
+[node name="islands" type="Node" parent="."]
+
+[node name="trees" type="Node" parent="."]
+
+[node name="ores" type="Node" parent="."]

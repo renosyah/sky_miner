@@ -9,7 +9,7 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 0.5, 0.866026, 0, -0.866026, 0.5, 0, 0, 0 )
 
 [node name="Camera" type="Camera" parent="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 40 )
 keep_aspect = 0
 current = true
 far = 200.0

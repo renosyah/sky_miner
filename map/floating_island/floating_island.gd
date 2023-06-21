@@ -2,6 +2,7 @@ extends StaticBody
 class_name FloatingIsland
 
 export var island :Resource = preload("res://map/floating_island/island_1/island.obj")
+
 export var size :float = 1
 export var rotate :float = 0
 
@@ -19,3 +20,5 @@ func _ready():
 	
 	scale = Vector3.ONE * size
 	rotate_y(deg2rad(rotate))
+	
+	

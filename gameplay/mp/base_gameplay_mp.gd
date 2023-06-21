@@ -47,7 +47,11 @@ func setup_map():
 	
 	if is_server():
 		_map.generate_islands()
-		NetworkLobbyManager.argument["map_data"] = _map.islands
+		NetworkLobbyManager.argument["map_data"] = _map.map_data
+	
+func _generate_island():
+	_map.map_data = NetworkLobbyManager.argument["map_data"]
+	_map.spawn_islands()
 	
 ################################################################
 # ui
@@ -76,8 +80,7 @@ func on_host_disconnected():
 	to_main_menu()
 	
 func all_player_ready():
-	_map.islands = NetworkLobbyManager.argument["map_data"]
-	_map.spawn_islands()
+	_generate_island()
 	
 ################################################################
 # exit

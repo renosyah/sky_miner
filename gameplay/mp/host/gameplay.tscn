@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://gameplay/mp/host/gameplay.gd" type="Script" id=1]
-[ext_resource path="res://entity/unit/ship/cruiser/cruiser.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entity/unit/airship/cruiser/cruiser.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/bot/bot.tscn" type="PackedScene" id=3]
 
 [node name="gameplay" type="Node"]
@@ -20,7 +20,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.157349, 20, -21.8909 )
 team = 2
 speed = 2
 enable_gravity = false
-margin = 1.0
 color_coat = Color( 1, 0.235294, 0.235294, 1 )
 acceleration = 0.25
 
@@ -33,10 +32,15 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.9095, 20, -3.74172 )
 team = 2
 speed = 2
 enable_gravity = false
-margin = 1.0
 color_coat = Color( 1, 0.235294, 0.235294, 1 )
 acceleration = 0.25
 
 [node name="bot" parent="cruiser3" instance=ExtResource( 3 )]
 unit = NodePath("..")
 team = 2
+
+[node name="enemy_airship_patrol" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="enemy_airship_patrol" to="." method="_on_enemy_airship_patrol_timeout"]

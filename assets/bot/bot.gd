@@ -1,26 +1,41 @@
 extends Spatial
 class_name Bot
 
+export var enable :bool = true
 export var unit :NodePath
 export var team :int
+export var detection_range :int = 15
 
 var targets :Array = []
 
 var _target :BaseUnit
 var _unit :BaseUnit
 
+onready var _collision_shape = $Area/CollisionShape
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_unit = get_node_or_null(unit)
 	_unit.is_bot = true
+	(_collision_shape.shape as SphereShape).radius = detection_range
 	
 func _process(delta):
-	_assign_target()
-	_chase_target()
+	if enable:
+		_assign_target()
+		_chase_target()
+		
+func move_to(_at :Vector3):
+	if not is_instance_valid(_unit):
+		return
+		
+	if _unit.is_moving:
+		return
+		
+	if enable:
+		_unit.is_moving = true
+		_unit.move_to = _at
 	
 func _chase_target():
-	_unit.is_moving = false
-	
 	if not is_instance_valid(_target):
 		return
 		

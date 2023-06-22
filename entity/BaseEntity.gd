@@ -49,7 +49,7 @@ func _is_network_running() -> bool:
 		
 	return true
 	
-func _is_master() -> bool:
+func _check_is_master() -> bool:
 	if not get_tree().network_peer:
 		return false
 		
@@ -60,7 +60,7 @@ func _is_master() -> bool:
 	
 func _setup_network_timer() -> void:
 	_is_online = _is_network_running()
-	_is_master = _is_master()
+	_is_master = _check_is_master()
 	
 	if not _is_master:
 		return

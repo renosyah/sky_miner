@@ -1,10 +1,13 @@
 extends BaseUnit
-class_name Ship
+class_name AirShip
 
 export var color_coat :Color
 export var acceleration :float = 0.78
 export var altitude :float = 20
 
+export var turret_positions :Array
+
+var turrets :Array = []
 var throttle :float
 var rotate_direction :float
 

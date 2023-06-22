@@ -25,6 +25,9 @@ func _ready():
 	
 	_path_follow = PathFollow.new()
 	_spawn_path.add_child(_path_follow)
+	
+func get_islands() -> Array:
+	return _islands.get_children()
 
 func spawn_islands():
 	var map_seed = map_data["map_seed"]

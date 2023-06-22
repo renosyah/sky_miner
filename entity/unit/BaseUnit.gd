@@ -73,4 +73,6 @@ func turn_spatial_pivot_to_moving(_spatial :Spatial, _interpolate :float, delta 
 	
 	var _transform :Transform = _spatial.transform.looking_at(_look_at, Vector3.UP)
 	_spatial.transform = _spatial.transform.interpolate_with(_transform, _interpolate * delta)
-
+	
+func get_velocity() -> Vector3:
+	return _velocity

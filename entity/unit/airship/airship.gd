@@ -44,13 +44,16 @@ func _ajust_altitude():
 	if translation.y < altitude:
 		_velocity.y = speed
 		
+	if translation.y > altitude + 5:
+		_velocity.y = -speed
+		
 	else:
 		_velocity.y = 0
 		
 func assign_turret_target(_targets :Array):
 	if _targets.empty():
 		return
-
+	
 	var pos :int = 0
 	for _turret in turrets:
 		if _targets.empty():

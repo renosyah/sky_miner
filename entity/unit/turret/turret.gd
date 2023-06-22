@@ -4,7 +4,7 @@ class_name Turret
 export var is_aiming :bool
 export var aim_at :Vector3
 export var aiming_speed :float
-export var ignore_bodies :Array
+export var ignore_body :NodePath
 
 export var body :NodePath
 export var gun :NodePath
@@ -30,9 +30,8 @@ func _ready():
 	_ray.enabled = true
 	_ray.exclude_parent = true
 	
-	for i in ignore_bodies:
-		_ray.add_exception(i)
-		
+	_ray.add_exception(get_node_or_null(ignore_body))
+	_pivot.translation = _ray.translation
 	
 func _process(delta):
 	_aiming(delta)
@@ -48,13 +47,16 @@ func _aiming(delta):
 	if not is_instance_valid(_gun):
 		return
 		
-	var _aim_dir :Vector3 = _pivot.global_transform.origin.direction_to(aim_at)
+	var _aim_dir :Vector3 = _pivot.global_transform.origin.direction_to(aim_at + Vector3(0,2,0))
 	_pivot.look_at(_aim_dir * 100, Vector3.UP)
 	_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -45, 45)
 	
 	_body.rotation.y = lerp_angle(_body.rotation.y, _pivot.rotation.y, aiming_speed * delta)
+	
 	_gun.rotation_degrees.x = lerp(_gun.rotation_degrees.x, _pivot.rotation_degrees.x, aiming_speed * delta)
 	_gun.rotation_degrees.x = clamp(_gun.rotation_degrees.x, -45, 45)
+	_ray.rotation_degrees.x = _gun.rotation_degrees.x
+	
 	
 func _detect_aim():
 	if not is_aiming:

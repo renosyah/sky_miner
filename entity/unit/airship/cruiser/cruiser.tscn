@@ -29,8 +29,8 @@ albedo_color = Color( 0.223529, 0.223529, 0.223529, 1 )
 albedo_color = Color( 0.27451, 0.27451, 0.27451, 1 )
 
 [sub_resource type="CylinderShape" id=4]
-height = 5.0
-radius = 0.8
+height = 4.81854
+radius = 1.16056
 
 [node name="cruiser" type="KinematicBody"]
 script = ExtResource( 2 )
@@ -91,3 +91,14 @@ material/1 = SubResource( 2 )
 [node name="mg" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.823445, 0 )
 aiming_speed = 5.0
+ignore_body = NodePath("..")
+
+[node name="mg2" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.863782, -1.48808 )
+aiming_speed = 5.0
+ignore_body = NodePath("..")
+
+[node name="mg3" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.863782, 0.82613 )
+aiming_speed = 5.0
+ignore_body = NodePath("..")

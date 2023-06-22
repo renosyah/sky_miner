@@ -16,8 +16,8 @@ onready var _collision_shape = $Area/CollisionShape
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_unit = get_node_or_null(unit)
-	_unit.is_bot = true
 	(_collision_shape.shape as SphereShape).radius = detection_range
+	_unit.is_bot = enable
 	
 func _process(delta):
 	if enable:

@@ -46,6 +46,22 @@ func _ajust_altitude():
 		
 	else:
 		_velocity.y = 0
+		
+func assign_turret_target(_targets :Array):
+	if _targets.empty():
+		return
+
+	var pos :int = 0
+	for _turret in turrets:
+		if _targets.empty():
+			_turret.is_aiming = false
+			continue
+			
+		_turret.is_aiming = true
+		_turret.aim_at = _targets[pos].global_transform.origin
+			
+		if pos < _targets.size() - 1:
+			pos += 1
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)

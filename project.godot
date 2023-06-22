@@ -134,6 +134,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
 }, {
+"base": "Spatial",
+"class": "Turret",
+"language": "GDScript",
+"path": "res://entity/unit/turret/turret.gd"
+}, {
 "base": "Control",
 "class": "UiMp",
 "language": "GDScript",
@@ -175,6 +180,7 @@ _global_script_class_icons={
 "SaveLoad": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
+"Turret": "",
 "UiMp": "",
 "VirtualJoystick": "",
 "Water": ""

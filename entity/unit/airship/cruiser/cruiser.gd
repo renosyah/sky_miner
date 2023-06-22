@@ -15,6 +15,7 @@ func _ready():
 	_material.albedo_color = color_coat
 	_main_body.set_surface_material(2, _material)
 	_flap.set_surface_material(0, _material)
+	turrets = [$mg]
 
 func moving(delta :float) -> void:
 	.moving(delta)
@@ -24,5 +25,5 @@ func moving(delta :float) -> void:
 	blade_r.rotate_z(rotating * delta)
 	blade_l.rotate_z(-rotating * delta)
 	
-	flaps_rotating = lerp(flaps_rotating, rotate_direction * 45, 25 * delta)
+	flaps_rotating = lerp(flaps_rotating, rotate_direction * 45, 15 * delta)
 	flaps.rotation_degrees.y = -flaps_rotating

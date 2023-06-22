@@ -15,6 +15,11 @@ enable_gravity = false
 margin = 1.0
 color_coat = Color( 0.00784314, 0, 1, 1 )
 
+[node name="bot" parent="cruiser" instance=ExtResource( 3 )]
+enable = false
+unit = NodePath("..")
+team = 1
+
 [node name="cruiser2" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.157349, 20, -21.8909 )
 team = 2

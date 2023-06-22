@@ -1,0 +1,103 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://entity/unit/turret/mg/mg.gd" type="Script" id=1]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 0.08, 0.4, 0.2 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.407843, 0.407843, 0.407843, 1 )
+
+[sub_resource type="CylinderMesh" id=3]
+top_radius = 0.04
+bottom_radius = 0.06
+height = 1.0
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.223529, 0.223529, 0.223529, 1 )
+
+[sub_resource type="SphereMesh" id=5]
+radius = 0.2
+height = 0.3
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_unshaded = true
+albedo_color = Color( 1, 0.321569, 0, 1 )
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("body/gun/MeshInstance:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "firing"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("body/gun/MeshInstance:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.6, 0.6, 0.6 ), Vector3( 1, 1, 1 ), Vector3( 0, 0, 0 ) ]
+}
+
+[node name="mg" type="Spatial"]
+script = ExtResource( 1 )
+body = NodePath("body")
+gun = NodePath("body/gun")
+ray = NodePath("body/gun/RayCast")
+
+[node name="body" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 2 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0 )
+mesh = SubResource( 1 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 2 )
+
+[node name="gun" type="Spatial" parent="body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.20127, 0 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="body/gun"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.0525167, -0.255018 )
+mesh = SubResource( 3 )
+skeleton = NodePath("../../..")
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="body/gun"]
+transform = Transform( 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -0.0538076, -0.851461 )
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
+[node name="RayCast" type="RayCast" parent="body/gun"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0515019, 0.0717994 )
+enabled = true
+cast_to = Vector3( 0, 0, -100 )
+
+[node name="firerate" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 7 )
+anims/firing = SubResource( 8 )

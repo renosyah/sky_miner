@@ -4,7 +4,7 @@ class_name Bot
 export var unit :NodePath
 export var team :int
 
-var _targets :Array = []
+var targets :Array = []
 
 var _target :BaseUnit
 var _unit :BaseUnit
@@ -31,12 +31,12 @@ func _assign_target():
 	_target = _get_closes()
 	
 func _get_closes() -> BaseUnit:
-	if _targets.empty():
+	if targets.empty():
 		return null
 		
 	var from :Vector3 = global_transform.origin
-	var default :BaseUnit = _targets[0]
-	for i in _targets:
+	var default :BaseUnit = targets[0]
+	for i in targets:
 		var dis_1 = from.distance_squared_to(default.global_transform.origin)
 		var dis_2 = from.distance_squared_to(i.global_transform.origin)
 		
@@ -58,13 +58,13 @@ func _on_Area_body_entered(body):
 	if body.team == team:
 		return
 		
-	_targets.append(body)
+	targets.append(body)
 
 func _on_Area_body_exited(body):
-	if not _targets.has(body):
+	if not targets.has(body):
 		return
 		
-	_targets.erase(body)
+	targets.erase(body)
 
 
 

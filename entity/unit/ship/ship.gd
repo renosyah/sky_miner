@@ -6,15 +6,18 @@ export var acceleration :float = 0.78
 export var altitude :float = 20
 
 var throttle :float
+var rotate_direction :float
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
 	
 	if _is_master and _is_online:
 		rset_unreliable("_puppet_throttle", throttle)
+		rset_unreliable("_puppet_rotate_direction", rotate_direction)
 		
 # multiplayer func
 puppet var _puppet_throttle :float
+puppet var _puppet_rotate_direction :float
 
 func master_moving(delta :float) -> void:
 	var _is_moving :bool = move_direction != Vector3.ZERO
@@ -28,7 +31,10 @@ func master_moving(delta :float) -> void:
 	
 	_ajust_altitude()
 	
+	var y_rotation :float = rotation_degrees.y
 	.turn_spatial_pivot_to_moving(self, clamp(throttle, 0, 0.5), delta)
+	
+	rotate_direction = clamp(rotation_degrees.y - y_rotation, -1, 1)
 	.master_moving(delta)
 	
 func _ajust_altitude():
@@ -41,3 +47,4 @@ func _ajust_altitude():
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	throttle = _puppet_throttle
+	rotate_direction = _puppet_rotate_direction

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://entity/unit/ship/cruiser/cruiser.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://entity/unit/ship/cruiser/cruiser.gd" type="Script" id=2]
@@ -37,6 +37,12 @@ height = 0.4
 [sub_resource type="Curve" id=9]
 _data = [ Vector2( 0.0544554, 0.939773 ), 0.0, 0.0, 0, 0, Vector2( 0.990099, 0.318182 ), 0.0, 0.0, 0, 0 ]
 
+[sub_resource type="CubeMesh" id=10]
+size = Vector3( 0.08, 1.2, 0.5 )
+
+[sub_resource type="SpatialMaterial" id=11]
+albedo_color = Color( 0.639216, 0.639216, 0.639216, 1 )
+
 [node name="cruiser" type="KinematicBody"]
 script = ExtResource( 2 )
 
@@ -73,3 +79,13 @@ mesh = SubResource( 8 )
 gravity = Vector3( 0, 0, 10 )
 scale_amount_curve = SubResource( 9 )
 color = Color( 0.6, 0.211765, 0, 1 )
+
+[node name="flaps" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.400416, 2.07994 )
+
+[node name="flap" type="MeshInstance" parent="flaps"]
+transform = Transform( 1, 0, 0, 0, 0.977016, -0.213167, 0, 0.213167, 0.977016, 0, -0.189085, 0.278066 )
+mesh = SubResource( 10 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = SubResource( 11 )

@@ -37,30 +37,33 @@ func master_moving(delta :float) -> void:
 		
 		# still flying?
 		# down & rotate
-		if not is_on_floor():
+		if translation.y > -15:
 			throttle = lerp(throttle, throttle + 1.5, delta)
 			throttle = clamp(throttle, 0, speed)
 			
 			_velocity = Vector3(0, -throttle, 0)
 			rotate_y(1.2 * delta)
+			
+			.master_moving(delta)
+			
+		return
 		
-	else:
-		var _is_moving :bool = move_direction != Vector3.ZERO
-		var _acc :float = acceleration if _is_moving else -acceleration
-		
-		throttle = lerp(throttle, throttle + _acc, delta)
-		throttle = clamp(throttle, 0, speed)
-		
-		var _move :Vector3 = -transform.basis.z * throttle
-		_velocity = Vector3(_move.x, _velocity.y, _move.z)
-		
-		_ajust_altitude()
-		
-		var y_rotation :float = rotation_degrees.y
-		.turn_spatial_pivot_to_moving(self, clamp(throttle, 0, 0.5), delta)
-		
-		rotate_direction = clamp(rotation_degrees.y - y_rotation, -1, 1)
-		
+	var _is_moving :bool = move_direction != Vector3.ZERO
+	var _acc :float = acceleration if _is_moving else -acceleration
+	
+	throttle = lerp(throttle, throttle + _acc, delta)
+	throttle = clamp(throttle, 0, speed)
+	
+	var _move :Vector3 = -transform.basis.z * throttle
+	_velocity = Vector3(_move.x, _velocity.y, _move.z)
+	
+	_ajust_altitude()
+	
+	var y_rotation :float = rotation_degrees.y
+	.turn_spatial_pivot_to_moving(self, clamp(throttle, 0, 0.5), delta)
+	
+	rotate_direction = clamp(rotation_degrees.y - y_rotation, -1, 1)
+	
 	.master_moving(delta)
 	
 func moving(delta :float) -> void:

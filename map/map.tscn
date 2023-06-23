@@ -48,6 +48,7 @@ transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -15, 0 )
 
 [node name="ground" type="CollisionShape" parent="wall"]
 shape = SubResource( 3 )
+disabled = true
 
 [node name="south" type="CollisionShape" parent="wall"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 25, 50 )

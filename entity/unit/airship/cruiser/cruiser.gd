@@ -7,7 +7,7 @@ onready var _main_body = $main_body
 onready var _flap = $flaps/flap
 
 onready var _material :Material = _main_body.get_surface_material(2).duplicate()
-onready var flaps = $flaps
+onready var _flaps = $flaps
 
 var flaps_rotating :float
 
@@ -18,6 +18,9 @@ func _ready():
 	
 	# just testing
 	turrets = [$mg, $mg2, $mg3]
+	
+	for i in turrets:
+		i.is_master = _check_is_master()
 
 func moving(delta :float) -> void:
 	.moving(delta)
@@ -28,4 +31,4 @@ func moving(delta :float) -> void:
 	blade_l.rotate_z(-rotating * delta)
 	
 	flaps_rotating = lerp(flaps_rotating, rotate_direction * 45, 15 * delta)
-	flaps.rotation_degrees.y = -flaps_rotating
+	_flaps.rotation_degrees.y = -flaps_rotating

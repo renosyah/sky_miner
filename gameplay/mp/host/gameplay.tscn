@@ -21,7 +21,7 @@ unit = NodePath("..")
 team = 1
 
 [node name="cruiser2" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.157349, 20, -21.8909 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.157, 20, -21.891 )
 team = 2
 speed = 2
 enable_gravity = false
@@ -34,7 +34,7 @@ unit = NodePath("..")
 team = 2
 
 [node name="cruiser3" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.9095, 20, -3.74172 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.91, 20, -3.742 )
 team = 2
 speed = 2
 enable_gravity = false

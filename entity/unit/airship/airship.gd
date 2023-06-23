@@ -48,10 +48,10 @@ func master_moving(delta :float) -> void:
 	
 func _ajust_altitude():
 	if translation.y < altitude:
-		_velocity.y = speed
+		_velocity.y = throttle
 		
-	if translation.y > altitude + 5:
-		_velocity.y = -speed
+	elif translation.y > altitude + 0.2:
+		_velocity.y = -throttle
 		
 	else:
 		_velocity.y = 0
@@ -65,7 +65,7 @@ func puppet_moving(delta :float) -> void:
 	throttle = _puppet_throttle
 	rotate_direction = _puppet_rotate_direction
 	targets = _puppet_targets
-		
+	
 func _turret_get_target():
 	var pos :int = 0
 	for _turret in turrets:

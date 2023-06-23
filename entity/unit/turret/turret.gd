@@ -5,6 +5,8 @@ export var target :NodePath
 
 export var aiming_speed :float
 export var ignore_body :NodePath
+
+export var projectile :PackedScene
 export var ammo :int
 export var max_ammo :int
 export var reload_time :float
@@ -14,10 +16,14 @@ export var body :NodePath
 export var gun :NodePath
 export var ray :NodePath
 
+export var is_master :bool
+
 var _pivot :Spatial
 var _reload_timer :Timer
 var _firing_timer :Timer
 var _iddle_timer :Timer
+var _muzzle_position :Vector3
+var _pool_projectile :Array
 
 var _body :Spatial
 var _gun :Spatial
@@ -55,13 +61,29 @@ func _ready():
 	_ray.add_exception(get_node_or_null(ignore_body))
 	_pivot.translation = _ray.translation
 	
+	_pooling_projectile()
+	
+func _pooling_projectile():
+	for i in 10:
+		var p = projectile.instance()
+		p.connect("reach", self, "projectile_reach_target")
+		add_child(p)
+		_pool_projectile.append(p)
+		
+func _get_projectile() -> Projectile:
+	for _projectile in _pool_projectile:
+		if not _projectile.is_launching():
+			return _projectile
+			
+	return null
+	
 func _process(delta):
 	var _target: BaseUnit = _get_target()
 	_aiming(_target, delta)
 	_detect_aim(_target, delta)
 	_idle(_target, delta)
 	
-func _idle(_target :BaseUnit, delta :float):
+func _idle(_target :BaseUnit, _delta :float):
 	if is_instance_valid(_target):
 		return
 		
@@ -131,12 +153,21 @@ func _detect_aim(_target :BaseUnit, _delta :float):
 		if not _body_target is BaseUnit:
 			return
 		
-		firing()
-		ammo -= 1
+		firing(_body_target)
 		
-func firing():
+func firing(_target :BaseUnit):
+	var _projectile :Projectile = _get_projectile()
+	if not is_instance_valid(_projectile):
+		return
+		
+	_projectile.translation = _muzzle_position
+	_projectile.target = _target
+	_projectile.launch()
+	
+	ammo -= 1
+	
+func projectile_reach_target(_p :Projectile, _t :BaseUnit):
 	pass
-
 
 
 

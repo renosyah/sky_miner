@@ -142,7 +142,7 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "Turret",
 "language": "GDScript",
-"path": "res://entity/unit/turret/turret.gd"
+"path": "res://entity/turret/turret.gd"
 }, {
 "base": "Control",
 "class": "UiMp",

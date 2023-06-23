@@ -7,7 +7,7 @@
 [ext_resource path="res://entity/unit/airship/cruiser/flap.obj" type="ArrayMesh" id=5]
 [ext_resource path="res://entity/unit/airship/cruiser/cabin.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://entity/unit/airship/cruiser/crownest.obj" type="ArrayMesh" id=7]
-[ext_resource path="res://entity/unit/turret/mg/mg.tscn" type="PackedScene" id=8]
+[ext_resource path="res://entity/turret/mg/mg.tscn" type="PackedScene" id=8]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.615686, 0.615686, 0.615686, 1 )

@@ -26,7 +26,8 @@ puppet var _puppet_rotate_direction :float
 puppet var _puppet_targets :Array
 
 func assign_turret_target(_targets :Array):
-	targets = _targets
+	if _is_master:
+		targets = _targets
 	
 func master_moving(delta :float) -> void:
 	var _is_moving :bool = move_direction != Vector3.ZERO

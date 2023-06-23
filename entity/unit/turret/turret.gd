@@ -1,24 +1,40 @@
 extends Spatial
 class_name Turret
 
-export var is_aiming :bool
-export var aim_at :Vector3
+export var target :NodePath
+
 export var aiming_speed :float
 export var ignore_body :NodePath
+export var ammo :int
+export var max_ammo :int
+export var reload_time :float
+export var fire_rate :float
 
 export var body :NodePath
 export var gun :NodePath
 export var ray :NodePath
 
 var _pivot :Spatial
+var _reload_timer :Timer
+var _firing_timer :Timer
+
 var _body :Spatial
 var _gun :Spatial
 var _ray :RayCast
-var _firing :bool
 
 func _ready():
 	_pivot = Spatial.new()
 	add_child(_pivot)
+	
+	_reload_timer = Timer.new()
+	_reload_timer.wait_time = reload_time
+	_reload_timer.one_shot = true
+	add_child(_reload_timer)
+	
+	_firing_timer = Timer.new()
+	_firing_timer.wait_time = fire_rate
+	_firing_timer.one_shot = true
+	add_child(_firing_timer)
 	
 	_body = get_node_or_null(body)
 	_gun = get_node_or_null(gun)
@@ -34,11 +50,12 @@ func _ready():
 	_pivot.translation = _ray.translation
 	
 func _process(delta):
-	_aiming(delta)
-	_detect_aim()
+	var _target: BaseUnit = _get_target()
+	_aiming(_target, delta)
+	_detect_aim(_target, delta)
 	
-func _aiming(delta):
-	if not is_aiming:
+func _aiming(_target :BaseUnit, delta :float):
+	if not is_instance_valid(_target):
 		return
 		
 	if not is_instance_valid(_body):
@@ -47,7 +64,10 @@ func _aiming(delta):
 	if not is_instance_valid(_gun):
 		return
 		
-	var _aim_dir :Vector3 = _pivot.global_transform.origin.direction_to(aim_at + Vector3(0,2,0))
+	var from_pos :Vector3 = _pivot.global_transform.origin
+	var to_pos :Vector3 = _target.global_transform.origin
+		
+	var _aim_dir :Vector3 = from_pos.direction_to(to_pos + Vector3(0,2,0))
 	_pivot.look_at(_aim_dir * 100, Vector3.UP)
 	_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -45, 45)
 	
@@ -57,17 +77,37 @@ func _aiming(delta):
 	_gun.rotation_degrees.x = clamp(_gun.rotation_degrees.x, -45, 45)
 	_ray.rotation_degrees.x = _gun.rotation_degrees.x
 	
+func _get_target() -> BaseUnit:
+	if target.is_empty():
+		return null
+		
+	var body = get_node_or_null(target)
+	if not is_instance_valid(body):
+		return null
+		
+	if not body is BaseUnit:
+		return null
+		
+	return body
 	
-func _detect_aim():
-	if not is_aiming:
+func _detect_aim(_target :BaseUnit, delta :float):
+	if not is_instance_valid(_target):
 		return
 		
-	_firing = false
-	
 	if not is_instance_valid(_ray):
 		return
 		
-	if _ray.is_colliding():
+	if not _reload_timer.is_stopped():
+		return
+		
+	if ammo < 0:
+		ammo = max_ammo
+		_reload_timer.start()
+		return
+		
+	if _ray.is_colliding() and _firing_timer.is_stopped():
+		_firing_timer.start()
+		
 		var body = _ray.get_collider()
 		if body is StaticBody:
 			return
@@ -75,8 +115,11 @@ func _detect_aim():
 		if not body is BaseUnit:
 			return
 		
-		_firing = true
-	
+		firing()
+		ammo -= 1
+		
+func firing():
+	pass
 
 
 

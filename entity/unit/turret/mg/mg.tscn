@@ -81,6 +81,11 @@ tracks/1/keys = {
 
 [node name="mg" type="Spatial"]
 script = ExtResource( 1 )
+aiming_speed = 2.0
+ammo = 5
+max_ammo = 5
+reload_time = 1.0
+fire_rate = 0.2
 body = NodePath("body")
 gun = NodePath("body/gun")
 ray = NodePath("body/RayCast")
@@ -117,10 +122,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0538076, -0.851461 )
 visible = false
 mesh = SubResource( 5 )
 material/0 = SubResource( 6 )
-
-[node name="firerate" type="Timer" parent="."]
-wait_time = 0.3
-one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 7 )

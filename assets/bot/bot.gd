@@ -35,6 +35,15 @@ func move_to(_at :Vector3):
 		_unit.is_moving = true
 		_unit.move_to = _at
 	
+func get_node_path_targets() -> Array:
+	var _targets :Array = []
+	
+	for i in targets:
+		if is_instance_valid(i):
+			_targets.append(i.get_path())
+			
+	return _targets
+	
 func _chase_target():
 	if not is_instance_valid(_target):
 		return

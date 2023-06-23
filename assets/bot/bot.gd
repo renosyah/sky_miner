@@ -20,6 +20,8 @@ func _ready():
 	_unit.is_bot = enable
 	
 func _process(_delta):
+	_revalidate_target()
+	
 	if enable:
 		_assign_target()
 		_chase_target()
@@ -39,8 +41,14 @@ func get_node_path_targets() -> Array:
 	var _targets :Array = []
 	
 	for i in targets:
-		if is_instance_valid(i):
-			_targets.append(i.get_path())
+		var _unit :BaseUnit = i
+		if not is_instance_valid(_unit):
+			continue
+			
+		if _unit.is_dead:
+			continue
+			
+		_targets.append(i.get_path())
 			
 	return _targets
 	
@@ -50,6 +58,15 @@ func _chase_target():
 		
 	_unit.is_moving = true
 	_unit.move_to = _target.global_transform.origin
+	
+func _revalidate_target():
+	var temp = []
+	for i in targets:
+		if not i.is_dead:
+			temp.append(i)
+			
+	targets.clear()
+	targets.append_array(temp)
 	
 func _assign_target():
 	_target = _get_closes()
@@ -77,6 +94,9 @@ func _on_Area_body_entered(body):
 		return
 		
 	if not body is BaseUnit:
+		return
+		
+	if body.is_dead:
 		return
 		
 	if body.team == team:

@@ -34,18 +34,8 @@ remotesync func _dead():
 	
 func master_moving(delta :float) -> void:
 	if is_dead:
-		
-		# still flying?
-		# down & rotate
-		if translation.y > -15:
-			throttle = lerp(throttle, throttle + 1.5, delta)
-			throttle = clamp(throttle, 0, speed)
-			
-			_velocity = Vector3(0, -throttle, 0)
-			rotate_y(1.2 * delta)
-			
-			.master_moving(delta)
-			
+		_falling_down(delta)
+		.master_moving(delta)
 		return
 		
 	var _is_moving :bool = move_direction != Vector3.ZERO
@@ -86,6 +76,23 @@ func _ajust_altitude():
 	else:
 		_velocity.y = 0
 		
+func _falling_down(delta):
+	var is_grounded :bool = is_on_floor()
+	var is_below_surface :bool = translation.y < -5
+	
+	if is_grounded or is_below_surface:
+		set_process(false)
+		return
+		
+	# still flying?
+	# down & rotate
+	throttle = lerp(throttle, throttle + 1.5, delta)
+	throttle = clamp(throttle, 0, speed)
+	
+	_velocity = Vector3(0, -throttle, 0)
+	rotate_y(1.2 * delta)
+	
+	
 func _turret_get_target():
 	var pos :int = 0
 	for _turret in turrets:

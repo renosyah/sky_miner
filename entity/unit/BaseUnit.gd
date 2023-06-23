@@ -1,8 +1,15 @@
 extends BaseEntity
 class_name BaseUnit
 
+signal take_damage(_unit, _damage)
+signal dead(_unit)
+
 export var team :int = 0
 export var speed :int = 1
+
+export var is_dead :bool = false
+export var hp :int = 100
+export var max_hp :int = 100
 
 export var move_direction :Vector3
 
@@ -37,6 +44,15 @@ func _ready():
 	add_child(_sound)
 	input_ray_pickable = false
 	
+remotesync func _take_damage(_damage :int, _remain_hp :int):
+	hp = _remain_hp
+	emit_signal("take_damage", self, _damage)
+	
+remotesync func _dead():
+	is_dead = true
+	hp = 0
+	emit_signal("dead", self)
+	
 func master_moving(_delta :float) -> void:
 	_bot_move()
 	
@@ -46,7 +62,11 @@ func master_moving(_delta :float) -> void:
 	if _velocity != Vector3.ZERO:
 		_velocity = move_and_slide(_velocity, Vector3.UP)
 		
+		
 func _bot_move():
+	if is_dead:
+		return
+		
 	if is_moving and is_bot:
 		var _pos = global_transform.origin
 		var _pos_norm = _pos * Vector3(1,0,1)
@@ -74,3 +94,16 @@ func turn_spatial_pivot_to_moving(_spatial :Spatial, _interpolate :float, delta 
 	
 func get_velocity() -> Vector3:
 	return _velocity
+	
+func take_damage(_damage :int):
+	if is_dead:
+		return
+		
+	hp = clamp(hp - _damage, 0, max_hp)
+	if hp == 0:
+		rpc("_dead")
+		return
+		
+	rpc("_take_damage", _damage, hp)
+	
+

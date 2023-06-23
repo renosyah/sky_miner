@@ -7,6 +7,7 @@ export var aiming_speed :float
 export var ignore_body :NodePath
 
 export var projectile :PackedScene
+export var attack_damage :int
 export var ammo :int
 export var max_ammo :int
 export var reload_time :float
@@ -167,9 +168,9 @@ func firing(_target :BaseUnit):
 	ammo -= 1
 	
 func projectile_reach_target(_p :Projectile, _t :BaseUnit):
-	pass
-
-
+	if is_master:
+		_t.take_damage(attack_damage)
+	
 
 
 

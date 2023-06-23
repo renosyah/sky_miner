@@ -84,6 +84,7 @@ tracks/1/keys = {
 script = ExtResource( 1 )
 aiming_speed = 2.0
 projectile = ExtResource( 2 )
+attack_damage = 1
 ammo = 5
 max_ammo = 5
 reload_time = 1.0

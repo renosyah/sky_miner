@@ -29,9 +29,6 @@ func assign_turret_target(_targets :Array):
 	if _is_master:
 		targets = _targets
 		
-remotesync func _dead():
-	._dead()
-	
 func master_moving(delta :float) -> void:
 	if is_dead:
 		_falling_down(delta)

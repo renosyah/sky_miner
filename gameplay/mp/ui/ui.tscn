@@ -31,22 +31,28 @@ mouse_filter = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer"]
 margin_right = 600.0
-margin_bottom = 666.0
+margin_bottom = 466.0
 mouse_filter = 2
 size_flags_vertical = 3
 
-[node name="MarginContainer2" type="CenterContainer" parent="CanvasLayer/Control/SafeArea/VBoxContainer"]
-margin_top = 670.0
+[node name="Control" type="Control" parent="CanvasLayer/Control/SafeArea/VBoxContainer"]
+margin_top = 470.0
 margin_right = 600.0
 margin_bottom = 970.0
-rect_min_size = Vector2( 0, 300 )
+rect_min_size = Vector2( 0, 500 )
 mouse_filter = 2
 
-[node name="virtual_joystick" parent="CanvasLayer/Control/SafeArea/VBoxContainer/MarginContainer2" instance=ExtResource( 4 )]
-margin_left = 200.0
-margin_top = 50.0
-margin_right = 400.0
+[node name="virtual_joystick" parent="CanvasLayer/Control/SafeArea/VBoxContainer/Control" instance=ExtResource( 4 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -300.0
+margin_top = -250.0
+margin_right = 300.0
 margin_bottom = 250.0
+rect_pivot_offset = Vector2( 300, 250 )
+joystick_mode = 1
 
 [node name="fps_ping_displayer" parent="CanvasLayer/Control/SafeArea/VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 974.0

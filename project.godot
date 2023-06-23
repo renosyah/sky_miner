@@ -44,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://assets/bot/bot.gd"
 }, {
+"base": "BaseUnit",
+"class": "Emplacement",
+"language": "GDScript",
+"path": "res://entity/unit/emplacement/emplacement.gd"
+}, {
 "base": "Spatial",
 "class": "FixCamera",
 "language": "GDScript",
@@ -53,6 +58,11 @@ _global_script_classes=[ {
 "class": "FloatingIsland",
 "language": "GDScript",
 "path": "res://map/floating_island/floating_island.gd"
+}, {
+"base": "Sprite3D",
+"class": "HpBar3D",
+"language": "GDScript",
+"path": "res://assets/bar-3d/hp_bar_3d.gd"
 }, {
 "base": "InputEventAction",
 "class": "InputEventMultiScreenDrag",
@@ -139,6 +149,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/LANServerBroadcast/server_listener/ServerListener.gd"
 }, {
+"base": "Area",
+"class": "Spotter",
+"language": "GDScript",
+"path": "res://assets/spotter/spotter.gd"
+}, {
 "base": "Spatial",
 "class": "Turret",
 "language": "GDScript",
@@ -167,8 +182,10 @@ _global_script_class_icons={
 "BaseResources": "",
 "BaseUnit": "",
 "Bot": "",
+"Emplacement": "",
 "FixCamera": "",
 "FloatingIsland": "",
+"HpBar3D": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",
 "InputEventScreenTwist": "",
@@ -186,6 +203,7 @@ _global_script_class_icons={
 "SaveLoad": "",
 "ServerAdvertiser": "res://addons/LANServerBroadcast/server_advertiser/server_advertiser.png",
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
+"Spotter": "",
 "Turret": "",
 "UiMp": "",
 "VirtualJoystick": "",

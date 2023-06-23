@@ -74,9 +74,16 @@ func _ready() -> void:
 	if not OS.has_touchscreen_ui_hint() and visibility_mode == VisibilityMode.TOUCHSCREEN_ONLY:
 		hide()
 		
-func _process(delta):
-	emit_signal("on_joystick_input", _output)
+	yield(get_tree(),"idle_frame")
+	_base_default_position = _base.rect_position
+	_tip_default_position = _tip.rect_position
 	
+#func _process(delta):
+#	#emit_signal("on_joystick_input", _output)
+#	if not _pressed:
+#		_base.rect_position = _base.rect_position.linear_interpolate(_base_default_position, 5 * delta)
+#		_tip.rect_position = _tip.rect_position.linear_interpolate(_tip_default_position, 5 * delta)
+#
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch:
 		if event.pressed and _touch_index == -1:
@@ -159,6 +166,7 @@ func _reset():
 	_tip.modulate = _default_color
 	_base.rect_position = _base_default_position
 	_tip.rect_position = _tip_default_position
+	
 	if use_input_actions:
 		if Input.is_action_pressed(action_left) or Input.is_action_just_pressed(action_left):
 			Input.action_release(action_left)

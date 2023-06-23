@@ -4,24 +4,21 @@ class_name Bot
 export var enable :bool = true
 export var unit :NodePath
 export var team :int
-export var detection_range :int = 15
-
-var targets :Array = []
+export var chase_offset :float
 
 var _target :BaseUnit
 var _unit :BaseUnit
 
-onready var _collision_shape = $Area/CollisionShape
+onready var _spotter = $spotter
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_unit = get_node_or_null(unit)
-	(_collision_shape.shape as SphereShape).radius = detection_range
+	_spotter.ignore_body = _unit
+	_spotter.team = team
 	_unit.is_bot = enable
 	
 func _process(_delta):
-	_revalidate_target()
-	
 	if enable:
 		_assign_target()
 		_chase_target()
@@ -40,7 +37,7 @@ func move_to(_at :Vector3):
 func get_node_path_targets() -> Array:
 	var _targets :Array = []
 	
-	for i in targets:
+	for i in _spotter.targets:
 		var _unit :BaseUnit = i
 		if not is_instance_valid(_unit):
 			continue
@@ -57,27 +54,27 @@ func _chase_target():
 		return
 		
 	_unit.is_moving = true
-	_unit.move_to = _target.global_transform.origin
+	_unit.move_to = _get_rand_pos(_target.global_transform.origin, chase_offset)
 	
-func _revalidate_target():
-	var temp = []
-	for i in targets:
-		if not i.is_dead:
-			temp.append(i)
-			
-	targets.clear()
-	targets.append_array(temp)
+func _get_rand_pos(from :Vector3, offset :float) -> Vector3:
+	if offset < 1:
+		return from
+		
+	var angle := rand_range(0, TAU)
+	var posv2 = polar2cartesian(offset, angle)
+	var posv3 = from + Vector3(posv2.x, 2.0, posv2.y)
+	return posv3
 	
 func _assign_target():
 	_target = _get_closes()
 	
 func _get_closes() -> BaseUnit:
-	if targets.empty():
+	if _spotter.targets.empty():
 		return null
 		
 	var from :Vector3 = global_transform.origin
-	var default :BaseUnit = targets[0]
-	for i in targets:
+	var default :BaseUnit = _spotter.targets[0]
+	for i in _spotter.targets:
 		var dis_1 = from.distance_squared_to(default.global_transform.origin)
 		var dis_2 = from.distance_squared_to(i.global_transform.origin)
 		
@@ -85,38 +82,3 @@ func _get_closes() -> BaseUnit:
 			default = i
 		
 	return default
-	
-func _on_Area_body_entered(body):
-	if body is StaticBody:
-		return
-		
-	if body == _unit:
-		return
-		
-	if not body is BaseUnit:
-		return
-		
-	if body.is_dead:
-		return
-		
-	if body.team == team:
-		return
-		
-	targets.append(body)
-
-func _on_Area_body_exited(body):
-	if not targets.has(body):
-		return
-		
-	targets.erase(body)
-
-
-
-
-
-
-
-
-
-
-		

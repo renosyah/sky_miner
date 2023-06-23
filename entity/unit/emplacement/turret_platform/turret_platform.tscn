@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://entity/unit/emplacement/turret_platform/turret_platform.gd" type="Script" id=1]
+[ext_resource path="res://entity/unit/emplacement/turret_platform/platform.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://entity/turret/mg/mg.tscn" type="PackedScene" id=3]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.396078, 0.396078, 0.396078, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.576471, 0.352941, 0.156863, 1 )
+
+[sub_resource type="CylinderShape" id=3]
+height = 0.595659
+radius = 2.05855
+
+[node name="turret_platform" type="KinematicBody"]
+script = ExtResource( 1 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.42049 )
+mesh = ExtResource( 2 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2122, 0, -0.76117 )
+mesh = ExtResource( 2 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23583, 0, -0.7825 )
+mesh = ExtResource( 2 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.226368, 0 )
+shape = SubResource( 3 )
+
+[node name="mg" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.277946, 1.4406 )
+ignore_body = NodePath("..")
+
+[node name="mg2" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21981, 0.277946, -0.809515 )
+ignore_body = NodePath("..")
+
+[node name="mg3" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.21301, 0.277946, -0.844961 )
+ignore_body = NodePath("..")

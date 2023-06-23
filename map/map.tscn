@@ -20,7 +20,7 @@ fog_color = Color( 0, 0.431373, 1, 1 )
 fog_depth_begin = 40.0
 fog_depth_curve = 0.784583
 fog_height_curve = 59.7141
-dof_blur_far_distance = 25.0
+dof_blur_far_distance = 50.0
 
 [sub_resource type="ConvexPolygonShape" id=3]
 points = PoolVector3Array( -50, 0, -50, -50, 0, 50, 50, 0, -50, 50, 0, 50 )

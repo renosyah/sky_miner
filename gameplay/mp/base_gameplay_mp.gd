@@ -43,11 +43,15 @@ var _map :Map
 
 func setup_map():
 	_map = preload("res://map/map.tscn").instance()
+	_map.connect("on_map_ready", self, "on_map_ready")
 	add_child(_map)
 	
 	if is_server():
 		_map.generate_islands()
 		NetworkLobbyManager.argument["map_data"] = _map.map_data
+	
+func on_map_ready():
+	pass
 	
 func _generate_island():
 	_map.map_data = NetworkLobbyManager.argument["map_data"]

@@ -53,6 +53,11 @@ remotesync func _dead():
 	hp = 0
 	emit_signal("dead", self)
 	
+remotesync func _reset():
+	is_dead = false
+	hp = max_hp
+	set_process(true)
+	
 func master_moving(_delta :float) -> void:
 	_bot_move()
 	
@@ -106,4 +111,6 @@ func take_damage(_damage :int):
 		
 	rpc("_take_damage", _damage, hp)
 	
-
+func reset():
+	rpc("_reset")
+	

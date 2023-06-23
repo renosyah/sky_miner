@@ -24,6 +24,7 @@ var _reload_timer :Timer
 var _firing_timer :Timer
 var _iddle_timer :Timer
 var _muzzle_position :Vector3
+var _aiming_position :Vector3
 var _pool_projectile :Array
 
 var _body :Spatial
@@ -56,7 +57,7 @@ func _ready():
 	if not is_instance_valid(_ray):
 		return
 		
-	_ray.enabled = true
+	#_ray.enabled = true
 	_ray.exclude_parent = true
 	
 	_ray.add_exception(get_node_or_null(ignore_body))
@@ -106,14 +107,14 @@ func _aiming(_target :BaseUnit, delta :float):
 		var from_pos :Vector3 = _pivot.global_transform.origin
 		var to_pos :Vector3 = _target.global_transform.origin
 		
-		var _aim_dir :Vector3 = from_pos.direction_to(to_pos + Vector3(0,2,0))
+		var _aim_dir :Vector3 = from_pos.direction_to(to_pos)
 		_pivot.look_at(_aim_dir * 100, Vector3.UP)
-		_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -45, 45)
+		#_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -60, 60)
 		
 	_body.rotation.y = lerp_angle(_body.rotation.y, _pivot.rotation.y, aiming_speed * delta)
 	
 	_gun.rotation_degrees.x = lerp(_gun.rotation_degrees.x, _pivot.rotation_degrees.x, aiming_speed * delta)
-	_gun.rotation_degrees.x = clamp(_gun.rotation_degrees.x, -45, 45)
+	_gun.rotation_degrees.x = clamp(_gun.rotation_degrees.x, -45, 90)
 	_ray.rotation_degrees.x = _gun.rotation_degrees.x
 	
 func _get_target() -> BaseUnit:
@@ -144,31 +145,38 @@ func _detect_aim(_target :BaseUnit, _delta :float):
 		_reload_timer.start()
 		return
 		
-	if _ray.is_colliding() and _firing_timer.is_stopped():
+	if _firing_timer.is_stopped():
+#		if _ray.is_colliding():
+#			var _body_target = _ray.get_collider()
+#			if _body_target is StaticBody:
+#				return
+#
+#			if not _body_target is BaseUnit:
+#				return
+#
+#			if _body_target != _target:
+#				return
+#
 		_firing_timer.start()
-		
-		var _body_target = _ray.get_collider()
-		if _body_target is StaticBody:
-			return
-			
-		if not _body_target is BaseUnit:
-			return
-		
-		firing(_body_target)
+		firing(_target)
 		
 func firing(_target :BaseUnit):
+	if not is_instance_valid(_target):
+		return
+		
 	var _projectile :Projectile = _get_projectile()
 	if not is_instance_valid(_projectile):
 		return
 		
 	_projectile.translation = _muzzle_position
+	_projectile.launch_to = _aiming_position
 	_projectile.target = _target
 	_projectile.launch()
 	
 	ammo -= 1
 	
 func projectile_reach_target(_p :Projectile, _t :BaseUnit):
-	if is_master:
+	if is_master and attack_damage > 0:
 		_t.take_damage(attack_damage)
 	
 

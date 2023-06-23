@@ -1,6 +1,8 @@
 extends Node
 class_name Map
 
+signal on_map_ready
+
 var island_templates = [
 	"res://map/floating_island/island_1"
 ]
@@ -28,7 +30,11 @@ func _ready():
 	
 func get_islands() -> Array:
 	return _islands.get_children()
-
+	
+func get_random_island() -> FloatingIsland:
+	var islands :Array = get_islands()
+	return islands[rand_range(0, islands.size())]
+	
 func spawn_islands():
 	var map_seed = map_data["map_seed"]
 	var rng = RandomNumberGenerator.new()
@@ -60,40 +66,54 @@ func spawn_islands():
 		resource.translation = ore["position"]
 		
 		
+	yield(get_tree(),"idle_frame")
+	emit_signal("on_map_ready")
+	
 func generate_islands():
 	map_data["map_seed"] = rand_range(-100, 100)
 	map_data["islands"] = []
 	map_data["trees"] = []
 	map_data["ores"] = []
 	
+	var generated_positions = []
+	var pos_count = 0
+	
 	for x in range(-2, 3, 1):
-		for y in range(-2, 3, 1):
-			randomize()
+		for z in range(-2, 3, 1):
+			generated_positions.append(Vector3(x, 0, z))
+			pos_count += 1
 			
-			if randf() > 0.6:
-				var template = island_templates[rand_range(0, island_templates.size())]
-				var island = _generate_island(x, y, template)
-				map_data["islands"].append(island)
-				
-				_spawn_position.translation = island["position"]
-				_spawn_position.scale = Vector3.ONE * island["size"]
-				_spawn_position.rotation_degrees = Vector3.ZERO
-				_spawn_position.rotate_y(deg2rad(island["rotate"]))
-				
-				_spawn_path.curve = load(template + "/curve.tres")
-				
-				map_data["trees"].append_array(
-					_generate_resource(
-						island["position"],island["name"],"tree",rand_range(2, 3) * island["size"]
-					)
-				)
-				
-				map_data["ores"].append_array(
-					_generate_resource(
-						island["position"],island["name"],"ore",rand_range(1, 3) * island["size"]
-					)
-				)
-				
+	randomize()
+	var max_island = clamp(rand_range(2, pos_count), 2, 10)
+	generated_positions.shuffle()
+	
+	for i in max_island:
+		generated_positions.pop_back()
+	
+	for pos in generated_positions:
+		var template = island_templates[rand_range(0, island_templates.size())]
+		var island = _generate_island(pos.x, pos.z, template)
+		map_data["islands"].append(island)
+		
+		_spawn_position.translation = island["position"]
+		_spawn_position.scale = Vector3.ONE * island["size"]
+		_spawn_position.rotation_degrees = Vector3.ZERO
+		_spawn_position.rotate_y(deg2rad(island["rotate"]))
+		
+		_spawn_path.curve = load(template + "/curve.tres")
+		
+		map_data["trees"].append_array(
+			_generate_resource(
+				island["position"],island["name"],"tree",rand_range(2, 3) * island["size"]
+			)
+		)
+		
+		map_data["ores"].append_array(
+			_generate_resource(
+				island["position"],island["name"],"ore",rand_range(1, 3) * island["size"]
+			)
+		)
+		
 	map_data["islands"].shuffle()
 	map_data["trees"].shuffle()
 	map_data["ores"].shuffle()

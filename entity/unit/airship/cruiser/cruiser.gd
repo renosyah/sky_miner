@@ -15,6 +15,8 @@ func _ready():
 	_material.albedo_color = color_coat
 	_main_body.set_surface_material(2, _material)
 	_flap.set_surface_material(0, _material)
+	
+	# just testing
 	turrets = [$mg, $mg2, $mg3]
 
 func moving(delta :float) -> void:

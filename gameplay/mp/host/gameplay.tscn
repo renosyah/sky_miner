@@ -12,7 +12,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 0 )
 team = 1
 speed = 4
 enable_gravity = false
-margin = 1.0
+margin = 5.0
 color_coat = Color( 0.00784314, 0, 1, 1 )
 
 [node name="bot" parent="cruiser" instance=ExtResource( 3 )]
@@ -25,6 +25,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.157349, 20, -21.8909 )
 team = 2
 speed = 2
 enable_gravity = false
+margin = 5.0
 color_coat = Color( 1, 0.235294, 0.235294, 1 )
 acceleration = 0.25
 
@@ -37,6 +38,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -26.9095, 20, -3.74172 )
 team = 2
 speed = 2
 enable_gravity = false
+margin = 5.0
 color_coat = Color( 1, 0.235294, 0.235294, 1 )
 acceleration = 0.25
 

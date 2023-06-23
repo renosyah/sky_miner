@@ -4,7 +4,7 @@ onready var cruiser = $cruiser
 onready var bots = [$cruiser2/bot, $cruiser3/bot]
 onready var islands = _map.get_islands()
 
-func _process(delta):
+func _process(_delta):
 	cruiser.move_direction = _ui.get_joystick_direction()
 	
 	$cruiser.assign_turret_target($cruiser/bot.get_node_path_targets())

@@ -19,7 +19,7 @@ func _ready():
 	(_collision_shape.shape as SphereShape).radius = detection_range
 	_unit.is_bot = enable
 	
-func _process(delta):
+func _process(_delta):
 	if enable:
 		_assign_target()
 		_chase_target()

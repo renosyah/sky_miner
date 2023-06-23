@@ -31,10 +31,10 @@ func _process(delta :float) -> void:
 func moving(_delta :float) -> void:
 	pass
 	
-func master_moving(delta :float) -> void:
+func master_moving(_delta :float) -> void:
 	pass
 	
-func puppet_moving(delta :float) -> void:
+func puppet_moving(_delta :float) -> void:
 	pass
 	
 ############################################################

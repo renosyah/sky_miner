@@ -37,7 +37,7 @@ func _ready():
 	add_child(_sound)
 	input_ray_pickable = false
 	
-func master_moving(delta :float) -> void:
+func master_moving(_delta :float) -> void:
 	_bot_move()
 	
 	if not is_on_floor() and enable_gravity:
@@ -51,12 +51,10 @@ func _bot_move():
 		var _pos = global_transform.origin
 		var _pos_norm = _pos * Vector3(1,0,1)
 		var _move_to_norm = move_to * Vector3(1,0,1)
-		move_direction = _pos.direction_to(move_to)
+		move_direction = _pos_norm.direction_to(_move_to_norm)
 		if _pos_norm.distance_to(_move_to_norm) < margin:
+			move_direction = Vector3.ZERO
 			is_moving = false
-			
-	if not is_moving:
-		move_direction = Vector3.ZERO
 	
 func puppet_moving(delta :float) -> void:
 	translation = translation.linear_interpolate(_puppet_translation, 2.5 * delta)

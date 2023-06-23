@@ -36,23 +36,26 @@ func _process(delta):
 	_target = target.global_transform.origin
 	
 	if _get_pos().distance_to(_target) < magin:
+		_launching = false
+		projectile_dismiss()
+		set_process(false)
 		_reach()
 		return
 		
 	if _travel_distance > max_distance:
-		stop()
+		_launching = false
+		projectile_dismiss()
+		set_process(false)
 		return
 		
 	_travel_distance += speed * delta
 	translation += _direction * speed * delta
 	
 func _reach():
-	stop()
 	emit_signal("reach", self, target)
 	
-func stop():
-	_launching = false
-	set_process(false)
+func projectile_dismiss():
+	pass
 	
 
 

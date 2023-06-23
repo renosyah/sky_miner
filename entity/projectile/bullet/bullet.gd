@@ -8,16 +8,24 @@ func _ready():
 	visible = false
 
 func launch():
-	mesh_instance.visible = true
-	visible = true
 	.launch()
 	
-func stop():
+	mesh_instance.visible = true
+	visible = true
+	
+	
+func projectile_dismiss():
+	.projectile_dismiss()
+	
 	mesh_instance.visible = false
 	cpu_particles.emitting = true
 	explosion_timeout.start()
-	set_process(false)
+	
+	# prevent being used
+	_launching = true
 	
 func _on_explosion_timeout_timeout():
 	visible = false
-	.stop()
+	
+	# recycle after explode
+	_launching = false

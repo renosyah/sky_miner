@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://entity/unit/emplacement/turret_platform/turret_platform.gd" type="Script" id=1]
 [ext_resource path="res://entity/unit/emplacement/turret_platform/platform.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://assets/flag/flag.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.396078, 0.396078, 0.396078, 1 )
@@ -13,26 +14,34 @@ albedo_color = Color( 0.576471, 0.352941, 0.156863, 1 )
 height = 0.595659
 radius = 2.05855
 
+[sub_resource type="CylinderMesh" id=4]
+top_radius = 0.06
+bottom_radius = 0.06
+height = 4.0
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.529412, 0.27451, 0, 1 )
+
 [node name="turret_platform" type="KinematicBody"]
 script = ExtResource( 1 )
-turret_positions = [ Vector3( 0, 0.278, 1.441 ), Vector3( 1.22, 0.278, -0.81 ), Vector3( -1.213, 0.278, -0.845 ) ]
+turret_positions = [ Vector3( 0, 0.278, 1 ), Vector3( -1, 0.278, -1 ), Vector3( 0, 0.278, -1 ) ]
 
 [node name="MeshInstance2" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.42049 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
 mesh = ExtResource( 2 )
 software_skinning_transform_normals = false
 material/0 = SubResource( 1 )
 material/1 = SubResource( 2 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2122, 0, -0.76117 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -1 )
 mesh = ExtResource( 2 )
 software_skinning_transform_normals = false
 material/0 = SubResource( 1 )
 material/1 = SubResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.23583, 0, -0.7825 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1 )
 mesh = ExtResource( 2 )
 software_skinning_transform_normals = false
 material/0 = SubResource( 1 )
@@ -41,3 +50,12 @@ material/1 = SubResource( 2 )
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.226368, 0 )
 shape = SubResource( 3 )
+
+[node name="flagpole" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50706, 0 )
+mesh = SubResource( 4 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 5 )
+
+[node name="flag" parent="flagpole" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0.960665, 1.42983, 0 )

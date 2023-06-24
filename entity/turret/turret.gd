@@ -158,7 +158,7 @@ func _detect_aim(_target :BaseUnit, _delta :float):
 #
 #			if _body_target != _target:
 #				return
-		_firing_timer.wait_time = rand_range(fire_rate * 0.5, fire_rate)
+		_firing_timer.wait_time = fire_rate
 		_firing_timer.start()
 		_firing(_target)
 		

@@ -106,10 +106,17 @@ func take_damage(_damage :int):
 		
 	hp = clamp(hp - _damage, 0, max_hp)
 	if hp == 0:
-		rpc("_dead")
+		dead()
 		return
 		
 	rpc("_take_damage", _damage, hp)
+	
+func dead():
+	if is_dead:
+		return
+		
+	if _is_master:
+		rpc("_dead")
 	
 func reset():
 	rpc("_reset")

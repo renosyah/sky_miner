@@ -16,6 +16,12 @@ func _network_timmer_timeout() -> void:
 # multiplayer func
 puppet var _puppet_targets :Array
 
+func assign_turret_position(_turret :Turret, _pos :Vector3):
+	add_child(_turret)
+	_turret.is_master = _check_is_master()
+	_turret.translation = _pos
+	turrets.append(_turret)
+	
 func assign_turret_target(_targets :Array):
 	if _is_master:
 		targets = _targets

@@ -16,12 +16,6 @@ func _ready():
 	_main_body.set_surface_material(2, _material)
 	_flap.set_surface_material(0, _material)
 	
-	# just testing
-	turrets = [$mg, $mg2, $mg3]
-	
-	for i in turrets:
-		i.is_master = _check_is_master()
-
 func moving(delta :float) -> void:
 	.moving(delta)
 	

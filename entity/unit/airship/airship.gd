@@ -25,6 +25,15 @@ puppet var _puppet_throttle :float
 puppet var _puppet_rotate_direction :float
 puppet var _puppet_targets :Array
 
+func _ready():
+	enable_gravity = false
+
+func assign_turret_position(_turret :Turret, _pos :Vector3):
+	add_child(_turret)
+	_turret.is_master = _check_is_master()
+	_turret.translation = _pos
+	turrets.append(_turret)
+	
 func assign_turret_target(_targets :Array):
 	if _is_master:
 		targets = _targets

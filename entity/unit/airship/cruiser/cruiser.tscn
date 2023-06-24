@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://entity/unit/airship/cruiser/cruiser.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://entity/unit/airship/cruiser/cruiser.gd" type="Script" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://entity/unit/airship/cruiser/flap.obj" type="ArrayMesh" id=5]
 [ext_resource path="res://entity/unit/airship/cruiser/cabin.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://entity/unit/airship/cruiser/crownest.obj" type="ArrayMesh" id=7]
-[ext_resource path="res://entity/turret/mg/mg.tscn" type="PackedScene" id=8]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.615686, 0.615686, 0.615686, 1 )
@@ -33,6 +32,8 @@ radius = 1.16056
 
 [node name="cruiser" type="KinematicBody"]
 script = ExtResource( 2 )
+speed = 4
+turret_positions = [ Vector3( 0, 0.823, 0 ), Vector3( 0, -0.864, -1.488 ), Vector3( 0, -0.864, 0.826 ) ]
 
 [node name="main_body" type="MeshInstance" parent="."]
 mesh = ExtResource( 1 )
@@ -86,15 +87,3 @@ skeleton = NodePath("../..")
 software_skinning_transform_normals = false
 material/0 = SubResource( 3 )
 material/1 = SubResource( 2 )
-
-[node name="mg" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.823445, 0 )
-ignore_body = NodePath("..")
-
-[node name="mg2" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.863782, -1.48808 )
-ignore_body = NodePath("..")
-
-[node name="mg3" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.863782, 0.82613 )
-ignore_body = NodePath("..")

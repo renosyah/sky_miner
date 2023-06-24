@@ -142,6 +142,8 @@ func _detect_aim(_target :BaseUnit, _delta :float):
 		
 	if ammo < 0:
 		ammo = max_ammo
+		
+		_reload_timer.wait_time = rand_range(reload_time * 0.5, reload_time)
 		_reload_timer.start()
 		return
 		
@@ -156,7 +158,7 @@ func _detect_aim(_target :BaseUnit, _delta :float):
 #
 #			if _body_target != _target:
 #				return
-#
+		_firing_timer.wait_time = rand_range(fire_rate * 0.5, fire_rate)
 		_firing_timer.start()
 		firing(_target)
 		

@@ -8,7 +8,6 @@ export var magin :float = 0.5
 export var max_distance :float = 25
 export var spread :float = 0.12
 
-var launch_to :Vector3
 var target :BaseUnit
 
 var _launching :bool
@@ -23,7 +22,7 @@ func _ready():
 
 func launch():
 	_target = target.global_transform.origin
-	_direction = _get_pos().direction_to(launch_to)
+	_direction = _get_pos().direction_to(_target)
 	_direction += Vector3.ONE * rand_range(-spread, spread)
 	_travel_distance = 0
 	_launching = true

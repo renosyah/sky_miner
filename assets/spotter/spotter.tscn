@@ -2,7 +2,8 @@
 
 [ext_resource path="res://assets/spotter/spotter.gd" type="Script" id=1]
 
-[sub_resource type="SphereShape" id=1]
+[sub_resource type="CylinderShape" id=1]
+height = 30.0
 radius = 15.0
 
 [node name="spotter" type="Area"]

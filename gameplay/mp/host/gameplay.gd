@@ -122,6 +122,9 @@ func _test_on_enemy_airship_patrol_timeout():
 		
 # test
 func _test_on_unit_take_damage(_unit, _damage, _hp_bar):
+	if _unit == player_airship:
+		_ui.show_hurt()
+		
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
 # test

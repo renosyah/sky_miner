@@ -11,7 +11,7 @@ onready var _collision_shape = $CollisionShape
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	(_collision_shape.shape as SphereShape).radius = detection_range
+	(_collision_shape.shape as CylinderShape).radius = detection_range
 	
 func _on_spotter_body_entered(body):
 	if body is StaticBody:

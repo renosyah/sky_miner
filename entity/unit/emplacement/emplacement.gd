@@ -17,6 +17,8 @@ func _network_timmer_timeout() -> void:
 puppet var _puppet_targets :Array
 
 func assign_turret_position(_turret :Turret, _pos :Vector3):
+	_turret.enable = true
+	_turret.enable_align = false
 	add_child(_turret)
 	_turret.is_master = _check_is_master()
 	_turret.translation = _pos
@@ -25,6 +27,16 @@ func assign_turret_position(_turret :Turret, _pos :Vector3):
 func assign_turret_target(_targets :Array):
 	if _is_master:
 		targets = _targets
+		
+remotesync func _dead():
+	._dead()
+	for _turret in turrets:
+		_turret.enable = false
+		
+remotesync func _reset():
+	._reset()
+	for _turret in turrets:
+		_turret.enable = true
 		
 func moving(delta :float) -> void:
 	.moving(delta)
@@ -42,7 +54,7 @@ func puppet_moving(delta :float) -> void:
 func _turret_get_target():
 	var pos :int = 0
 	for _turret in turrets:
-		if  targets.empty() or is_dead:
+		if targets.empty():
 			_turret.target = NodePath("")
 			
 		else:

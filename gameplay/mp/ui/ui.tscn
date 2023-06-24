@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://gameplay/mp/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
 [ext_resource path="res://assets/ui/fps_ping_displayer/fps_ping_displayer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/joystick/virtual_joystick.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/ui/hurt/hurt.tscn" type="PackedScene" id=5]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -17,6 +18,8 @@ script = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
+
+[node name="hurt" parent="CanvasLayer/Control" instance=ExtResource( 5 )]
 
 [node name="SafeArea" type="MarginContainer" parent="CanvasLayer/Control"]
 anchor_right = 1.0

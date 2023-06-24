@@ -16,7 +16,9 @@ export var fire_rate :float
 export var body :NodePath
 export var gun :NodePath
 
+export var enable :bool
 export var is_master :bool
+export var enable_align :bool
 
 var _pivot :Spatial
 var _reload_timer :Timer
@@ -68,9 +70,10 @@ func _get_projectile() -> Projectile:
 	return null
 	
 func _process(delta):
-	var _target: BaseUnit = _get_target()
-	_aiming(_target, delta)
-	_idle(_target, delta)
+	if enable:
+		var _target: BaseUnit = _get_target()
+		_aiming(_target, delta)
+		_idle(_target, delta)
 	
 func _idle(_target :BaseUnit, _delta :float):
 	if is_instance_valid(_target):
@@ -129,7 +132,7 @@ func _align_aim(_target :BaseUnit):
 		_reload_timer.start()
 		return
 		
-	if not is_align(_target.global_transform.origin):
+	if enable_align and not is_align(_target.global_transform.origin):
 		return
 		
 	if _firing_timer.is_stopped():
@@ -151,7 +154,6 @@ func _firing(_target :BaseUnit):
 	firing(_target)
 	
 	_projectile.translation = _muzzle_position
-	_projectile.launch_to = _aiming_position
 	_projectile.target = _target
 	_projectile.launch()
 	ammo -= 1

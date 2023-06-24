@@ -29,6 +29,8 @@ func _ready():
 	enable_gravity = false
 
 func assign_turret_position(_turret :Turret, _pos :Vector3):
+	_turret.enable = true
+	_turret.enable_align = true
 	add_child(_turret)
 	_turret.is_master = _check_is_master()
 	_turret.translation = _pos
@@ -38,14 +40,26 @@ func assign_turret_target(_targets :Array):
 	if _is_master:
 		targets = _targets
 		
+remotesync func _dead():
+	._dead()
+	for _turret in turrets:
+		_turret.enable = false
+		
+remotesync func _reset():
+	._reset()
+	for _turret in turrets:
+		_turret.enable = true
+		
 func master_moving(delta :float) -> void:
 	if is_dead:
 		_falling_down(delta)
 		.master_moving(delta)
 		return
 		
-	var _is_moving :bool = move_direction != Vector3.ZERO
-	var _acc :float = acceleration if _is_moving else -acceleration
+	var _input_power :float = move_direction.length()
+	var _is_moving :bool = _input_power > 0.5
+	
+	var _acc :float = (acceleration * _input_power) if _is_moving else -acceleration
 	
 	throttle = lerp(throttle, throttle + _acc, delta)
 	throttle = clamp(throttle, 0, speed)
@@ -56,7 +70,7 @@ func master_moving(delta :float) -> void:
 	_ajust_altitude()
 	
 	var y_rotation :float = rotation_degrees.y
-	.turn_spatial_pivot_to_moving(self, clamp(throttle, 0, 0.5), delta)
+	.turn_spatial_pivot_to_moving(self, clamp(throttle * _input_power, 0, 0.5), delta)
 	
 	rotate_direction = clamp(rotation_degrees.y - y_rotation, -1, 1)
 	

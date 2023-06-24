@@ -114,7 +114,7 @@ func _aiming(_target :BaseUnit, delta :float):
 	_body.rotation.y = lerp_angle(_body.rotation.y, _pivot.rotation.y, aiming_speed * delta)
 	
 	_gun.rotation_degrees.x = lerp(_gun.rotation_degrees.x, _pivot.rotation_degrees.x, aiming_speed * delta)
-	_gun.rotation_degrees.x = clamp(_gun.rotation_degrees.x, -45, 90)
+	_gun.rotation_degrees.x = clamp(_gun.rotation_degrees.x, -45, 60)
 	_ray.rotation_degrees.x = _gun.rotation_degrees.x
 	
 func _get_target() -> BaseUnit:
@@ -160,9 +160,9 @@ func _detect_aim(_target :BaseUnit, _delta :float):
 #				return
 		_firing_timer.wait_time = rand_range(fire_rate * 0.5, fire_rate)
 		_firing_timer.start()
-		firing(_target)
+		_firing(_target)
 		
-func firing(_target :BaseUnit):
+func _firing(_target :BaseUnit):
 	if not is_instance_valid(_target):
 		return
 		
@@ -170,12 +170,16 @@ func firing(_target :BaseUnit):
 	if not is_instance_valid(_projectile):
 		return
 		
+	firing(_target)
+	
 	_projectile.translation = _muzzle_position
 	_projectile.launch_to = _aiming_position
 	_projectile.target = _target
 	_projectile.launch()
-	
 	ammo -= 1
+	
+func firing(_target :BaseUnit):
+	pass
 	
 func projectile_reach_target(_p :Projectile, _t :BaseUnit):
 	if is_master and attack_damage > 0:

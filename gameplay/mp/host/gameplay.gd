@@ -29,14 +29,14 @@ func spawn_airship():
 		add_child(airship)
 		airship.translation = spawn_pos
 		airship.translation.y = 20
-
+	
 		var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
 		hp_bar.tag_name = airship.name
 		hp_bar.enable_label = true
 		hp_bar.color = Color.green if is_player_airship else Color.red
 		airship.add_child(hp_bar)
 		hp_bar.update_bar(airship.hp, airship.max_hp)
-		airship.connect("take_damage", self, "_test_on_cruiser_take_damage",[hp_bar])
+		airship.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
 		airship.connect("dead", self, "_test_on_cruiser_dead",[hp_bar])
 	
 		var turret_index = 0
@@ -72,6 +72,15 @@ func spawn_island_defence():
 		defence.color_coat = Color(randf(),randf(),randf(),1)
 		add_child(defence)
 		defence.translation = spawn_pos
+		
+		var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
+		hp_bar.tag_name = defence.name
+		hp_bar.enable_label = true
+		hp_bar.color = Color.green if (i == 0) else Color.orange
+		defence.add_child(hp_bar)
+		hp_bar.update_bar(defence.hp, defence.max_hp)
+		defence.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
+		defence.connect("dead", self, "_test_on_defence_dead",[hp_bar])
 		
 		var turret_index = 0
 		for turret_pos in defence.turret_positions:
@@ -112,7 +121,7 @@ func _test_on_enemy_airship_patrol_timeout():
 		i.move_to(_map.get_random_island().translation)
 		
 # test
-func _test_on_cruiser_take_damage(_unit, _damage, _hp_bar):
+func _test_on_unit_take_damage(_unit, _damage, _hp_bar):
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
 # test
@@ -122,7 +131,11 @@ func _test_on_cruiser_dead(_unit, _hp_bar):
 	_unit.translation = _map.get_random_island().translation
 	_unit.translation.y = 20
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
-
-
+	
+# test
+func _test_on_defence_dead(_unit, _hp_bar):
+	yield(get_tree().create_timer(15), "timeout")
+	_unit.reset()
+	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 
 

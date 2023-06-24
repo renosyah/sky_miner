@@ -15,7 +15,6 @@ export var fire_rate :float
 
 export var body :NodePath
 export var gun :NodePath
-export var ray :NodePath
 
 export var is_master :bool
 
@@ -29,7 +28,6 @@ var _pool_projectile :Array
 
 var _body :Spatial
 var _gun :Spatial
-var _ray :RayCast
 
 func _ready():
 	_pivot = Spatial.new()
@@ -52,16 +50,6 @@ func _ready():
 	
 	_body = get_node_or_null(body)
 	_gun = get_node_or_null(gun)
-	_ray = get_node_or_null(ray)
-	
-	if not is_instance_valid(_ray):
-		return
-		
-	#_ray.enabled = true
-	_ray.exclude_parent = true
-	
-	_ray.add_exception(get_node_or_null(ignore_body))
-	_pivot.translation = _ray.translation
 	
 	_pooling_projectile()
 	
@@ -82,7 +70,6 @@ func _get_projectile() -> Projectile:
 func _process(delta):
 	var _target: BaseUnit = _get_target()
 	_aiming(_target, delta)
-	_detect_aim(_target, delta)
 	_idle(_target, delta)
 	
 func _idle(_target :BaseUnit, _delta :float):
@@ -103,19 +90,21 @@ func _aiming(_target :BaseUnit, delta :float):
 	if not is_instance_valid(_gun):
 		return
 		
-	if is_instance_valid(_target):
+	var _is_taget_valid :bool = is_instance_valid(_target)
+		
+	if _is_taget_valid:
 		var from_pos :Vector3 = _pivot.global_transform.origin
 		var to_pos :Vector3 = _target.global_transform.origin
 		
 		var _aim_dir :Vector3 = from_pos.direction_to(to_pos)
 		_pivot.look_at(_aim_dir * 100, Vector3.UP)
-		#_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -60, 60)
 		
 	_body.rotation.y = lerp_angle(_body.rotation.y, _pivot.rotation.y, aiming_speed * delta)
-	
 	_gun.rotation_degrees.x = lerp(_gun.rotation_degrees.x, _pivot.rotation_degrees.x, aiming_speed * delta)
 	_gun.rotation_degrees.x = clamp(_gun.rotation_degrees.x, -45, 60)
-	_ray.rotation_degrees.x = _gun.rotation_degrees.x
+	
+	if _is_taget_valid:
+		_align_aim(_target)
 	
 func _get_target() -> BaseUnit:
 	if target.is_empty():
@@ -130,38 +119,27 @@ func _get_target() -> BaseUnit:
 		
 	return _body_target
 	
-func _detect_aim(_target :BaseUnit, _delta :float):
-	if not is_instance_valid(_target):
-		return
-		
-	if not is_instance_valid(_ray):
-		return
-		
+func _align_aim(_target :BaseUnit):
 	if not _reload_timer.is_stopped():
 		return
 		
 	if ammo < 0:
 		ammo = max_ammo
-		
 		_reload_timer.wait_time = rand_range(reload_time * 0.5, reload_time)
 		_reload_timer.start()
 		return
 		
+	if not is_align(_target.global_transform.origin):
+		return
+		
 	if _firing_timer.is_stopped():
-#		if _ray.is_colliding():
-#			var _body_target = _ray.get_collider()
-#			if _body_target is StaticBody:
-#				return
-#
-#			if not _body_target is BaseUnit:
-#				return
-#
-#			if _body_target != _target:
-#				return
 		_firing_timer.wait_time = fire_rate
 		_firing_timer.start()
 		_firing(_target)
 		
+func is_align(_target_pos :Vector3) -> bool:
+	return true
+	
 func _firing(_target :BaseUnit):
 	if not is_instance_valid(_target):
 		return

@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entity/unit/airship/airship.gd"
 }, {
+"base": "BaseData",
+"class": "AirshipData",
+"language": "GDScript",
+"path": "res://data/airship/airship.gd"
+}, {
 "base": "Resource",
 "class": "BaseData",
 "language": "GDScript",
@@ -48,6 +53,11 @@ _global_script_classes=[ {
 "class": "Emplacement",
 "language": "GDScript",
 "path": "res://entity/unit/emplacement/emplacement.gd"
+}, {
+"base": "BaseData",
+"class": "EmplacementData",
+"language": "GDScript",
+"path": "res://data/emplacement/emplacement.gd"
 }, {
 "base": "Spatial",
 "class": "FixCamera",
@@ -159,6 +169,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entity/turret/turret.gd"
 }, {
+"base": "BaseData",
+"class": "TurretData",
+"language": "GDScript",
+"path": "res://data/turret/turret.gd"
+}, {
 "base": "Control",
 "class": "UiMp",
 "language": "GDScript",
@@ -176,6 +191,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "AirShip": "",
+"AirshipData": "",
 "BaseData": "",
 "BaseEntity": "",
 "BaseGameplayMp": "",
@@ -183,6 +199,7 @@ _global_script_class_icons={
 "BaseUnit": "",
 "Bot": "",
 "Emplacement": "",
+"EmplacementData": "",
 "FixCamera": "",
 "FloatingIsland": "",
 "HpBar3D": "",
@@ -205,6 +222,7 @@ _global_script_class_icons={
 "ServerListener": "res://addons/LANServerBroadcast/server_listener/server_listener.png",
 "Spotter": "",
 "Turret": "",
+"TurretData": "",
 "UiMp": "",
 "VirtualJoystick": "",
 "Water": ""

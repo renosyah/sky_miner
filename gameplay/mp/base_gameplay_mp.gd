@@ -87,6 +87,44 @@ func all_player_ready():
 	_generate_island()
 	
 ################################################################
+# airship spawner
+func spawn_airship(_data :AirshipData, _parent :Node = self):
+	rpc("_spawn_airship", _data.to_dictionary(), _parent.get_path())
+
+remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
+	var _airship_data :AirshipData = AirshipData.new()
+	_airship_data.from_dictionary(_data)
+	
+	var _parent = get_node_or_null(_parent_path)
+	if not is_instance_valid(_parent):
+		return
+		
+	var spawns :Array = _airship_data.spawn_airship(_parent)
+	on_airship_spawned(spawns[0], spawns[1])
+	
+func on_airship_spawned(_airship :AirShip, _bot :Bot):
+	pass
+	
+################################################################
+# emplacement spawner
+func spawn_emplacement(_data :EmplacementData, _parent :Node = self):
+	rpc("_spawn_emplacement", _data.to_dictionary(), _parent.get_path())
+
+remotesync func _spawn_emplacement(_data :Dictionary, _parent_path :NodePath):
+	var _emplacement_data :EmplacementData = EmplacementData.new()
+	_emplacement_data.from_dictionary(_data)
+	
+	var _parent = get_node_or_null(_parent_path)
+	if not is_instance_valid(_parent):
+		return
+		
+	var spawns :Array = _emplacement_data.spawn_emplacement(_parent)
+	on_emplacement_spawned(spawns[0], spawns[1])
+	
+func on_emplacement_spawned(_airship :Emplacement, _bot :Bot):
+	pass
+	
+################################################################
 # exit
 func on_exit_game_session():
 	Network.disconnect_from_server()

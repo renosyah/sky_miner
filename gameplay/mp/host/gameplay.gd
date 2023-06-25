@@ -13,92 +13,98 @@ func _ready():
 # test
 func on_map_ready():
 	.on_map_ready()
-	spawn_airship()
+	spawn()
 	spawn_island_defence()
 	
-func spawn_airship():
+func spawn():
 	for i in 4:
 		var spawn_pos = _map.get_islands()[i].translation
-		var is_player_airship = (i == 0)
+		var node_name :String = "airship_%s" % i
+		var is_player = (node_name == "airship_1")
 		
-		var airship :AirShip = preload("res://entity/unit/airship/cruiser/cruiser.tscn").instance()
-		airship.name = "airship_%s" % i
-		airship.set_network_master(Network.PLAYER_HOST_ID)
+		var airship :AirshipData = AirshipData.new()
+		airship.node_name = node_name
+		airship.network_id = Network.PLAYER_HOST_ID
+		airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
+		airship.position = spawn_pos
+		airship.turrets_count = 3
 		airship.team = i
-		airship.color_coat = Color(randf(),randf(),randf(),1)
-		add_child(airship)
-		airship.translation = spawn_pos
-		airship.translation.y = 20
-	
-		var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
-		hp_bar.tag_name = airship.name
-		hp_bar.enable_label = true
-		hp_bar.color = Color.green if is_player_airship else Color.red
-		airship.add_child(hp_bar)
-		hp_bar.update_bar(airship.hp, airship.max_hp)
-		airship.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
-		airship.connect("dead", self, "_test_on_cruiser_dead",[hp_bar])
-	
-		var turret_index = 0
-		for turret_pos in airship.turret_positions:
-			var turret :Turret = preload("res://entity/turret/mg/mg.tscn").instance()
-			turret.name = "airship_%s_turret_%s" % [i, turret_index]
-			turret.ignore_body = airship.get_path()
-			airship.assign_turret_position(turret, turret_pos)
-			turret_index += 1
-		
-		var bot :Bot = preload("res://assets/bot/bot.tscn").instance()
-		bot.enable = not is_player_airship
-		bot.team = airship.team
-		bot.unit = airship.get_path()
-		airship.add_child(bot)
-		
-		if is_player_airship:
-			player_airship = airship
-			player_airship_bot = bot
+		airship.color_coat = Color.green if is_player else Color.red
+		airship.enable_bot = not is_player
+		airship.turrets = []
+		for index in airship.turrets_count:
+			var t :TurretData = TurretData.new()
+			t.node_name = "airship_%s_turret_%s" % [i, index]
+			t.scene_path = "res://entity/turret/mg/mg.tscn"
+			t.position = Vector3.ZERO
+			airship.turrets.append(t)
 			
-		if not is_player_airship:
-			airships.append(airship)
-			bots.append(bot)
+		.spawn_airship(airship)
 		
+func on_airship_spawned(airship :AirShip, bot :Bot):
+	.on_airship_spawned(airship, bot)
+	
+	var is_player = (airship.name == "airship_1")
+	
+	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
+	hp_bar.tag_name = airship.name
+	hp_bar.enable_label = true
+	hp_bar.color = Color.green if is_player else Color.red
+	airship.add_child(hp_bar)
+	hp_bar.update_bar(airship.hp, airship.max_hp)
+	airship.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
+	airship.connect("dead", self, "_test_on_cruiser_dead",[hp_bar])
+		
+	if is_player:
+		player_airship = airship
+		player_airship_bot = bot
+	
+	if not is_player:
+		airships.append(airship)
+		bots.append(bot)
 	
 func spawn_island_defence():
-	for i in 3:
+	for i in 4:
+		var node_name :String = "defence_%s" % i
 		var spawn_pos = _map.get_islands()[i].translation
-		var defence :Emplacement = preload("res://entity/unit/emplacement/turret_platform/turret_platform.tscn").instance()
-		defence.name = "defence_%s" % i
-		defence.set_network_master(Network.PLAYER_HOST_ID)
+		var is_player = (node_name == "defence_1")
+		
+		var defence :EmplacementData = EmplacementData.new()
+		defence.node_name = node_name
+		defence.network_id = Network.PLAYER_HOST_ID
+		defence.scene_path = "res://entity/unit/emplacement/turret_platform/turret_platform.tscn"
+		defence.position = spawn_pos
+		defence.turrets_count = 3
 		defence.team = i
-		defence.color_coat = Color(randf(),randf(),randf(),1)
-		add_child(defence)
-		defence.translation = spawn_pos
+		defence.color_coat = Color.green if is_player else Color.orange
+		defence.enable_bot = true
+		defence.turrets = []
+		for index in defence.turrets_count:
+			var t :TurretData = TurretData.new()
+			t.node_name = "airship_%s_turret_%s" % [i, index]
+			t.scene_path = "res://entity/turret/mg/mg.tscn"
+			t.position = Vector3.ZERO
+			defence.turrets.append(t)
 		
-		var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
-		hp_bar.tag_name = defence.name
-		hp_bar.enable_label = true
-		hp_bar.color = Color.green if (i == 0) else Color.orange
-		defence.add_child(hp_bar)
-		hp_bar.update_bar(defence.hp, defence.max_hp)
-		defence.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
-		defence.connect("dead", self, "_test_on_defence_dead",[hp_bar])
+		.spawn_emplacement(defence)
+	
+func on_emplacement_spawned(emplacement :Emplacement, bot :Bot):
+	.on_emplacement_spawned(emplacement, bot)
+	
+	var is_player = (emplacement.name == "defence_1")
 		
-		var turret_index = 0
-		for turret_pos in defence.turret_positions:
-			var turret :Turret = preload("res://entity/turret/mg/mg.tscn").instance()
-			turret.name = "defence_%s_turret_%s" % [i, turret_index]
-			turret.ignore_body = defence.get_path()
-			defence.assign_turret_position(turret, turret_pos)
-			turret_index += 1
-			
-		var bot :Bot = preload("res://assets/bot/bot.tscn").instance()
-		bot.enable = true
-		bot.team = defence.team
-		bot.unit = defence.get_path()
-		defence.add_child(bot)
+	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
+	hp_bar.tag_name = emplacement.name
+	hp_bar.enable_label = true
+	hp_bar.color = Color.green if is_player else Color.orange
+	emplacement.add_child(hp_bar)
+	hp_bar.update_bar(emplacement.hp, emplacement.max_hp)
+	emplacement.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
+	emplacement.connect("dead", self, "_test_on_defence_dead",[hp_bar])
 		
-		island_defences.append(defence)
-		bots.append(bot)
-		
+	island_defences.append(emplacement)
+	bots.append(bot)
+	
 func _process(_delta):
 	# test player
 	if is_instance_valid(player_airship):

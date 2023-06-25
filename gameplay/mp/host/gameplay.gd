@@ -154,8 +154,7 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D):
 	
 	yield(get_tree().create_timer(15), "timeout")
 	
-	var pos :Vector3 = _map.get_random_island().translation
-	.respawn(_unit,pos)
+	.respawn(_unit, _unit.translation)
 	
 	
 	

@@ -48,7 +48,7 @@ func spawn_bot_airship():
 		airship.node_name = "airship_%s" % i
 		airship.network_id = Network.PLAYER_HOST_ID
 		airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
-		airship.position = islands[i].translation
+		airship.position = islands[i].translation + Vector3(10, 0, -10)
 		airship.turrets_count = 3
 		airship.level = int(rand_range(1, 100))
 		airship.team = i + 10
@@ -76,7 +76,7 @@ func spawn_defence_bot():
 		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.scene_path = "res://entity/unit/emplacement/turret_platform/turret_platform.tscn"
-		defence.position = _map.get_random_island().translation
+		defence.position = islands[i].translation
 		defence.turrets_count = 3
 		defence.level = int(rand_range(1, 100))
 		defence.team = i + 20

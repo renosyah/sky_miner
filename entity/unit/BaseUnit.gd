@@ -112,13 +112,12 @@ func take_damage(_damage :int):
 	if is_dead:
 		return
 		
-	hp = clamp(hp - _damage, 0, max_hp)
-	if hp == 0:
-		dead()
-		return
-		
-	rpc("_take_damage", _damage, hp)
+	hp -= _damage
+	rpc_unreliable("_take_damage", _damage, hp)
 	
+	if hp < 0:
+		dead()
+		
 func dead():
 	if not enable_network:
 		return
@@ -126,8 +125,7 @@ func dead():
 	if is_dead:
 		return
 		
-	if _is_master:
-		rpc("_dead")
+	rpc("_dead")
 	
 func reset(_sync :bool = true):
 	if not enable_network:
@@ -135,6 +133,7 @@ func reset(_sync :bool = true):
 		
 	if _sync:
 		rpc("_reset")
+		
 	else:
 		_reset()
 	

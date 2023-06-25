@@ -58,6 +58,9 @@ func _check_is_master() -> bool:
 		
 	return true
 	
+func is_master() -> bool:
+	return _check_is_master()
+	
 func _setup_network_timer() -> void:
 	_is_online = _is_network_running()
 	_is_master = _check_is_master()

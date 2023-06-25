@@ -18,6 +18,11 @@ func _ready():
 	_spotter.team = team
 	_unit.is_bot = enable
 	
+	var is_master :bool = _unit.is_master()
+	
+	set_process(is_master)
+	_spotter.set_enable(is_master)
+	
 func _process(_delta):
 	if enable:
 		_assign_target()

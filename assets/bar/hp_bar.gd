@@ -1,4 +1,4 @@
-extends Control
+extends MarginContainer
 
 onready var _hp_bar = $hp_bar
 onready var _hp_bar_bg = $hp_bar_bg

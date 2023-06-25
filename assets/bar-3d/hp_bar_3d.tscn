@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/bar-3d/hp_bar_3d.gd" type="Script" id=1]
-[ext_resource path="res://assets/bar/hp_bar.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/bar-3d/hp_bar_3d_2d.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/bar/bar.png" type="Texture" id=3]
-[ext_resource path="res://assets/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=4]
 
 [node name="hpBar" type="Sprite3D"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8626, 0 )
@@ -20,25 +19,4 @@ render_target_v_flip = true
 render_target_update_mode = 3
 gui_disable_input = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Viewport"]
-margin_right = 250.0
-margin_bottom = 135.0
-alignment = 1
-
-[node name="name" type="Label" parent="Viewport/VBoxContainer"]
-margin_top = 23.0
-margin_right = 250.0
-margin_bottom = 63.0
-rect_min_size = Vector2( 250, 40 )
-size_flags_horizontal = 6
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/shadow_as_outline = 5
-custom_fonts/font = ExtResource( 4 )
-align = 1
-valign = 1
-
-[node name="hp_bar" parent="Viewport/VBoxContainer" instance=ExtResource( 2 )]
-margin_top = 67.0
-margin_right = 250.0
-margin_bottom = 112.0
-rect_min_size = Vector2( 250, 45 )
+[node name="VBoxContainer" parent="Viewport" instance=ExtResource( 2 )]

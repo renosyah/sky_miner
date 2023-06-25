@@ -18,10 +18,8 @@ texture_under = ExtResource( 2 )
 texture_progress = ExtResource( 1 )
 tint_progress = Color( 1, 0.376471, 0, 1 )
 nine_patch_stretch = true
-stretch_margin_left = 64
-stretch_margin_top = 12
-stretch_margin_right = 64
-stretch_margin_bottom = 12
+stretch_margin_left = 32
+stretch_margin_right = 32
 __meta__ = {
 "_editor_description_": ""
 }
@@ -32,8 +30,8 @@ margin_bottom = 40.0
 texture_progress = ExtResource( 1 )
 tint_progress = Color( 0.14902, 1, 0, 1 )
 nine_patch_stretch = true
-stretch_margin_left = 64
-stretch_margin_right = 64
+stretch_margin_left = 32
+stretch_margin_right = 32
 __meta__ = {
 "_editor_description_": ""
 }

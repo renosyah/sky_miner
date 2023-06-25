@@ -69,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://map/floating_island/floating_island.gd"
 }, {
+"base": "Node",
+"class": "GDUUID",
+"language": "GDScript",
+"path": "res://addons/godot-uuid/uuid.gd"
+}, {
 "base": "Sprite3D",
 "class": "HpBar3D",
 "language": "GDScript",
@@ -103,6 +108,11 @@ _global_script_classes=[ {
 "class": "InputEventSingleScreenTouch",
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
+}, {
+"base": "Node",
+"class": "LevelSystem",
+"language": "GDScript",
+"path": "res://data/level_system/level_system.gd"
 }, {
 "base": "Node",
 "class": "Map",
@@ -202,6 +212,7 @@ _global_script_class_icons={
 "EmplacementData": "",
 "FixCamera": "",
 "FloatingIsland": "",
+"GDUUID": "",
 "HpBar3D": "",
 "InputEventMultiScreenDrag": "",
 "InputEventScreenPinch": "",
@@ -209,6 +220,7 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"LevelSystem": "",
 "Map": "",
 "NetworkClient": "",
 "NetworkConfiguration": "",

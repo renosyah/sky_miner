@@ -33,6 +33,9 @@ puppet var _puppet_translation :Vector3
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
 	
+	if not enable_network:
+		return
+		
 	if _is_master and _is_online:
 		rset_unreliable("_puppet_translation", global_transform.origin)
 		rset_unreliable("_puppet_rotation", global_transform.basis.get_euler())
@@ -103,6 +106,9 @@ func get_velocity() -> Vector3:
 	return _velocity
 	
 func take_damage(_damage :int):
+	if not enable_network:
+		return
+		
 	if is_dead:
 		return
 		
@@ -114,6 +120,9 @@ func take_damage(_damage :int):
 	rpc("_take_damage", _damage, hp)
 	
 func dead():
+	if not enable_network:
+		return
+		
 	if is_dead:
 		return
 		
@@ -121,8 +130,16 @@ func dead():
 		rpc("_dead")
 	
 func reset(_sync :bool = true):
+	if not enable_network:
+		return
+		
 	if _sync:
 		rpc("_reset")
 	else:
 		_reset()
 	
+
+
+
+
+

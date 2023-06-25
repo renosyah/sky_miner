@@ -1,20 +1,28 @@
 extends MarginContainer
 
-onready var os = $VBoxContainer/HBoxContainer9/os
-onready var platform = $VBoxContainer/HBoxContainer9/platform
-onready var cpu = $VBoxContainer/HBoxContainer8/cpu
-onready var driver = $VBoxContainer/HBoxContainer8/driver
+enum Mode {DETAIL , SIMPLE }
 
-onready var fps = $VBoxContainer/HBoxContainer/fps
-onready var drawn = $VBoxContainer/HBoxContainer/drawn
+export(Mode) var mode := Mode.DETAIL
 
-onready var memory_usage = $VBoxContainer/HBoxContainer2/memory_usage
-onready var memory_peak = $VBoxContainer/HBoxContainer2/memory_peak
+onready var simple = $simple
+onready var detail = $detail
 
-onready var ping = $VBoxContainer/HBoxContainer6/ping
+onready var os = $detail/HBoxContainer9/os
+onready var platform = $detail/HBoxContainer9/platform
+onready var cpu = $detail/HBoxContainer8/cpu
+onready var driver = $detail/HBoxContainer8/driver
+onready var fps = $detail/HBoxContainer/fps
+onready var drawn = $detail/HBoxContainer/drawn
+onready var memory_usage = $detail/HBoxContainer2/memory_usage
+onready var memory_peak = $detail/HBoxContainer2/memory_peak
+onready var ping = $detail/HBoxContainer6/ping
+
+onready var simple_fps = $simple/fps
+onready var simple_ping = $simple/ping
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_check_mode()
 	os.text = "Os : %s" % OS.get_model_name()
 	platform.text = "Platform : %s" % OS.get_name()
 	cpu.text = "Cpu : %s" % OS.get_processor_name()
@@ -22,17 +30,28 @@ func _ready():
 	
 	Network.connect("on_ping", self, "on_ping")
 	
+func _check_mode():
+	if mode == Mode.SIMPLE:
+		simple.visible = true
+		detail.visible = false
+		
+	elif mode == Mode.DETAIL:
+		simple.visible = false
+		detail.visible = true
+		
+	
 func on_ping(_ping :int):
 	ping.text = "Ping : " + str(_ping) + "/ms"
+	simple_ping.text = ping.text
 	
 func _process(_delta):
 	fps.text = "Current : %s/Fps" % Engine.get_frames_per_second()
-	drawn.text = "Drawn: %s" % Performance.get_monitor(Performance.RENDER_OBJECTS_IN_FRAME)
+	drawn.text = "Objects : %s" % Performance.get_monitor(Performance.RENDER_OBJECTS_IN_FRAME)
 	
 	memory_usage.text = "Usage : %s" % format_size(OS.get_static_memory_usage())
 	memory_peak.text = "Peak : %s" % format_size(OS.get_static_memory_peak_usage())
 	
-	#send.text "Send : %s " % get
+	simple_fps.text = "Fps : %s" % Engine.get_frames_per_second()
 	
 func format_size(size :int):
 	var b :float = size
@@ -53,4 +72,3 @@ func format_size(size :int):
 		return "%s Bytes" % b
 		
 	return "";
-	

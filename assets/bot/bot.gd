@@ -43,14 +43,14 @@ func get_node_path_targets() -> Array:
 	var _targets :Array = []
 	
 	for i in _spotter.targets:
-		var _unit :BaseUnit = i
-		if not is_instance_valid(_unit):
+		var _unit_spotted :BaseUnit = i
+		if not is_instance_valid(_unit_spotted):
 			continue
 			
-		if _unit.is_dead:
+		if _unit_spotted.is_dead:
 			continue
 			
-		_targets.append(i.get_path())
+		_targets.append(_unit_spotted.get_path())
 			
 	return _targets
 	

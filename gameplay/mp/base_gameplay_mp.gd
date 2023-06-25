@@ -13,6 +13,7 @@ func _ready():
 	setup_map()
 	setup_camera()
 	setup_ui()
+	setup_parents()
 	
 	NetworkLobbyManager.set_ready()
 	
@@ -88,6 +89,20 @@ func all_player_ready():
 	_generate_island()
 	
 ################################################################
+# holders
+var _airship_parent :Node
+var _defence_parent :Node
+
+func setup_parents():
+	_airship_parent = Node.new()
+	_airship_parent.name = "airship_parent"
+	add_child(_airship_parent)
+	
+	_defence_parent = Node.new()
+	_defence_parent.name = "defence_parent"
+	add_child(_defence_parent)
+	
+################################################################
 # spawner
 func respawn(_unit :BaseUnit, _position :Vector3):
 	if not is_server():
@@ -104,8 +119,12 @@ remotesync func _respawn(_node_path :NodePath, _position :Vector3):
 	_unit.translation = _position
 	
 ################################################################
+onready var unique_player_node_name :String = GDUUID.v4()
+var player_airship :AirShip
+var player_airship_bot :Bot
+
 # airship spawner
-func spawn_airships(_datas :Array, _parent :Node = self):
+func spawn_airships(_datas :Array, _parent :Node = _airship_parent):
 	var _datas_dicts :Array = []
 	for i in _datas:
 		_datas_dicts.append(i.to_dictionary())
@@ -128,14 +147,30 @@ remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
 		return
 		
 	var spawns :Array = _airship_data.spawn_airship(_parent)
-	on_airship_spawned(spawns[0], spawns[1])
+	on_airship_spawned(_airship_data, spawns[0], spawns[1])
 	
-func on_airship_spawned(airship :AirShip, _bot :Bot):
-	pass
+func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
+	var is_player = (data.node_name == unique_player_node_name)
+	
+	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
+	hp_bar.tag_name = data.player_name
+	hp_bar.level = data.level
+	hp_bar.enable_label = true
+	hp_bar.color = Color.green if is_player else Color.red
+	airship.add_child(hp_bar)
+	hp_bar.update_bar(airship.hp, airship.max_hp)
+	
+	airship.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
+	airship.connect("dead", self, "on_airship_dead",[hp_bar])
+	airship.connect("reset", self, "on_unit_reset",[hp_bar])
+		
+	if is_player:
+		player_airship = airship
+		player_airship_bot = bot
 	
 ################################################################
 # emplacement spawner
-func spawn_emplacements(_datas :Array, _parent :Node = self):
+func spawn_emplacements(_datas :Array, _parent :Node = _defence_parent):
 	var _datas_dicts :Array = []
 	for i in _datas:
 		_datas_dicts.append(i.to_dictionary())
@@ -158,10 +193,34 @@ remotesync func _spawn_emplacement(_data :Dictionary, _parent_path :NodePath):
 		return
 		
 	var spawns :Array = _emplacement_data.spawn_emplacement(_parent)
-	on_emplacement_spawned(spawns[0], spawns[1])
+	on_emplacement_spawned(_emplacement_data, spawns[0], spawns[1])
 	
-func on_emplacement_spawned(_airship :Emplacement, _bot :Bot):
-	pass
+func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bot :Bot):
+	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
+	hp_bar.tag_name = data.player_name
+	hp_bar.level = data.level
+	hp_bar.enable_label = true
+	hp_bar.color = Color.orange
+	emplacement.add_child(hp_bar)
+	hp_bar.update_bar(emplacement.hp, emplacement.max_hp)
+	
+	emplacement.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
+	emplacement.connect("dead", self, "on_emplacement_dead",[hp_bar])
+	emplacement.connect("reset", self, "on_unit_reset",[hp_bar])
+	
+################################################################
+# unit signals handler
+func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
+	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
+	
+func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):
+	_hp_bar.update_bar(0, _unit.max_hp)
+	
+func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D):
+	_hp_bar.update_bar(0, _unit.max_hp)
+	
+func on_unit_reset(_unit :BaseUnit, _hp_bar :HpBar3D):
+	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
 ################################################################
 # exit

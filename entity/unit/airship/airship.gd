@@ -13,9 +13,14 @@ var throttle :float
 var rotate_direction :float
 var targets :Array
 
+var _falling_down_rotation :float = -1.2
+
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
 	
+	if not enable_network:
+		return
+		
 	if _is_master and _is_online:
 		rset_unreliable("_puppet_throttle", throttle)
 		rset_unreliable("_puppet_rotate_direction", rotate_direction)
@@ -46,6 +51,8 @@ remotesync func _dead():
 	for _turret in turrets:
 		_turret.enable = false
 		
+	_falling_down_rotation = 1.2 if randf() > 0 else -1.2
+	
 remotesync func _reset():
 	._reset()
 	for _turret in turrets:
@@ -111,8 +118,7 @@ func _falling_down(delta):
 	throttle = clamp(throttle, 0, speed)
 	
 	_velocity = Vector3(0, -throttle, 0)
-	rotate_y(1.2 * delta)
-	
+	rotate_y(_falling_down_rotation * delta)
 	
 func _turret_get_target():
 	var pos :int = 0

@@ -1,119 +1,102 @@
 extends BaseGameplayMp
 
-var island_defences :Array
-var airships :Array
-var bots :Array
-
-var player_airship :AirShip
-var player_airship_bot :Bot
+var ai_bots :Array = []
+var islands :Array
+onready var enemy_airship_patrol = $enemy_airship_patrol
 
 # test
 func on_map_ready():
 	.on_map_ready()
-	spawn()
-	spawn_island_defence()
 	
-func spawn():
+	islands = _map.get_islands()
+	
+	spawn_bot_airship()
+	spawn_defence_bot()
+	spawn_player_airship()
+	
+	enemy_airship_patrol.start()
+	
+func spawn_player_airship():
+	var airship :AirshipData = AirshipData.new()
+	airship.player_name = RandomNameGenerator.generate()
+	airship.node_name = unique_player_node_name
+	airship.network_id = NetworkLobbyManager.get_id()
+	airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
+	airship.position = islands[6].translation
+	airship.turrets_count = 3
+	airship.level = int(rand_range(1, 100))
+	airship.team = 0
+	airship.color_coat = Color.green
+	airship.enable_bot = false
+	
+	airship.turrets = []
+	for index in airship.turrets_count:
+		var t :TurretData = TurretData.new()
+		t.node_name = "%s_turret_%s" % [unique_player_node_name, index]
+		t.scene_path = "res://entity/turret/mg/mg.tscn"
+		t.level = airship.level
+		t.position = Vector3.ZERO
+		airship.turrets.append(t)
+		
+	.spawn_airship(airship)
+	
+func spawn_bot_airship():
 	var datas :Array = []
 	for i in 4:
-		var spawn_pos = _map.get_islands()[i].translation
-		var node_name :String = "airship_%s" % i
-		var is_player = (node_name == "airship_1")
-		
 		var airship :AirshipData = AirshipData.new()
-		airship.node_name = node_name
+		airship.player_name = "Bot %s" % RandomNameGenerator.generate()
+		airship.node_name = "airship_%s" % i
 		airship.network_id = Network.PLAYER_HOST_ID
 		airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
-		airship.position = spawn_pos
+		airship.position = islands[i].translation
 		airship.turrets_count = 3
-		airship.team = i
-		airship.color_coat = Color.green if is_player else Color.red
-		airship.enable_bot = not is_player
+		airship.level = int(rand_range(1, 100))
+		airship.team = i + 10
+		airship.color_coat = Color.red
+		airship.enable_bot = true
+		
 		airship.turrets = []
 		for index in airship.turrets_count:
 			var t :TurretData = TurretData.new()
-			t.node_name = "airship_%s_turret_%s" % [i, index]
+			t.node_name = "%s_turret_%s" % [airship.node_name, index]
 			t.scene_path = "res://entity/turret/mg/mg.tscn"
+			t.level = airship.level
 			t.position = Vector3.ZERO
 			airship.turrets.append(t)
 			
 		datas.append(airship)
 		
 	.spawn_airships(datas)
-		
-func on_airship_spawned(airship :AirShip, bot :Bot):
-	.on_airship_spawned(airship, bot)
 	
-	var is_player = (airship.name == "airship_1")
-	
-	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
-	hp_bar.tag_name = airship.name
-	hp_bar.enable_label = true
-	hp_bar.color = Color.green if is_player else Color.red
-	airship.add_child(hp_bar)
-	hp_bar.update_bar(airship.hp, airship.max_hp)
-	
-	airship.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
-	airship.connect("dead", self, "_test_on_cruiser_dead",[hp_bar])
-	airship.connect("reset", self, "_test_on_unit_reset",[hp_bar])
-		
-	if is_player:
-		player_airship = airship
-		player_airship_bot = bot
-	
-	if not is_player:
-		airships.append(airship)
-		bots.append(bot)
-	
-func spawn_island_defence():
+func spawn_defence_bot():
 	var datas :Array = []
 	for i in 4:
-		var node_name :String = "defence_%s" % i
-		var spawn_pos = _map.get_islands()[i].translation
-		var is_player = (node_name == "defence_1")
-		
 		var defence :EmplacementData = EmplacementData.new()
-		defence.node_name = node_name
+		defence.player_name = "Defence %s" % i
+		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.scene_path = "res://entity/unit/emplacement/turret_platform/turret_platform.tscn"
-		defence.position = spawn_pos
+		defence.position = _map.get_random_island().translation
 		defence.turrets_count = 3
-		defence.team = i
-		defence.color_coat = Color.green if is_player else Color.orange
+		defence.level = int(rand_range(1, 100))
+		defence.team = i + 20
+		defence.color_coat = Color.orange
 		defence.enable_bot = true
+		
 		defence.turrets = []
 		for index in defence.turrets_count:
 			var t :TurretData = TurretData.new()
-			t.node_name = "airship_%s_turret_%s" % [i, index]
+			t.node_name = "%s_turret_%s" % [defence.node_name, index]
 			t.scene_path = "res://entity/turret/mg/mg.tscn"
 			t.position = Vector3.ZERO
+			t.level = defence.level
 			defence.turrets.append(t)
 			
 		datas.append(defence)
 		
 	.spawn_emplacements(datas)
 	
-func on_emplacement_spawned(emplacement :Emplacement, bot :Bot):
-	.on_emplacement_spawned(emplacement, bot)
-	
-	var is_player = (emplacement.name == "defence_1")
-		
-	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
-	hp_bar.tag_name = emplacement.name
-	hp_bar.enable_label = true
-	hp_bar.color = Color.green if is_player else Color.orange
-	emplacement.add_child(hp_bar)
-	hp_bar.update_bar(emplacement.hp, emplacement.max_hp)
-	
-	emplacement.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
-	emplacement.connect("dead", self, "_test_on_defence_dead",[hp_bar])
-	emplacement.connect("reset", self, "_test_on_unit_reset",[hp_bar])
-		
-	island_defences.append(emplacement)
-	bots.append(bot)
-	
 func _process(_delta):
-	# test player
 	if is_instance_valid(player_airship):
 		player_airship.move_direction = _ui.get_joystick_direction()
 		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
@@ -121,28 +104,44 @@ func _process(_delta):
 		_camera.set_distance(player_airship.throttle * player_airship.speed)
 	
 	# test mob
-	for bot in bots:
+	for bot in ai_bots:
 		var unit = get_node_or_null(bot.unit)
-		if is_instance_valid(unit):
-			if unit is AirShip:
-				unit.assign_turret_target(bot.get_node_path_targets())
-			elif unit is Emplacement:
-				unit.assign_turret_target(bot.get_node_path_targets())
-# test
+		if not is_instance_valid(unit):
+			continue
+			
+		if unit is AirShip:
+			unit.assign_turret_target(bot.get_node_path_targets())
+		elif unit is Emplacement:
+			unit.assign_turret_target(bot.get_node_path_targets())
+			
+			
+# assign AI to patrol
 func _test_on_enemy_airship_patrol_timeout():
-	for i in bots:
-		i.move_to(_map.get_random_island().translation)
+	for ai_bot in ai_bots:
+		var unit = get_node_or_null(ai_bot.unit)
+		if unit is AirShip:
+			ai_bot.move_to(_map.get_random_island().translation)
 		
-# test
-func _test_on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
+	enemy_airship_patrol.start()
+	
+func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
+	.on_airship_spawned(data, airship, bot)
+	
+	if airship != player_airship:
+		ai_bots.append(bot)
+	
+func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, bot :Bot):
+	.on_emplacement_spawned(data, emplacement, bot)
+	ai_bots.append(bot)
+	
+func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
+	.on_unit_take_damage(_unit, _damage , _hp_bar)
 	if _unit == player_airship:
 		_ui.show_hurt()
 		
-	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
+func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):
+	.on_airship_dead(_unit, _hp_bar)
 	
-# test
-func _test_on_cruiser_dead(_unit :AirShip, _hp_bar :HpBar3D):
-	_hp_bar.update_bar(0, _unit.max_hp)
 	yield(get_tree().create_timer(15), "timeout")
 	
 	var pos :Vector3 = _map.get_random_island().translation
@@ -150,17 +149,14 @@ func _test_on_cruiser_dead(_unit :AirShip, _hp_bar :HpBar3D):
 	
 	.respawn(_unit,pos)
 	
-# test
-func _test_on_defence_dead(_unit :Emplacement, _hp_bar :HpBar3D):
-	_hp_bar.update_bar(0, _unit.max_hp)
+func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D):
+	.on_emplacement_dead(_unit, _hp_bar)
+	
 	yield(get_tree().create_timer(15), "timeout")
 	
 	var pos :Vector3 = _map.get_random_island().translation
 	.respawn(_unit,pos)
 	
-# test
-func _test_on_unit_reset(_unit :BaseUnit, _hp_bar :HpBar3D):
-	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
 	
 	

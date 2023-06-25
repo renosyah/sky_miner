@@ -1,30 +1,59 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/ui/fonts/montserrat_eb_32.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/bar/hp_bar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/bar-3d/hp_bar_3d_2d.gd" type="Script" id=3]
+[ext_resource path="res://assets/bar/circle.png" type="Texture" id=4]
 
-[node name="VBoxContainer" type="VBoxContainer"]
-margin_right = 250.0
-margin_bottom = 135.0
-rect_min_size = Vector2( 0, 135 )
-alignment = 1
+[node name="VBoxContainer" type="HBoxContainer"]
+margin_right = 334.0
+margin_bottom = 89.0
+rect_min_size = Vector2( 335, 90 )
 script = ExtResource( 3 )
 
-[node name="name" type="Label" parent="."]
-margin_top = 23.0
+[node name="MarginContainer" type="MarginContainer" parent="."]
+margin_right = 81.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 3
+
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer"]
+margin_right = 81.0
+margin_bottom = 90.0
+texture = ExtResource( 4 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+
+[node name="level" type="Label" parent="MarginContainer"]
+margin_left = 34.0
+margin_top = 25.0
+margin_right = 47.0
+margin_bottom = 65.0
+size_flags_horizontal = 4
+custom_fonts/font = ExtResource( 1 )
+text = "1"
+align = 1
+valign = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 85.0
+margin_right = 335.0
+margin_bottom = 90.0
+
+[node name="name" type="Label" parent="VBoxContainer"]
 margin_right = 250.0
-margin_bottom = 63.0
+margin_bottom = 40.0
 rect_min_size = Vector2( 250, 40 )
 size_flags_horizontal = 6
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 5
 custom_fonts/font = ExtResource( 1 )
-align = 1
 valign = 1
 
-[node name="hp_bar" parent="." instance=ExtResource( 2 )]
+[node name="hp_bar" parent="VBoxContainer" instance=ExtResource( 2 )]
 use_parent_material = true
-margin_top = 67.0
-margin_bottom = 112.0
+margin_top = 44.0
+margin_bottom = 89.0
 rect_min_size = Vector2( 250, 45 )

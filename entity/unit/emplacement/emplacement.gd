@@ -10,6 +10,9 @@ var targets :Array
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
 	
+	if not enable_network:
+		return
+		
 	if _is_master and _is_online:
 		rset_unreliable("_puppet_targets", targets)
 		

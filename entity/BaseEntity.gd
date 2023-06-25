@@ -1,6 +1,8 @@
 extends KinematicBody
 class_name BaseEntity
 
+var enable_network :bool = true
+
 # misc network
 var _network_timmer :Timer
 var _is_online :bool = false
@@ -9,6 +11,9 @@ var _is_master :bool = false
 ############################################################
 # multiplayer func
 func _network_timmer_timeout() -> void:
+	if not enable_network:
+		return
+		
 	_is_online = _is_network_running()
 	
 ############################################################
@@ -20,6 +25,9 @@ func _ready() -> void:
 func _process(delta :float) -> void:
 	moving(delta)
 	
+	if not enable_network:
+		return
+		
 	if not _is_online:
 		return
 	

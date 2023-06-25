@@ -18,6 +18,7 @@ func _network_timmer_timeout() -> void:
 	
 	if _is_master and _is_online:
 		rset_unreliable("_puppet_throttle", throttle)
+		rset_unreliable("_puppet_rotate_direction", rotate_direction)
 		rset_unreliable("_puppet_targets", targets)
 		
 # multiplayer func

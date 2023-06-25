@@ -3,6 +3,7 @@ class_name BaseUnit
 
 signal take_damage(_unit, _damage)
 signal dead(_unit)
+signal reset(_unit)
 
 export var team :int = 0
 export var speed :int = 1
@@ -57,6 +58,7 @@ remotesync func _reset():
 	is_dead = false
 	hp = max_hp
 	set_process(true)
+	emit_signal("reset", self)
 	
 func master_moving(_delta :float) -> void:
 	_bot_move()
@@ -118,6 +120,9 @@ func dead():
 	if _is_master:
 		rpc("_dead")
 	
-func reset():
-	rpc("_reset")
+func reset(_sync :bool = true):
+	if _sync:
+		rpc("_reset")
+	else:
+		_reset()
 	

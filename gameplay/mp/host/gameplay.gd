@@ -7,9 +7,6 @@ var bots :Array
 var player_airship :AirShip
 var player_airship_bot :Bot
 
-func _ready():
-	pass
-	
 # test
 func on_map_ready():
 	.on_map_ready()
@@ -17,6 +14,7 @@ func on_map_ready():
 	spawn_island_defence()
 	
 func spawn():
+	var datas :Array = []
 	for i in 4:
 		var spawn_pos = _map.get_islands()[i].translation
 		var node_name :String = "airship_%s" % i
@@ -39,7 +37,9 @@ func spawn():
 			t.position = Vector3.ZERO
 			airship.turrets.append(t)
 			
-		.spawn_airship(airship)
+		datas.append(airship)
+		
+	.spawn_airships(datas)
 		
 func on_airship_spawned(airship :AirShip, bot :Bot):
 	.on_airship_spawned(airship, bot)
@@ -52,8 +52,10 @@ func on_airship_spawned(airship :AirShip, bot :Bot):
 	hp_bar.color = Color.green if is_player else Color.red
 	airship.add_child(hp_bar)
 	hp_bar.update_bar(airship.hp, airship.max_hp)
+	
 	airship.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
 	airship.connect("dead", self, "_test_on_cruiser_dead",[hp_bar])
+	airship.connect("reset", self, "_test_on_unit_reset",[hp_bar])
 		
 	if is_player:
 		player_airship = airship
@@ -64,6 +66,7 @@ func on_airship_spawned(airship :AirShip, bot :Bot):
 		bots.append(bot)
 	
 func spawn_island_defence():
+	var datas :Array = []
 	for i in 4:
 		var node_name :String = "defence_%s" % i
 		var spawn_pos = _map.get_islands()[i].translation
@@ -85,8 +88,10 @@ func spawn_island_defence():
 			t.scene_path = "res://entity/turret/mg/mg.tscn"
 			t.position = Vector3.ZERO
 			defence.turrets.append(t)
+			
+		datas.append(defence)
 		
-		.spawn_emplacement(defence)
+	.spawn_emplacements(datas)
 	
 func on_emplacement_spawned(emplacement :Emplacement, bot :Bot):
 	.on_emplacement_spawned(emplacement, bot)
@@ -99,8 +104,10 @@ func on_emplacement_spawned(emplacement :Emplacement, bot :Bot):
 	hp_bar.color = Color.green if is_player else Color.orange
 	emplacement.add_child(hp_bar)
 	hp_bar.update_bar(emplacement.hp, emplacement.max_hp)
+	
 	emplacement.connect("take_damage", self, "_test_on_unit_take_damage",[hp_bar])
 	emplacement.connect("dead", self, "_test_on_defence_dead",[hp_bar])
+	emplacement.connect("reset", self, "_test_on_unit_reset",[hp_bar])
 		
 	island_defences.append(emplacement)
 	bots.append(bot)
@@ -127,24 +134,34 @@ func _test_on_enemy_airship_patrol_timeout():
 		i.move_to(_map.get_random_island().translation)
 		
 # test
-func _test_on_unit_take_damage(_unit, _damage, _hp_bar):
+func _test_on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
 	if _unit == player_airship:
 		_ui.show_hurt()
 		
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
 # test
-func _test_on_cruiser_dead(_unit, _hp_bar):
+func _test_on_cruiser_dead(_unit :AirShip, _hp_bar :HpBar3D):
+	_hp_bar.update_bar(0, _unit.max_hp)
 	yield(get_tree().create_timer(15), "timeout")
-	_unit.reset()
-	_unit.translation = _map.get_random_island().translation
-	_unit.translation.y = 20
-	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
+	
+	var pos :Vector3 = _map.get_random_island().translation
+	pos.y = _unit.altitude
+	
+	.respawn(_unit,pos)
 	
 # test
-func _test_on_defence_dead(_unit, _hp_bar):
+func _test_on_defence_dead(_unit :Emplacement, _hp_bar :HpBar3D):
+	_hp_bar.update_bar(0, _unit.max_hp)
 	yield(get_tree().create_timer(15), "timeout")
-	_unit.reset()
+	
+	var pos :Vector3 = _map.get_random_island().translation
+	.respawn(_unit,pos)
+	
+# test
+func _test_on_unit_reset(_unit :BaseUnit, _hp_bar :HpBar3D):
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
-
-
+	
+	
+	
+	

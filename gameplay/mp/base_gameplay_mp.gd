@@ -49,6 +49,7 @@ func setup_map():
 	if is_server():
 		_map.generate_islands()
 		NetworkLobbyManager.argument["map_data"] = _map.map_data
+		NetworkLobbyManager.set_host_ready()
 	
 func on_map_ready():
 	pass
@@ -87,7 +88,34 @@ func all_player_ready():
 	_generate_island()
 	
 ################################################################
+# spawner
+func respawn(_unit :BaseUnit, _position :Vector3):
+	if not is_server():
+		return
+		
+	rpc("_respawn", _unit.get_path(), _position)
+	
+remotesync func _respawn(_node_path :NodePath, _position :Vector3):
+	var _unit :BaseUnit = get_node_or_null(_node_path)
+	if not is_instance_valid(_unit):
+		return
+		
+	_unit.reset(false)
+	_unit.translation = _position
+	
+################################################################
 # airship spawner
+func spawn_airships(_datas :Array, _parent :Node = self):
+	var _datas_dicts :Array = []
+	for i in _datas:
+		_datas_dicts.append(i.to_dictionary())
+		
+	rpc("_spawn_airships", _datas_dicts, _parent.get_path())
+
+remotesync func _spawn_airships(_datas :Array, _parent_path :NodePath):
+	for data in _datas:
+		_spawn_airship(data, _parent_path)
+
 func spawn_airship(_data :AirshipData, _parent :Node = self):
 	rpc("_spawn_airship", _data.to_dictionary(), _parent.get_path())
 
@@ -102,11 +130,22 @@ remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
 	var spawns :Array = _airship_data.spawn_airship(_parent)
 	on_airship_spawned(spawns[0], spawns[1])
 	
-func on_airship_spawned(_airship :AirShip, _bot :Bot):
+func on_airship_spawned(airship :AirShip, _bot :Bot):
 	pass
 	
 ################################################################
 # emplacement spawner
+func spawn_emplacements(_datas :Array, _parent :Node = self):
+	var _datas_dicts :Array = []
+	for i in _datas:
+		_datas_dicts.append(i.to_dictionary())
+		
+	rpc("_spawn_emplacements", _datas_dicts, _parent.get_path())
+
+remotesync func _spawn_emplacements(_datas :Array, _parent_path :NodePath):
+	for data in _datas:
+		_spawn_emplacement(data, _parent_path)
+
 func spawn_emplacement(_data :EmplacementData, _parent :Node = self):
 	rpc("_spawn_emplacement", _data.to_dictionary(), _parent.get_path())
 

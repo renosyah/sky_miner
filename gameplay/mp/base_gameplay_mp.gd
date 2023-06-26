@@ -225,11 +225,26 @@ func on_unit_reset(_unit :BaseUnit, _hp_bar :HpBar3D):
 ################################################################
 # proccess
 func _process(_delta):
-	if is_instance_valid(player_airship):
-		player_airship.move_direction = _ui.get_joystick_direction()
-		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
-		_camera.translation = player_airship.translation
-		_camera.set_distance(player_airship.throttle * player_airship.speed)
+	player_input_airship_control()
+	player_input_squad_control()
+	
+func player_input_airship_control():
+	if not is_instance_valid(player_airship_bot):
+		return
+		
+	if player_airship_bot.enable:
+		return
+		
+	if not is_instance_valid(player_airship):
+		return
+		
+	player_airship.move_direction = _ui.get_joystick_direction()
+	player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
+	_camera.translation = player_airship.translation
+	_camera.set_distance(player_airship.throttle * player_airship.speed)
+	
+func player_input_squad_control():
+	pass
 	
 ################################################################
 # exit

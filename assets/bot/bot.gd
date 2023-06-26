@@ -23,6 +23,9 @@ func _ready():
 	set_process(is_master)
 	_spotter.set_enable(is_master)
 	
+func get_unit() -> BaseUnit:
+	return _unit
+	
 func _process(_delta):
 	if enable:
 		_assign_target()

@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/bar/hp_bar.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/bar-3d/hp_bar_3d_2d.gd" type="Script" id=3]
 [ext_resource path="res://assets/bar/circle.png" type="Texture" id=4]
-[ext_resource path="res://assets/bar/bar.png" type="Texture" id=5]
+[ext_resource path="res://assets/bar/circle_fill.png" type="Texture" id=5]
 
 [node name="VBoxContainer" type="MarginContainer"]
 margin_right = 290.0

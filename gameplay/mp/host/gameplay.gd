@@ -108,15 +108,10 @@ func spawn_defence_bot():
 func _process(_delta):
 	# test mob
 	for bot in ai_bots:
-		var unit = get_node_or_null(bot.unit)
-		if not is_instance_valid(unit):
-			continue
-			
-		if unit is AirShip:
+		var unit = bot.get_unit()
+		if unit is AirShip or unit is Emplacement:
 			unit.assign_turret_target(bot.get_node_path_targets())
-		elif unit is Emplacement:
-			unit.assign_turret_target(bot.get_node_path_targets())
-			
+		
 # assign AI to patrol
 func _test_on_enemy_airship_patrol_timeout():
 	for ai_bot in ai_bots:

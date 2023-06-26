@@ -51,6 +51,9 @@ var _output := Vector2.ZERO setget , get_output
 func get_output() -> Vector2:
 	return _output
 	
+func get_v3_output() -> Vector3:
+	return Vector3(_output.x, 0, _output.y) 
+	
 func get_touch_index() -> int:
 	return _touch_index
 

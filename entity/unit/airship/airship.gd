@@ -83,7 +83,7 @@ func master_moving(delta :float) -> void:
 	.turn_spatial_pivot_to_moving(self, rotation_power, delta)
 	
 	rotate_direction = clamp(rotation_degrees.y - y_rotation, -1, 1)
-	rotation_degrees.z = lerp(rotation_degrees.z, rotate_direction * 45, rotation_power * delta)
+	rotation_degrees.z = lerp(rotation_degrees.z, rotate_direction * 45, 0.5 * delta)
 	rotation_degrees.x = 0
 	
 	.master_moving(delta)

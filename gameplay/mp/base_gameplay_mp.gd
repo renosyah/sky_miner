@@ -166,7 +166,12 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	if is_player:
 		player_airship = airship
 		player_airship_bot = bot
-	
+		
+		player_airship.connect("take_damage", self, "on_player_airship_take_damage")
+		player_airship.connect("dead", self, "on_player_airship_dead")
+		player_airship.connect("reset", self, "on_player_airship_reset")
+		
+		
 ################################################################
 # emplacement spawner
 func spawn_emplacements(_datas :Array, _parent :Node = _defence_parent):
@@ -210,9 +215,6 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bo
 ################################################################
 # unit signals handler
 func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
-	if _unit == player_airship:
-		_ui.show_hurt()
-		
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
 func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):
@@ -223,6 +225,20 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D):
 	
 func on_unit_reset(_unit :BaseUnit, _hp_bar :HpBar3D):
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
+	
+# player signals handler
+func on_player_airship_take_damage(_unit :BaseUnit, _damage :int):
+	if _unit.hp < _unit.max_hp * 0.15:
+		_ui.show_hurting()
+		return
+		
+	_ui.show_hurt()
+	
+func on_player_airship_dead(_unit :AirShip):
+	_ui.hide_hurt()
+	
+func on_player_airship_reset(_unit :AirShip):
+	_ui.hide_hurt()
 	
 ################################################################
 # proccess

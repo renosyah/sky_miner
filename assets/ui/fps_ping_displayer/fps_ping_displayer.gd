@@ -68,7 +68,5 @@ func format_size(size :int):
 		return "%s MB" % m
 	elif k > 1:
 		return "%s KB" % k
-	else:
-		return "%s Bytes" % b
 		
-	return "";
+	return "%s Bytes" % b

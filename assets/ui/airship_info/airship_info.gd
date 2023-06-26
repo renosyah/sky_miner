@@ -6,15 +6,12 @@ const turret_potrait_scene = preload("res://assets/ui/airship_info/turret_info/t
 onready var _icon = $airship_potrait/icon
 onready var _name = $VBoxContainer/name
 
-onready var _bg = $airship_potrait/bg
 onready var _border = $airship_potrait/border
-
 onready var _turret_holder = $VBoxContainer/HBoxContainer
 
 func display_info(_nm :String, _ic :String, _val :Color):
 	_icon.texture = load(_ic)
 	_name.text = _nm
-	#_bg.modulate = _val
 	_border.modulate = _val
 	
 func display_turrets(data, airship, _val :Color):

@@ -15,6 +15,7 @@ var targets :Array
 
 var _falling_down_rotation :float = -1.2
 var _last_velocity :Vector3
+var _explosion_sfx :CPUParticles
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
@@ -34,6 +35,9 @@ puppet var _puppet_targets :Array
 
 func _ready():
 	enable_gravity = false
+	
+	_explosion_sfx = preload("res://addons/explosion/quick_explosion.tscn").instance()
+	add_child(_explosion_sfx)
 
 func assign_turret_position(_turret :Turret, _pos :Vector3):
 	_turret.enable = true
@@ -53,6 +57,7 @@ remotesync func _dead():
 		_turret.enable = false
 		
 	_falling_down_rotation = 1.2 if randf() > 0 else -1.2
+	_explosion_sfx.emitting = true
 	
 remotesync func _reset():
 	._reset()
@@ -115,7 +120,7 @@ func _falling_down(delta):
 	var is_below_surface :bool = translation.y < -5
 	
 	if is_grounded or is_below_surface:
-		set_process(false)
+		_explode()
 		return
 		
 	# still flying?
@@ -125,6 +130,10 @@ func _falling_down(delta):
 	
 	_velocity = Vector3(_last_velocity.x, -throttle, _last_velocity.z)
 	rotate_y(_falling_down_rotation * delta)
+	
+func _explode():
+	_explosion_sfx.emitting = true
+	set_process(false)
 	
 func _turret_get_target():
 	var pos :int = 0

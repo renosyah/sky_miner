@@ -1,11 +1,20 @@
 extends BaseUnit
 class_name Emplacement
 
+const explosions = [
+	preload("res://assets/sounds/explosions/explosion_1.wav"),
+	preload("res://assets/sounds/explosions/explosion_2.wav"),
+	preload("res://assets/sounds/explosions/explosion_3.wav")
+]
+
 export var color_coat :Color
 export var turret_positions :Array
 
 var turrets :Array = []
 var targets :Array
+
+var _explosion_sfx :CPUParticles
+var _fire_sfx :Spatial
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
@@ -18,6 +27,16 @@ func _network_timmer_timeout() -> void:
 		
 # multiplayer func
 puppet var _puppet_targets :Array
+
+func _ready():
+	enable_gravity = false
+	_explosion_sfx = preload("res://addons/explosion/quick_explosion.tscn").instance()
+	add_child(_explosion_sfx)
+	_explosion_sfx.visible = false
+	_explosion_sfx.set_as_toplevel(true)
+	
+	_fire_sfx = preload("res://assets/fire/fire.tscn").instance()
+	add_child(_fire_sfx)
 
 func assign_turret_position(_turret :Turret, _pos :Vector3):
 	_turret.enable = true
@@ -36,11 +55,16 @@ remotesync func _dead():
 	for _turret in turrets:
 		_turret.enable = false
 		
+	_explode()
+		
 remotesync func _reset():
 	._reset()
 	for _turret in turrets:
 		_turret.enable = true
 		
+	_explosion_sfx.visible = false
+	_fire_sfx.set_is_burning(false)
+	
 func moving(delta :float) -> void:
 	.moving(delta)
 	_turret_get_target()
@@ -66,3 +90,25 @@ func _turret_get_target():
 			if pos < targets.size() - 1:
 				pos += 1
 	
+func _explode():
+	_explosion_sfx.translation = global_transform.origin
+	_explosion_sfx.visible = true
+	
+	yield(get_tree(),"idle_frame")
+	
+	_sound.stream = explosions[rand_range(0, explosions.size())]
+	_sound.play()
+	
+	if translation.y > -5:
+		_explosion_sfx.emitting = true
+		
+	_fire_sfx.set_is_burning(true)
+
+
+
+
+
+
+
+
+

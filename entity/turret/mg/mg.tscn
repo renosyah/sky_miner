@@ -113,8 +113,8 @@ projectile = ExtResource( 2 )
 attack_damage = 1
 ammo = 5
 max_ammo = 5
-reload_time = 1.0
-fire_rate = 0.4
+reload_time = 3.0
+fire_rate = 0.6
 body = NodePath("body")
 gun = NodePath("body/gun")
 

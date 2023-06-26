@@ -26,9 +26,9 @@ albedo_color = Color( 0.223529, 0.223529, 0.223529, 1 )
 [sub_resource type="SpatialMaterial" id=12]
 albedo_color = Color( 0.27451, 0.27451, 0.27451, 1 )
 
-[sub_resource type="CylinderShape" id=4]
-height = 4.81854
-radius = 1.16056
+[sub_resource type="CapsuleShape" id=13]
+radius = 1.2
+height = 4.0
 
 [node name="cruiser" type="KinematicBody"]
 script = ExtResource( 2 )
@@ -74,8 +74,7 @@ material/0 = SubResource( 12 )
 material/1 = SubResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, -0.332638 )
-shape = SubResource( 4 )
+shape = SubResource( 13 )
 
 [node name="flaps" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.400416, 2.17122 )

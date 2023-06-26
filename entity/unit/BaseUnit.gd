@@ -20,6 +20,7 @@ export var enable_gravity :bool = true
 export var margin :float = 3
 var move_to :Vector3
 
+var _pivot :Spatial
 var _velocity :Vector3 = Vector3.ZERO
 
 var _sound :AudioStreamPlayer3D
@@ -43,6 +44,10 @@ func _network_timmer_timeout() -> void:
 ############################################################
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_pivot = Spatial.new()
+	add_child(_pivot)
+	_pivot.set_as_toplevel(true)
+	
 	_sound = AudioStreamPlayer3D.new()
 	_sound.unit_size = Global.sound_amplified
 	add_child(_sound)
@@ -99,8 +104,13 @@ func turn_spatial_pivot_to_moving(_spatial :Spatial, _interpolate :float, delta 
 	var _look_at :Vector3 = move_direction * 100
 	_look_at.y = translation.y
 	
-	var _transform :Transform = _spatial.transform.looking_at(_look_at, Vector3.UP)
-	_spatial.transform = _spatial.transform.interpolate_with(_transform, _interpolate * delta)
+	_pivot.translation = global_transform.origin
+	
+	_pivot.look_at(_look_at, Vector3.UP)
+	_pivot.rotation_degrees.y = wrapf(_pivot.rotation_degrees.y, 0.0, 360.0)
+	_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -45, 45)
+	
+	_spatial.rotation.y = lerp_angle(_spatial.rotation.y, _pivot.rotation.y, _interpolate * delta)
 	
 func get_velocity() -> Vector3:
 	return _velocity

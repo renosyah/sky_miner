@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://map/map_env.tres" type="Environment" id=1]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.746522, -2.90838e-08, 0.665361, -0.665361, -3.26315e-08, 0.746522, 0, -1, -4.37114e-08, 2.76453, 5.03232, 0 )
+light_energy = 0.6
+shadow_enabled = true
+directional_shadow_mode = 0
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -0.743577, -0.383522, 0.547726, 0, 0.819152, 0.573577, -0.668651, 0.426498, -0.609102, 4.03706, 5.4546, -4.44726 )
+environment = ExtResource( 1 )

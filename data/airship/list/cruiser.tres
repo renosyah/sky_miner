@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 2 )
 entity_name = "Cruiser"
-entity_icon = ""
+entity_icon = "res://assets/ui/icons/airship/cruiser.png"
 node_name = ""
 network_id = 0
 scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"

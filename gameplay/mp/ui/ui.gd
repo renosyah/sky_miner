@@ -1,7 +1,9 @@
 extends Control
 class_name UiMp
 
-onready var virtual_joystick = $CanvasLayer/Control/SafeArea/VBoxContainer/Control/virtual_joystick
+onready var airship_info = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/airship_info
+
+onready var virtual_joystick =  $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/virtual_joystick
 onready var hurt_indicator = $CanvasLayer/Control/hurt
 
 func get_joystick_direction() -> Vector3:

@@ -3,16 +3,17 @@
 importer="texture"
 type="StreamTexture"
 path.s3tc="res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.s3tc.stex"
+path.etc2="res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.etc2.stex"
 path.etc="res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.etc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc" ],
+"imported_formats": [ "s3tc", "etc2", "etc" ],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/bar/bar.png"
-dest_files=[ "res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.s3tc.stex", "res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.etc.stex" ]
+dest_files=[ "res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.s3tc.stex", "res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.etc2.stex", "res://.import/bar.png-201d4e19a78212d072d8a3d13501c763.etc.stex" ]
 
 [params]
 

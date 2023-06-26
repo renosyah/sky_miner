@@ -165,7 +165,9 @@ func _explode():
 	_sound.stream = explosions[rand_range(0, explosions.size())]
 	_sound.play()
 	
-	_explosion_sfx.emitting = true
+	if translation.y > -5:
+		_explosion_sfx.emitting = true
+		
 	_fire_sfx.set_is_burning(true)
 	
 func _turret_get_target():

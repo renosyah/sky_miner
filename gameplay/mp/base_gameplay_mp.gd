@@ -156,7 +156,9 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	hp_bar.level = data.level
 	hp_bar.enable_label = true
 	hp_bar.color = Color.green if is_player else Color.red
-	airship.add_child(hp_bar)
+	hp_bar.attach_to = airship.get_path()
+	hp_bar.pos_offset = Vector3(0,3,0)
+	add_child(hp_bar)
 	hp_bar.update_bar(airship.hp, airship.max_hp)
 	
 	airship.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
@@ -171,6 +173,8 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 		player_airship.connect("dead", self, "on_player_airship_dead")
 		player_airship.connect("reset", self, "on_player_airship_reset")
 		
+		_ui.airship_info.display_info(data.entity_name, data.entity_icon, data.color_coat)
+		_ui.airship_info.display_turrets(data, airship, data.color_coat)
 		
 ################################################################
 # emplacement spawner
@@ -205,7 +209,9 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bo
 	hp_bar.level = data.level
 	hp_bar.enable_label = true
 	hp_bar.color = Color.orange
-	emplacement.add_child(hp_bar)
+	hp_bar.attach_to = emplacement.get_path()
+	hp_bar.pos_offset = Vector3(0,3,0)
+	add_child(hp_bar)
 	hp_bar.update_bar(emplacement.hp, emplacement.max_hp)
 	
 	emplacement.connect("take_damage", self, "on_unit_take_damage",[hp_bar])

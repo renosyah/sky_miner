@@ -6,6 +6,10 @@ export var level :int
 export var color :Color
 export var enable_label :bool
 
+export var attach_to :NodePath
+export var pos_offset :Vector3
+
+onready var _attach_to :BaseUnit = get_node_or_null(attach_to)
 onready var _viewport_hp_bar = $Viewport
 onready var _2d_hp_bar = $Viewport/VBoxContainer
 
@@ -18,3 +22,7 @@ func _ready():
 	
 func update_bar(hp, max_hp : int):
 	_2d_hp_bar.update_bar(hp, max_hp)
+
+func _process(delta):
+	if is_instance_valid(_attach_to):
+		translation = _attach_to.global_transform.origin + pos_offset

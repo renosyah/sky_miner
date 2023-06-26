@@ -13,10 +13,11 @@ onready var player :PlayerData = PlayerData.new()
 
 func _ready():
 	var player_data = SaveLoad.load_save(player_save_file)
-	if player_data != null:
+	if player_data == null:
+		player.player_id = GDUUID.v4()
+		player.player_name = RandomNameGenerator.generate()
+		player.player_color = Color(randf(), randf(), randf(), 1)
+		player.save_data(player_save_file)
 		return
 		
-	player.player_id = GDUUID.v4()
-	player.player_name = RandomNameGenerator.generate()
-	player.player_color = Color(randf(), randf(), randf(), 1)
-	player.save_data(player_save_file)
+	player.load_data(player_save_file)

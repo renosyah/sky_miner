@@ -22,12 +22,10 @@ func is_align(_target_pos :Vector3) -> bool:
 	return _align.distance_to(_target_pos) < 5
 
 func firing(_target :BaseUnit):
-	if not _sound.playing:
-		_sound.stream = firing_sounds[rand_range(0, firing_sounds.size())]
-		_sound.play()
-		
-	_muzzle_position = from.global_transform.origin
+	_sound.stream = firing_sounds[rand_range(0, firing_sounds.size())]
+	_sound.play()
 	animation_player.play("firing")
+	_muzzle_position = from.global_transform.origin
 	.firing(_target)
 
 

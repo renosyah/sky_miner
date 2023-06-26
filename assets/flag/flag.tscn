@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/flag/flag.gd" type="Script" id=1]
 
@@ -7,54 +7,8 @@ size = Vector2( 2, 1 )
 subdivide_width = 30
 subdivide_depth = 30
 
-[sub_resource type="Shader" id=7]
-code = "shader_type spatial;
-
-uniform float speed = 2.0;
-uniform float frequency_y = 5.0;
-uniform float frequency_x = 2.5;
-uniform float frequency_z = 2.5;
-uniform float amplitude_y = 0.1;
-uniform float amplitude_x = 0.05;
-uniform float amplitude_z = 0.05;
-uniform float inclination = -0.04;
-
-uniform sampler2D tex: hint_albedo;
-
-void fragment(){
-	vec4 albedo_tex = texture(tex, UV);
-	ALBEDO = vec3(1.0) * albedo_tex.rgb;
-}
-
-void vertex(){
-	VERTEX.y += sin((UV.x - TIME * speed) * frequency_y) * amplitude_y * UV.x;
-	VERTEX.x += cos((UV.y - TIME * speed) * frequency_x) * amplitude_x * 0.1 * UV.x;
-	VERTEX.z += sin((UV.x - TIME * speed) * frequency_z) * amplitude_z * UV.x;
-	VERTEX.x -= (1.0 - UV.y) * inclination;
-}"
-
-[sub_resource type="Gradient" id=10]
-offsets = PoolRealArray( 0 )
-colors = PoolColorArray( 1, 0, 0, 1 )
-
-[sub_resource type="GradientTexture" id=11]
-gradient = SubResource( 10 )
-
-[sub_resource type="ShaderMaterial" id=8]
-shader = SubResource( 7 )
-shader_param/speed = 2.0
-shader_param/frequency_y = 5.0
-shader_param/frequency_x = 2.5
-shader_param/frequency_z = 2.5
-shader_param/amplitude_y = 0.1
-shader_param/amplitude_x = 0.05
-shader_param/amplitude_z = 0.25
-shader_param/inclination = -0.04
-shader_param/tex = SubResource( 11 )
-
 [node name="flag" type="MeshInstance"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 mesh = SubResource( 9 )
 software_skinning_transform_normals = false
-material/0 = SubResource( 8 )
 script = ExtResource( 1 )

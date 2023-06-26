@@ -67,6 +67,12 @@ func _pooling_projectile():
 		add_child(p)
 		_pool_projectile.append(p)
 		
+func current_fire_rate_time() -> float:
+	return _firing_timer.time_left
+	
+func current_reload_time() -> float:
+	return _reload_timer.time_left
+		
 func _get_projectile() -> Projectile:
 	for _projectile in _pool_projectile:
 		if not _projectile.is_launching():

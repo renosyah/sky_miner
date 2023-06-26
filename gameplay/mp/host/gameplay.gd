@@ -17,57 +17,50 @@ func on_map_ready():
 	enemy_airship_patrol.start()
 	
 func spawn_player_airship():
-	var airship :AirshipData = AirshipData.new()
-	airship.entity_name = RandomNameGenerator.generate()
-	airship.entity_icon = ""
-	airship.node_name = unique_player_node_name
-	airship.network_id = NetworkLobbyManager.get_id()
-	airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
-	airship.position = islands[6].translation
-	airship.turrets_count = 3
-	airship.level = int(rand_range(1, 100))
-	airship.team = 0
-	airship.color_coat = Color.green
-	airship.enable_bot = false
-	
-	airship.turrets = []
-	for index in airship.turrets_count:
-		var t :TurretData = TurretData.new()
-		t.entity_name = "mg turret"
-		t.entity_icon = ""
-		t.node_name = "%s_turret_%s" % [unique_player_node_name, index]
-		t.scene_path = "res://entity/turret/mg/mg.tscn"
-		t.level = airship.level
-		t.position = Vector3.ZERO
-		airship.turrets.append(t)
+	var datas :Array = []
+	var index :int = 0
+	for p in NetworkLobbyManager.get_players():
+		var player :NetworkPlayer = p
+		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
+		airship.entity_name = player.player_name
+		airship.node_name = "player_%s" % player.player_network_unique_id
+		airship.network_id = player.player_network_unique_id
+		airship.position = islands[index].translation + Vector3(-10, 0, -10)
+		airship.level = int(rand_range(1, 100))
+		airship.team = 0
+		airship.color_coat = Color.green
+		airship.enable_bot = false
 		
-	.spawn_airship(airship)
+		airship.turrets = []
+		for turret_index in airship.turrets_count:
+			var t :TurretData = preload("res://data/turret/list/mg.tres").duplicate()
+			t.node_name = "%s_turret_%s" % [airship.node_name, turret_index]
+			t.level = airship.level
+			airship.turrets.append(t)
+			
+		datas.append(airship)
+		index += 1
+		
+	.spawn_airships(datas)
 	
 func spawn_bot_airship():
 	var datas :Array = []
 	for i in 4:
-		var airship :AirshipData = AirshipData.new()
+		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
 		airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
-		airship.entity_icon = ""
 		airship.node_name = "airship_%s" % i
 		airship.network_id = Network.PLAYER_HOST_ID
-		airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
-		airship.position = islands[i].translation + Vector3(10, 0, -10)
-		airship.turrets_count = 3
 		airship.level = int(rand_range(1, 100))
+		airship.position = islands[i].translation + Vector3(10, 0, 10)
 		airship.team = i + 10
 		airship.color_coat = Color.red
 		airship.enable_bot = true
 		
 		airship.turrets = []
 		for index in airship.turrets_count:
-			var t :TurretData = TurretData.new()
-			t.entity_name = "mg turret"
-			t.entity_icon = ""
+			var t :TurretData = preload("res://data/turret/list/mg.tres").duplicate()
 			t.node_name = "%s_turret_%s" % [airship.node_name, index]
-			t.scene_path = "res://entity/turret/mg/mg.tscn"
 			t.level = airship.level
-			t.position = Vector3.ZERO
 			airship.turrets.append(t)
 			
 		datas.append(airship)
@@ -77,14 +70,11 @@ func spawn_bot_airship():
 func spawn_defence_bot():
 	var datas :Array = []
 	for i in 4:
-		var defence :EmplacementData = EmplacementData.new()
+		var defence :EmplacementData = preload("res://data/emplacement/list/turret_platform.tres").duplicate()
 		defence.entity_name = "Defence (Bot)"
-		defence.entity_icon = ""
 		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
-		defence.scene_path = "res://entity/unit/emplacement/turret_platform/turret_platform.tscn"
 		defence.position = islands[i].translation
-		defence.turrets_count = 3
 		defence.level = int(rand_range(1, 100))
 		defence.team = i + 20
 		defence.color_coat = Color.orange
@@ -92,12 +82,8 @@ func spawn_defence_bot():
 		
 		defence.turrets = []
 		for index in defence.turrets_count:
-			var t :TurretData = TurretData.new()
-			t.entity_name = "mg turret"
-			t.entity_icon = ""
+			var t :TurretData = preload("res://data/turret/list/mg.tres").duplicate()
 			t.node_name = "%s_turret_%s" % [defence.node_name, index]
-			t.scene_path = "res://entity/turret/mg/mg.tscn"
-			t.position = Vector3.ZERO
 			t.level = defence.level
 			defence.turrets.append(t)
 			
@@ -131,11 +117,6 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, bot
 	.on_emplacement_spawned(data, emplacement, bot)
 	ai_bots.append(bot)
 	
-func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
-	.on_unit_take_damage(_unit, _damage , _hp_bar)
-	if _unit == player_airship:
-		_ui.show_hurt()
-		
 func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):
 	.on_airship_dead(_unit, _hp_bar)
 	

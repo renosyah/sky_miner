@@ -9,7 +9,7 @@ export var network_id :int
 export var scene_path :String
 export var position :Vector3
 
-export var level :int
+export var level :int = 1
 export var team :int
 export var color_coat:Color
 

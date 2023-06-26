@@ -8,7 +8,7 @@ export var node_name :String
 export var scene_path :String
 export var position :Vector3
 
-export var level :int
+export var level :int = 1
 
 func from_dictionary(data : Dictionary):
 	.from_dictionary(data)

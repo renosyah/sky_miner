@@ -30,7 +30,7 @@ albedo_color = Color( 1, 0.545098, 0, 1 )
 [sub_resource type="Animation" id=7]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("body/gun/MeshInstance:scale")
+tracks/0/path = NodePath("body/gun/gun/MeshInstance:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -42,7 +42,7 @@ tracks/0/keys = {
 "values": [ Vector3( 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("body/gun/MeshInstance:visible")
+tracks/1/path = NodePath("body/gun/gun/MeshInstance:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -53,12 +53,24 @@ tracks/1/keys = {
 "update": 1,
 "values": [ false ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("body/gun/gun:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=8]
 resource_name = "firing"
 length = 0.2
 tracks/0/type = "value"
-tracks/0/path = NodePath("body/gun/MeshInstance:scale")
+tracks/0/path = NodePath("body/gun/gun/MeshInstance:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -70,7 +82,7 @@ tracks/0/keys = {
 "values": [ Vector3( 0.6, 0.6, 0.6 ), Vector3( 1, 1, 1 ), Vector3( 0.1, 0.1, 0.1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("body/gun/MeshInstance:visible")
+tracks/1/path = NodePath("body/gun/gun/MeshInstance:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -80,6 +92,18 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("body/gun/gun:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0.11526 ), Vector3( 0, 0, 0 ) ]
 }
 
 [node name="mg" type="Spatial"]
@@ -111,10 +135,11 @@ mesh = ExtResource( 3 )
 material/0 = SubResource( 12 )
 material/1 = SubResource( 13 )
 
-[node name="MeshInstance" type="MeshInstance" parent="body/gun"]
+[node name="MeshInstance" type="MeshInstance" parent="body/gun/gun"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00412002, -0.789383 )
 visible = false
 mesh = SubResource( 9 )
+skeleton = NodePath("../..")
 software_skinning_transform_normals = false
 material/0 = SubResource( 6 )
 

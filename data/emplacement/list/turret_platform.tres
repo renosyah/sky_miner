@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://data/emplacement/emplacement.gd" type="Script" id=2]
+
+[resource]
+script = ExtResource( 2 )
+entity_name = "Turrets Platform"
+entity_icon = ""
+node_name = ""
+network_id = 0
+scene_path = "res://entity/unit/emplacement/turret_platform/turret_platform.tscn"
+position = Vector3( 60, 10, 0 )
+level = 1
+team = 0
+color_coat = Color( 0, 0, 0, 1 )
+turrets = [  ]
+turrets_count = 3
+enable_bot = false

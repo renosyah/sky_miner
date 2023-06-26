@@ -119,7 +119,6 @@ remotesync func _respawn(_node_path :NodePath, _position :Vector3):
 	_unit.translation = _position
 	
 ################################################################
-onready var unique_player_node_name :String = GDUUID.v4()
 var player_airship :AirShip
 var player_airship_bot :Bot
 
@@ -150,7 +149,7 @@ remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
 	on_airship_spawned(_airship_data, spawns[0], spawns[1])
 	
 func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
-	var is_player = (data.node_name == unique_player_node_name)
+	var is_player = (data.node_name == "player_%s" % NetworkLobbyManager.get_id())
 	
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
 	hp_bar.tag_name = data.entity_name
@@ -211,6 +210,9 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bo
 ################################################################
 # unit signals handler
 func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
+	if _unit == player_airship:
+		_ui.show_hurt()
+		
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
 func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):

@@ -30,6 +30,8 @@ var _pool_projectile :Array
 var _body :Spatial
 var _gun :Spatial
 
+var _sound :AudioStreamPlayer3D
+
 func _ready():
 	_pivot = Spatial.new()
 	add_child(_pivot)
@@ -48,6 +50,10 @@ func _ready():
 	_iddle_timer.wait_time = 3
 	_iddle_timer.one_shot = true
 	add_child(_iddle_timer)
+	
+	_sound = AudioStreamPlayer3D.new()
+	_sound.unit_size = Global.sound_amplified
+	add_child(_sound)
 	
 	_body = get_node_or_null(body)
 	_gun = get_node_or_null(gun)
@@ -100,6 +106,8 @@ func _aiming(_target :BaseUnit, delta :float):
 		
 		var _aim_dir :Vector3 = from_pos.direction_to(to_pos)
 		_pivot.look_at(_aim_dir * 100, Vector3.UP)
+		_pivot.rotation_degrees.y = wrapf(_pivot.rotation_degrees.y, 0.0, 360.0)
+		_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -60, 60)
 		
 	_body.rotation.y = lerp_angle(_body.rotation.y, _pivot.rotation.y, aiming_speed * delta)
 	_gun.rotation_degrees.x = lerp(_gun.rotation_degrees.x, _pivot.rotation_degrees.x, aiming_speed * delta)

@@ -1,5 +1,11 @@
 extends Turret
 
+const firing_sounds = [
+	preload("res://assets/sounds/mg_firings/firing_1.wav"),
+	preload("res://assets/sounds/mg_firings/firing_2.wav"),
+	preload("res://assets/sounds/mg_firings/firing_3.wav")
+]
+
 onready var animation_player = $AnimationPlayer
 onready var from = $body/gun/from
 onready var to = $body/gun/to
@@ -16,6 +22,17 @@ func is_align(_target_pos :Vector3) -> bool:
 	return _align.distance_to(_target_pos) < 5
 
 func firing(_target :BaseUnit):
+	if not _sound.playing:
+		_sound.stream = firing_sounds[rand_range(0, firing_sounds.size())]
+		_sound.play()
+		
 	_muzzle_position = from.global_transform.origin
 	animation_player.play("firing")
 	.firing(_target)
+
+
+
+
+
+
+

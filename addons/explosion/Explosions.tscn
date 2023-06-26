@@ -25,7 +25,6 @@ albedo_color = Color( 0.729412, 0.729412, 0.729412, 1 )
 [node name="Spatial" type="Spatial"]
 
 [node name="Explosion1" parent="." instance=ExtResource( 2 )]
-visible = false
 
 [node name="Explosion2" type="CPUParticles" parent="."]
 transform = Transform( -0.88341, 0.321487, 0.330613, 0.460227, 0.617097, 0.634615, 0, 0.712782, -0.69854, -0.00112057, -0.00427759, -0.00190479 )

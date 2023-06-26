@@ -1,6 +1,12 @@
 extends BaseUnit
 class_name AirShip
 
+const explosions = [
+	preload("res://assets/sounds/explosions/explosion_1.wav"),
+	preload("res://assets/sounds/explosions/explosion_2.wav"),
+	preload("res://assets/sounds/explosions/explosion_3.wav")
+]
+
 export var color_coat :Color
 export var acceleration :float = 0.78
 export var altitude :float = 20
@@ -16,6 +22,7 @@ var targets :Array
 var _falling_down_rotation :float = -1.2
 var _last_velocity :Vector3
 var _explosion_sfx :CPUParticles
+var _fire_sfx :Spatial
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
@@ -38,6 +45,11 @@ func _ready():
 	
 	_explosion_sfx = preload("res://addons/explosion/quick_explosion.tscn").instance()
 	add_child(_explosion_sfx)
+	_explosion_sfx.visible = false
+	_explosion_sfx.set_as_toplevel(true)
+	
+	_fire_sfx = preload("res://assets/fire/fire.tscn").instance()
+	add_child(_fire_sfx)
 
 func assign_turret_position(_turret :Turret, _pos :Vector3):
 	_turret.enable = true
@@ -57,7 +69,8 @@ remotesync func _dead():
 		_turret.enable = false
 		
 	_falling_down_rotation = 1.2 if randf() > 0 else -1.2
-	_explosion_sfx.emitting = true
+	
+	_explode()
 	
 remotesync func _reset():
 	._reset()
@@ -70,6 +83,9 @@ remotesync func _reset():
 	_last_velocity = Vector3.ZERO
 	_velocity = Vector3.ZERO
 	
+	_explosion_sfx.visible = false
+	_fire_sfx.set_is_burning(false)
+	
 func master_moving(delta :float) -> void:
 	if is_dead:
 		_falling_down(delta)
@@ -77,7 +93,7 @@ func master_moving(delta :float) -> void:
 		return
 		
 	var _input_power :float = move_direction.length()
-	var _is_moving :bool = _input_power > 0.5
+	var _is_moving :bool = _input_power > 0.1
 	
 	var _acc :float = (acceleration * _input_power) if _is_moving else -acceleration
 	
@@ -94,7 +110,9 @@ func master_moving(delta :float) -> void:
 	.turn_spatial_pivot_to_moving(self, rotation_power, delta)
 	
 	rotate_direction = clamp(rotation_degrees.y - y_rotation, -1, 1)
-	rotation_degrees.z = lerp(rotation_degrees.z, rotate_direction * 45, 0.5 * delta)
+	
+	var _roll_rotation_speed :float = _input_power if _is_moving else 1.0
+	rotation_degrees.z = lerp(rotation_degrees.z, rotate_direction * 45,_roll_rotation_speed * delta)
 	rotation_degrees.x = 0
 	
 	.master_moving(delta)
@@ -127,6 +145,7 @@ func _falling_down(delta):
 	
 	if is_grounded or is_below_surface:
 		_explode()
+		set_process(false)
 		return
 		
 	# still flying?
@@ -138,8 +157,16 @@ func _falling_down(delta):
 	rotate_y(_falling_down_rotation * delta)
 	
 func _explode():
+	_explosion_sfx.translation = global_transform.origin
+	_explosion_sfx.visible = true
+	
+	yield(get_tree(),"idle_frame")
+	
+	_sound.stream = explosions[rand_range(0, explosions.size())]
+	_sound.play()
+	
 	_explosion_sfx.emitting = true
-	set_process(false)
+	_fire_sfx.set_is_burning(true)
 	
 func _turret_get_target():
 	var pos :int = 0

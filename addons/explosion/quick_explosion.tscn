@@ -24,3 +24,9 @@ angular_velocity = 10.28
 angular_velocity_random = 1.0
 linear_accel = -1.0
 angle_random = 1.0
+
+[node name="BlueLight" type="OmniLight" parent="."]
+light_color = Color( 1, 0.376471, 0, 1 )
+light_energy = 6.16
+omni_range = 1.0
+omni_attenuation = 1.41421

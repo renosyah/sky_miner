@@ -14,6 +14,7 @@ var rotate_direction :float
 var targets :Array
 
 var _falling_down_rotation :float = -1.2
+var _last_velocity :Vector3
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
@@ -78,11 +79,16 @@ func master_moving(delta :float) -> void:
 	_ajust_altitude()
 	
 	var y_rotation :float = rotation_degrees.y
-	.turn_spatial_pivot_to_moving(self, clamp(throttle * _input_power, 0, 0.5), delta)
+	var rotation_power :float = clamp(throttle * _input_power, 0, 0.5)
+	.turn_spatial_pivot_to_moving(self, rotation_power, delta)
 	
 	rotate_direction = clamp(rotation_degrees.y - y_rotation, -1, 1)
+	rotation_degrees.z = lerp(rotation_degrees.z, rotate_direction * 45, rotation_power * delta)
+	rotation_degrees.x = 0
 	
 	.master_moving(delta)
+	
+	_last_velocity = _velocity
 	
 func moving(delta :float) -> void:
 	.moving(delta)
@@ -117,7 +123,7 @@ func _falling_down(delta):
 	throttle = lerp(throttle, throttle + 1.5, delta)
 	throttle = clamp(throttle, 0, speed)
 	
-	_velocity = Vector3(0, -throttle, 0)
+	_velocity = Vector3(_last_velocity.x, -throttle, _last_velocity.z)
 	rotate_y(_falling_down_rotation * delta)
 	
 func _turret_get_target():

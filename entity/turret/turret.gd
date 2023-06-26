@@ -25,7 +25,6 @@ var _reload_timer :Timer
 var _firing_timer :Timer
 var _iddle_timer :Timer
 var _muzzle_position :Vector3
-var _aiming_position :Vector3
 var _pool_projectile :Array
 
 var _body :Spatial

@@ -1,25 +1,27 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://entity/turret/mg/mg.gd" type="Script" id=1]
 [ext_resource path="res://entity/projectile/bullet/bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://entity/turret/mg/gun.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://entity/turret/mg/turret_body.obj" type="ArrayMesh" id=4]
 
-[sub_resource type="CubeMesh" id=1]
-size = Vector3( 0.08, 0.4, 0.2 )
+[sub_resource type="SpatialMaterial" id=10]
+albedo_color = Color( 0.521569, 0.521569, 0.521569, 1 )
 
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.407843, 0.407843, 0.407843, 1 )
+[sub_resource type="SpatialMaterial" id=11]
+albedo_color = Color( 0.254902, 0.254902, 0.254902, 1 )
 
-[sub_resource type="CylinderMesh" id=3]
-top_radius = 0.04
-bottom_radius = 0.06
-height = 1.0
+[sub_resource type="SpatialMaterial" id=12]
+albedo_color = Color( 0.145098, 0.145098, 0.145098, 1 )
 
-[sub_resource type="SpatialMaterial" id=4]
-albedo_color = Color( 0.223529, 0.223529, 0.223529, 1 )
+[sub_resource type="SpatialMaterial" id=13]
+albedo_color = Color( 0.505882, 0.505882, 0.505882, 1 )
 
-[sub_resource type="SphereMesh" id=5]
-radius = 0.2
-height = 0.3
+[sub_resource type="SphereMesh" id=9]
+radius = 0.1
+height = 0.2
+radial_segments = 12
+rings = 12
 
 [sub_resource type="SpatialMaterial" id=6]
 flags_unshaded = true
@@ -94,38 +96,33 @@ gun = NodePath("body/gun")
 
 [node name="body" type="Spatial" parent="."]
 
-[node name="MeshInstance" type="MeshInstance" parent="body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0, 0 )
-mesh = SubResource( 1 )
+[node name="base" type="MeshInstance" parent="body"]
+mesh = ExtResource( 4 )
 skeleton = NodePath("../..")
-material/0 = SubResource( 2 )
-
-[node name="MeshInstance2" type="MeshInstance" parent="body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1, 0, 0 )
-mesh = SubResource( 1 )
-skeleton = NodePath("../..")
-material/0 = SubResource( 2 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 10 )
+material/1 = SubResource( 11 )
 
 [node name="gun" type="Spatial" parent="body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.150686, 0 )
 
-[node name="MeshInstance3" type="MeshInstance" parent="body/gun"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.0525167, -0.255018 )
-mesh = SubResource( 3 )
-skeleton = NodePath("../../..")
-material/0 = SubResource( 4 )
+[node name="gun" type="MeshInstance" parent="body/gun"]
+mesh = ExtResource( 3 )
+material/0 = SubResource( 12 )
+material/1 = SubResource( 13 )
 
 [node name="MeshInstance" type="MeshInstance" parent="body/gun"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0538076, -0.851461 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00412002, -0.789383 )
 visible = false
-mesh = SubResource( 5 )
+mesh = SubResource( 9 )
+software_skinning_transform_normals = false
 material/0 = SubResource( 6 )
 
 [node name="from" type="Position3D" parent="body/gun"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.045, -0.775 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00569241, -0.775 )
 
 [node name="to" type="Position3D" parent="body/gun"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.045, -2 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00569241, -2 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 7 )

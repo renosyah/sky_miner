@@ -7,7 +7,6 @@ const DEFAULT_IP : String = '127.0.0.1'
 const DEFAULT_PORT : int = 31400
 const MAX_PLAYERS : int = 5
 const PLAYER_HOST_ID : int = 1
-const LATENCY_TWEEN = 0.10
 const LATENCY_DELAY = 0.08
 
 signal server_player_connected(player_network_unique_id)

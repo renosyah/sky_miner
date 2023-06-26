@@ -153,7 +153,7 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	var is_player = (data.node_name == unique_player_node_name)
 	
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
-	hp_bar.tag_name = data.player_name
+	hp_bar.tag_name = data.entity_name
 	hp_bar.level = data.level
 	hp_bar.enable_label = true
 	hp_bar.color = Color.green if is_player else Color.red
@@ -197,7 +197,7 @@ remotesync func _spawn_emplacement(_data :Dictionary, _parent_path :NodePath):
 	
 func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bot :Bot):
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
-	hp_bar.tag_name = data.player_name
+	hp_bar.tag_name = data.entity_name
 	hp_bar.level = data.level
 	hp_bar.enable_label = true
 	hp_bar.color = Color.orange
@@ -221,6 +221,15 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D):
 	
 func on_unit_reset(_unit :BaseUnit, _hp_bar :HpBar3D):
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
+	
+################################################################
+# proccess
+func _process(_delta):
+	if is_instance_valid(player_airship):
+		player_airship.move_direction = _ui.get_joystick_direction()
+		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
+		_camera.translation = player_airship.translation
+		_camera.set_distance(player_airship.throttle * player_airship.speed)
 	
 ################################################################
 # exit

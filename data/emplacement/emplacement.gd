@@ -1,7 +1,8 @@
 extends BaseData
 class_name EmplacementData
 
-export var player_name :String
+export var entity_name :String
+export var entity_icon :String
 
 export var node_name :String
 export var network_id :int
@@ -20,7 +21,8 @@ export var enable_bot :bool
 func from_dictionary(data : Dictionary):
 	.from_dictionary(data)
 	
-	player_name = data["player_name"]
+	entity_name = data["entity_name"]
+	entity_icon = data["entity_icon"]
 	
 	node_name = data["node_name"]
 	network_id = data["network_id"]
@@ -44,7 +46,8 @@ func from_dictionary(data : Dictionary):
 func to_dictionary() -> Dictionary :
 	var data = .to_dictionary()
 	
-	data["player_name"] = player_name
+	data["entity_name"] = entity_name
+	data["entity_icon"] = entity_icon
 	
 	data["node_name"] = node_name
 	data["network_id"] = network_id

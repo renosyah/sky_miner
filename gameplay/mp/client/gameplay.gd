@@ -35,13 +35,6 @@ func spawn_player_airship():
 		
 	.spawn_airship(airship)
 	
-func _process(_delta):
-	if is_instance_valid(player_airship):
-		player_airship.move_direction = _ui.get_joystick_direction()
-		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
-		_camera.translation = player_airship.translation
-		_camera.set_distance(player_airship.throttle * player_airship.speed)
-	
 func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
 	.on_unit_take_damage(_unit, _damage , _hp_bar)
 	if _unit == player_airship:

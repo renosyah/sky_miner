@@ -18,7 +18,8 @@ func on_map_ready():
 	
 func spawn_player_airship():
 	var airship :AirshipData = AirshipData.new()
-	airship.player_name = RandomNameGenerator.generate()
+	airship.entity_name = RandomNameGenerator.generate()
+	airship.entity_icon = ""
 	airship.node_name = unique_player_node_name
 	airship.network_id = NetworkLobbyManager.get_id()
 	airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
@@ -32,6 +33,8 @@ func spawn_player_airship():
 	airship.turrets = []
 	for index in airship.turrets_count:
 		var t :TurretData = TurretData.new()
+		t.entity_name = "mg turret"
+		t.entity_icon = ""
 		t.node_name = "%s_turret_%s" % [unique_player_node_name, index]
 		t.scene_path = "res://entity/turret/mg/mg.tscn"
 		t.level = airship.level
@@ -44,7 +47,8 @@ func spawn_bot_airship():
 	var datas :Array = []
 	for i in 4:
 		var airship :AirshipData = AirshipData.new()
-		airship.player_name = "Bot %s" % RandomNameGenerator.generate()
+		airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
+		airship.entity_icon = ""
 		airship.node_name = "airship_%s" % i
 		airship.network_id = Network.PLAYER_HOST_ID
 		airship.scene_path = "res://entity/unit/airship/cruiser/cruiser.tscn"
@@ -58,6 +62,8 @@ func spawn_bot_airship():
 		airship.turrets = []
 		for index in airship.turrets_count:
 			var t :TurretData = TurretData.new()
+			t.entity_name = "mg turret"
+			t.entity_icon = ""
 			t.node_name = "%s_turret_%s" % [airship.node_name, index]
 			t.scene_path = "res://entity/turret/mg/mg.tscn"
 			t.level = airship.level
@@ -72,7 +78,8 @@ func spawn_defence_bot():
 	var datas :Array = []
 	for i in 4:
 		var defence :EmplacementData = EmplacementData.new()
-		defence.player_name = "Defence %s" % i
+		defence.entity_name = "Defence (Bot)"
+		defence.entity_icon = ""
 		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.scene_path = "res://entity/unit/emplacement/turret_platform/turret_platform.tscn"
@@ -86,6 +93,8 @@ func spawn_defence_bot():
 		defence.turrets = []
 		for index in defence.turrets_count:
 			var t :TurretData = TurretData.new()
+			t.entity_name = "mg turret"
+			t.entity_icon = ""
 			t.node_name = "%s_turret_%s" % [defence.node_name, index]
 			t.scene_path = "res://entity/turret/mg/mg.tscn"
 			t.position = Vector3.ZERO
@@ -97,12 +106,6 @@ func spawn_defence_bot():
 	.spawn_emplacements(datas)
 	
 func _process(_delta):
-	if is_instance_valid(player_airship):
-		player_airship.move_direction = _ui.get_joystick_direction()
-		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
-		_camera.translation = player_airship.translation
-		_camera.set_distance(player_airship.throttle * player_airship.speed)
-	
 	# test mob
 	for bot in ai_bots:
 		var unit = get_node_or_null(bot.unit)
@@ -113,7 +116,6 @@ func _process(_delta):
 			unit.assign_turret_target(bot.get_node_path_targets())
 		elif unit is Emplacement:
 			unit.assign_turret_target(bot.get_node_path_targets())
-			
 			
 # assign AI to patrol
 func _test_on_enemy_airship_patrol_timeout():

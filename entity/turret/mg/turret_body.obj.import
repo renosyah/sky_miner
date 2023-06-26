@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/turret_body.obj-192eab20d4bf15d39acfdff513916e2c.mesh"
+
+[deps]
+
+files=[ "res://.import/turret_body.obj-192eab20d4bf15d39acfdff513916e2c.mesh" ]
+
+source_file="res://entity/turret/mg/turret_body.obj"
+dest_files=[ "res://.import/turret_body.obj-192eab20d4bf15d39acfdff513916e2c.mesh", "res://.import/turret_body.obj-192eab20d4bf15d39acfdff513916e2c.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

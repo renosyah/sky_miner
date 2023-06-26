@@ -64,6 +64,12 @@ remotesync func _reset():
 	for _turret in turrets:
 		_turret.enable = true
 		
+	throttle = 0.0
+	rotate_direction = 0.0
+	
+	_last_velocity = Vector3.ZERO
+	_velocity = Vector3.ZERO
+	
 func master_moving(delta :float) -> void:
 	if is_dead:
 		_falling_down(delta)

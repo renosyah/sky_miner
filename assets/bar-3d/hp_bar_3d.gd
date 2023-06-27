@@ -23,6 +23,6 @@ func _ready():
 func update_bar(hp, max_hp : int):
 	_2d_hp_bar.update_bar(hp, max_hp)
 
-func _process(delta):
+func _process(_delta):
 	if is_instance_valid(_attach_to):
 		translation = _attach_to.global_transform.origin + pos_offset

@@ -65,7 +65,15 @@ var _ui :UiMp
 
 func setup_ui():
 	_ui = preload("res://gameplay/mp/ui/ui.tscn").instance()
+	_ui.connect("exit_airship", self, "on_exit_airship")
+	_ui.connect("enter_airship", self, "on_enter_airship")
 	add_child(_ui)
+	
+func on_exit_airship():
+	enable_airship_bot(player_airship_bot, true)
+	
+func on_enter_airship():
+	enable_airship_bot(player_airship_bot, false)
 	
 ################################################################
 # network connection watcher
@@ -247,6 +255,16 @@ func on_player_airship_reset(_unit :AirShip):
 	_ui.hide_hurt()
 	
 ################################################################
+# airships bot
+func enable_airship_bot(_bot :Bot, _val :bool):
+	if is_instance_valid(_bot):
+		_bot.enable = _val
+		airship_bot_updated(_bot)
+		
+func airship_bot_updated(_bot :Bot):
+	pass
+	
+################################################################
 # proccess
 func _process(_delta):
 	player_input_airship_control()
@@ -256,16 +274,16 @@ func player_input_airship_control():
 	if not is_instance_valid(player_airship_bot):
 		return
 		
-	if player_airship_bot.enable:
-		return
-		
 	if not is_instance_valid(player_airship):
 		return
 		
-	player_airship.move_direction = _ui.get_joystick_direction()
-	player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
-	_camera.translation = player_airship.translation
-	_camera.set_distance(player_airship.throttle * player_airship.speed)
+	if not player_airship_bot.enable:
+		player_airship.move_direction = _ui.get_joystick_direction()
+		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
+		
+		_camera.translation = player_airship.translation
+		_camera.set_distance(player_airship.throttle * player_airship.speed)
+	
 	
 func player_input_squad_control():
 	pass

@@ -92,20 +92,30 @@ func spawn_defence_bot():
 	.spawn_emplacements(datas)
 	
 func _process(_delta):
-	# test mob
+	# assign target bot to unit
 	for bot in ai_bots:
 		var unit = bot.get_unit()
 		if unit is AirShip or unit is Emplacement:
 			unit.assign_turret_target(bot.get_node_path_targets())
 		
-# assign AI to patrol
+# assign autofight to bot
 func _test_on_enemy_airship_patrol_timeout():
 	for ai_bot in ai_bots:
-		var unit = get_node_or_null(ai_bot.unit)
-		if unit is AirShip:
+		if ai_bot.get_unit() is AirShip:
 			ai_bot.move_to(_map.get_random_island().translation)
 		
 	enemy_airship_patrol.start()
+	
+# test if bot enable
+# auto fight with other bot
+func airship_bot_updated(_bot :Bot):
+	.airship_bot_updated(_bot)
+	
+	if _bot.enable:
+		ai_bots.append(_bot)
+		
+	else:
+		ai_bots.erase(_bot)
 	
 func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	.on_airship_spawned(data, airship, bot)

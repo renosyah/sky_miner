@@ -1,6 +1,10 @@
 extends Node
 
 ################################################################
+# versioning
+onready var game_version :int = 1
+
+################################################################
 # sound
 const is_dekstop =  ["Server", "Windows", "WinRT", "X11"]
 onready var sound_amplified :float = 5.0 if OS.get_name() in is_dekstop else 10.0

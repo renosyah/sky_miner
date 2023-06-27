@@ -1,7 +1,7 @@
 extends Spatial
 class_name Bot
 
-export var enable :bool = true
+export var enable :bool = true setget _set_enable
 export var unit :NodePath
 export var team :int
 export var chase_offset :float
@@ -16,15 +16,21 @@ func _ready():
 	_unit = get_node_or_null(unit)
 	_spotter.ignore_body = _unit
 	_spotter.team = team
-	_unit.is_bot = enable
 	
 	var is_master :bool = _unit.is_master()
 	
-	set_process(is_master)
+	_unit.is_bot = enable
 	_spotter.set_enable(is_master)
+	set_process(is_master)
 	
 func get_unit() -> BaseUnit:
 	return _unit
+	
+func _set_enable(_val:bool):
+	enable = _val
+	
+	if is_instance_valid(_unit):
+		_unit.is_bot = enable
 	
 func _process(_delta):
 	if enable:

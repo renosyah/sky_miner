@@ -1,6 +1,8 @@
 extends Spatial
 class_name Turret
 
+signal fired(_turret)
+
 export var target :NodePath
 
 export var aiming_speed :float
@@ -172,7 +174,7 @@ func _firing(_target :BaseUnit):
 	ammo -= 1
 	
 func firing(_target :BaseUnit):
-	pass
+	emit_signal("fired", self)
 	
 func projectile_reach_target(_p :Projectile, _t :BaseUnit):
 	if is_master and attack_damage > 0:

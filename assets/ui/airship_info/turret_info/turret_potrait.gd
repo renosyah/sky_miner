@@ -19,10 +19,21 @@ func _ready():
 	_reload.max_value = _turret.reload_time
 	_border.modulate = color
 	
-func _process(delta):
-	if is_instance_valid(_turret):
-		var _reload_time :float = _turret.current_reload_time()
-		_fire_rate.visible = _reload_time < 0.1
-		_fire_rate.value = _turret.current_fire_rate_time()
-		_reload.value = _reload_time
-		_ammo.text = "%s" % _turret.ammo
+	_turret.connect("fired", self, "_turret_fired")
+	_ammo.text = "%s" % _turret.ammo
+	
+func _process(_delta):
+	var _reload_time :float = _turret.current_reload_time()
+	_fire_rate.visible = _reload_time < 0.1
+	_fire_rate.value = _turret.current_fire_rate_time()
+	_reload.value = _reload_time
+	
+func _turret_fired(_tr :Turret):
+	_ammo.text = "%s" % _tr.ammo
+
+
+
+
+
+
+

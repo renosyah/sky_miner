@@ -52,8 +52,20 @@ margin_bottom = 2.0
 rect_min_size = Vector2( 0, 2 )
 mouse_filter = 2
 
-[node name="airship_info" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer" instance=ExtResource( 6 )]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
+margin_top = 6.0
+margin_right = 588.0
 margin_bottom = 134.0
+
+[node name="airship_info" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 6 )]
+margin_top = 0.0
+margin_bottom = 128.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer"]
+margin_left = 386.0
+margin_right = 588.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
 margin_top = 138.0
@@ -74,12 +86,23 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -300.0
-margin_top = -250.0
-margin_right = 300.0
-margin_bottom = 250.0
-rect_pivot_offset = Vector2( 300, 250 )
+margin_left = -100.0
+margin_top = -100.0
+margin_right = 100.0
+margin_bottom = 100.0
+rect_pivot_offset = Vector2( 100, 100 )
 joystick_mode = 1
+
+[node name="auto" type="Button" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -100.0
+margin_top = -125.0
+rect_min_size = Vector2( 100, 125 )
+toggle_mode = true
+text = "Auto"
 
 [node name="fps_ping_displayer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 999.0
@@ -93,3 +116,5 @@ margin_right = 600.0
 margin_bottom = 1024.0
 rect_min_size = Vector2( 2, 0 )
 mouse_filter = 2
+
+[connection signal="pressed" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/auto" to="." method="_on_auto_pressed"]

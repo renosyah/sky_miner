@@ -27,6 +27,7 @@ func _ready():
 	
 	_path_follow = PathFollow.new()
 	_spawn_path.add_child(_path_follow)
+
 	
 func get_islands() -> Array:
 	return _islands.get_children()
@@ -65,8 +66,8 @@ func spawn_islands():
 		_ores.add_child(resource)
 		resource.translation = ore["position"]
 		
-		
 	yield(get_tree(),"idle_frame")
+	
 	emit_signal("on_map_ready")
 	
 func generate_islands():

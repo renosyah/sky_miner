@@ -2,7 +2,7 @@
 
 [ext_resource path="res://entity/unit/emplacement/turret_platform/turret_platform.gd" type="Script" id=1]
 [ext_resource path="res://entity/unit/emplacement/turret_platform/platform.obj" type="ArrayMesh" id=2]
-[ext_resource path="res://assets/flag/flag.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/utils/flag/flag.tscn" type="PackedScene" id=3]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.396078, 0.396078, 0.396078, 1 )

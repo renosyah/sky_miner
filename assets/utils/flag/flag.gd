@@ -1,7 +1,7 @@
 extends MeshInstance
 
-const double_sided_flag = preload("res://assets/flag/double_sided_flag.gdshader")
-const one_sided_flag = preload("res://assets/flag/flag.gdshader")
+const double_sided_flag = preload("res://assets/utils/flag/double_sided_flag.gdshader")
+const one_sided_flag = preload("res://assets/utils/flag/flag.gdshader")
 
 export var color :Color
 export var double_side :bool

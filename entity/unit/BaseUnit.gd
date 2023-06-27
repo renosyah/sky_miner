@@ -83,11 +83,13 @@ func _bot_move():
 		return
 		
 	if is_moving and is_bot:
-		var _pos = global_transform.origin
-		var _pos_norm = _pos * Vector3(1,0,1)
-		var _move_to_norm = move_to * Vector3(1,0,1)
-		move_direction = _pos_norm.direction_to(_move_to_norm)
-		if _pos_norm.distance_to(_move_to_norm) < margin:
+		var _pos :Vector3 = global_transform.origin
+		var _pos_norm :Vector3 = _pos * Vector3(1,0,1)
+		var _move_to_norm :Vector3 = move_to * Vector3(1,0,1)
+		var _dist :float = _pos_norm.distance_to(_move_to_norm)
+		var _input_power :float = clamp(_dist * 0.10, 0, 1)
+		move_direction = _pos_norm.direction_to(_move_to_norm) * _input_power
+		if _dist < margin:
 			move_direction = Vector3.ZERO
 			is_moving = false
 	
@@ -100,11 +102,12 @@ func puppet_moving(delta :float) -> void:
 func turn_spatial_pivot_to_moving(_spatial :Spatial, _interpolate :float, delta :float):
 	if move_direction == Vector3.ZERO:
 		return
-		
-	var _look_at :Vector3 = move_direction * 100
+	
+	var _pos :Vector3 = global_transform.origin
+	var _look_at :Vector3 = _pos + move_direction * 100
 	_look_at.y = translation.y
 	
-	_pivot.translation = global_transform.origin
+	_pivot.translation = _pos
 	
 	_pivot.look_at(_look_at, Vector3.UP)
 	_pivot.rotation_degrees.y = wrapf(_pivot.rotation_degrees.y, 0.0, 360.0)

@@ -35,7 +35,7 @@ func on_back_pressed():
 var _camera :FixCamera
 
 func setup_camera():
-	_camera = preload("res://assets/fix_camera/fix_camera.tscn").instance()
+	_camera = preload("res://assets/utils/fix_camera/fix_camera.tscn").instance()
 	add_child(_camera)
 	
 ################################################################
@@ -129,6 +129,7 @@ remotesync func _respawn(_node_path :NodePath, _position :Vector3):
 ################################################################
 var player_airship :AirShip
 var player_airship_bot :Bot
+var landing_zone_validator :LandingZoneValidator
 
 # airship spawner
 func spawn_airships(_datas :Array, _parent :Node = _airship_parent):
@@ -177,12 +178,19 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 		player_airship = airship
 		player_airship_bot = bot
 		
+		player_airship_bot.autochase = false
+		
 		player_airship.connect("take_damage", self, "on_player_airship_take_damage")
 		player_airship.connect("dead", self, "on_player_airship_dead")
 		player_airship.connect("reset", self, "on_player_airship_reset")
 		
 		_ui.airship_info.display_info(data.entity_name, data.entity_icon, data.color_coat)
 		_ui.airship_info.display_turrets(data, airship, data.color_coat)
+		
+		landing_zone_validator = preload("res://assets/utils/landing_zone_validator/landing_zone_validator.tscn").instance()
+		landing_zone_validator.enable = true
+		landing_zone_validator.follow_body = player_airship.get_path()
+		add_child(landing_zone_validator)
 		
 ################################################################
 # emplacement spawner
@@ -257,10 +265,13 @@ func on_player_airship_reset(_unit :AirShip):
 ################################################################
 # airships bot
 func enable_airship_bot(_bot :Bot, _val :bool):
-	if is_instance_valid(_bot):
-		_bot.enable = _val
-		airship_bot_updated(_bot)
+	if not is_instance_valid(_bot):
+		return
 		
+	_bot.enable = _val
+	_bot.get_unit().is_bot = _val
+	airship_bot_updated(_bot)
+	
 func airship_bot_updated(_bot :Bot):
 	pass
 	
@@ -269,6 +280,7 @@ func airship_bot_updated(_bot :Bot):
 func _process(_delta):
 	player_input_airship_control()
 	player_input_squad_control()
+	check_valid_landing_zone()
 	
 func player_input_airship_control():
 	if not is_instance_valid(player_airship_bot):
@@ -284,9 +296,17 @@ func player_input_airship_control():
 		_camera.translation = player_airship.translation
 		_camera.set_distance(player_airship.throttle * player_airship.speed)
 	
-	
 func player_input_squad_control():
 	pass
+	
+func check_valid_landing_zone():
+	if not is_instance_valid(player_airship):
+		return
+		
+	if not is_instance_valid(landing_zone_validator):
+		return
+		
+	landing_zone_validator.translation = player_airship.global_transform.origin
 	
 ################################################################
 # exit

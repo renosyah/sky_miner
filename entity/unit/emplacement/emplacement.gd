@@ -35,12 +35,11 @@ func _ready():
 	_explosion_sfx.visible = false
 	_explosion_sfx.set_as_toplevel(true)
 	
-	_fire_sfx = preload("res://assets/fire/fire.tscn").instance()
+	_fire_sfx = preload("res://assets/visual_effect/fire/fire.tscn").instance()
 	add_child(_fire_sfx)
 
 func assign_turret_position(_turret :Turret, _pos :Vector3):
-	_turret.enable = true
-	_turret.enable_align = false
+	_turret.enable = (not is_dead)
 	add_child(_turret)
 	_turret.is_master = _check_is_master()
 	_turret.translation = _pos

@@ -23,6 +23,8 @@ var _falling_down_rotation :float = -1.2
 var _last_velocity :Vector3
 var _explosion_sfx :CPUParticles
 var _fire_sfx :Spatial
+var _hit_particle :HitParticle
+
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
@@ -48,12 +50,16 @@ func _ready():
 	_explosion_sfx.visible = false
 	_explosion_sfx.set_as_toplevel(true)
 	
-	_fire_sfx = preload("res://assets/fire/fire.tscn").instance()
+	_fire_sfx = preload("res://assets/visual_effect/fire/fire.tscn").instance()
 	add_child(_fire_sfx)
-
+	
+	_hit_particle = preload("res://assets/visual_effect/hit_particle/hit_particle.tscn").instance()
+	_hit_particle.custom_particle_scene =  preload("res://assets/visual_effect/hit_particle/custom_particle/text/custom_text_particle.tscn")
+	add_child(_hit_particle)
+	_hit_particle.set_as_toplevel(true)
+	
 func assign_turret_position(_turret :Turret, _pos :Vector3):
-	_turret.enable = true
-	_turret.enable_align = true
+	_turret.enable = (not is_dead)
 	add_child(_turret)
 	_turret.is_master = _check_is_master()
 	_turret.translation = _pos
@@ -63,6 +69,12 @@ func assign_turret_target(_targets :Array):
 	if _is_master:
 		targets = _targets
 		
+remotesync func _take_damage(_damage :int, _remain_hp :int):
+	._take_damage(_damage, _remain_hp)
+	_hit_particle.display_hit(
+		"-%s" % _damage, Color.orangered, global_transform.origin
+	)
+	
 remotesync func _dead():
 	._dead()
 	for _turret in turrets:

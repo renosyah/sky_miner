@@ -1,6 +1,6 @@
 extends MarginContainer
 
-onready var _level = $HBoxContainer/MarginContainer/level
+onready var _level = $HBoxContainer/MarginContainer/HBoxContainer/level
 onready var _name = $HBoxContainer/VBoxContainer/name
 onready var _hp_bar = $HBoxContainer/VBoxContainer/hp_bar
 

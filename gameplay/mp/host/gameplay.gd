@@ -1,7 +1,10 @@
 extends BaseGameplayMp
 
+var airships_to_spawn :Array = []
+var defences_to_spawn :Array = []
+
 var ai_bots :Array = []
-var islands :Array
+var islands :Array = []
 onready var enemy_airship_patrol = $enemy_airship_patrol
 
 # test
@@ -10,14 +13,16 @@ func on_map_ready():
 	
 	islands = _map.get_islands()
 	
+	spawn_player_airship()
 	spawn_bot_airship()
 	spawn_defence_bot()
-	spawn_player_airship()
+	
+	.spawn_airships(airships_to_spawn)
+	.spawn_emplacements(defences_to_spawn)
 	
 	enemy_airship_patrol.start()
 	
 func spawn_player_airship():
-	var datas :Array = []
 	var index :int = 0
 	for p in NetworkLobbyManager.get_players():
 		var player :NetworkPlayer = p
@@ -27,7 +32,7 @@ func spawn_player_airship():
 		airship.network_id = player.player_network_unique_id
 		airship.position = islands[index].translation + Vector3(-10, 0, -10)
 		airship.level = int(rand_range(50, 100))
-		airship.team = 0
+		airship.team = 1
 		airship.color_coat = Color.green
 		airship.enable_bot = false
 		
@@ -38,13 +43,11 @@ func spawn_player_airship():
 			t.level = airship.level
 			airship.turrets.append(t)
 			
-		datas.append(airship)
+		airships_to_spawn.append(airship)
 		index += 1
 		
-	.spawn_airships(datas)
-	
+		
 func spawn_bot_airship():
-	var datas :Array = []
 	for i in 4:
 		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
 		airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
@@ -52,7 +55,7 @@ func spawn_bot_airship():
 		airship.network_id = Network.PLAYER_HOST_ID
 		airship.level = int(rand_range(1, 25))
 		airship.position = islands[i].translation + Vector3(10, 0, 10)
-		airship.team = i + 10
+		airship.team = 2
 		airship.color_coat = Color.red
 		airship.enable_bot = true
 		
@@ -63,20 +66,18 @@ func spawn_bot_airship():
 			t.level = airship.level
 			airship.turrets.append(t)
 			
-		datas.append(airship)
+		airships_to_spawn.append(airship)
 		
-	.spawn_airships(datas)
 	
 func spawn_defence_bot():
-	var datas :Array = []
 	for i in 4:
 		var defence :EmplacementData = preload("res://data/emplacement/list/turret_platform.tres").duplicate()
 		defence.entity_name = "Defence (Bot)"
 		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.position = islands[i].translation
-		defence.level = int(rand_range(1, 25))
-		defence.team = i + 20
+		defence.level = int(rand_range(50, 125))
+		defence.team = 3
 		defence.color_coat = Color.orange
 		defence.enable_bot = true
 		
@@ -87,9 +88,7 @@ func spawn_defence_bot():
 			t.level = defence.level
 			defence.turrets.append(t)
 			
-		datas.append(defence)
-		
-	.spawn_emplacements(datas)
+		defences_to_spawn.append(defence)
 	
 func _process(_delta):
 	# assign target bot to unit
@@ -105,17 +104,6 @@ func _test_on_enemy_airship_patrol_timeout():
 			ai_bot.move_to(_map.get_random_island().translation)
 		
 	enemy_airship_patrol.start()
-	
-# test if bot enable
-# auto fight with other bot
-func airship_bot_updated(_bot :Bot):
-	.airship_bot_updated(_bot)
-	
-	if _bot.enable:
-		ai_bots.append(_bot)
-		
-	else:
-		ai_bots.erase(_bot)
 	
 func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	.on_airship_spawned(data, airship, bot)

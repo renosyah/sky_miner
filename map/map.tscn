@@ -20,7 +20,7 @@ script = ExtResource( 2 )
 environment = ExtResource( 3 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 1, 0, 0, 0, -0.418375, 0.908275, 0, -0.908275, -0.418375, 0, 44.1716, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 44.1716, 0 )
 light_energy = 0.6
 shadow_enabled = true
 directional_shadow_mode = 0
@@ -50,6 +50,7 @@ shape = SubResource( 7 )
 
 [node name="water" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00865936, -0.403336, 0.198318 )
+visible = false
 
 [node name="spawn_position" type="Spatial" parent="."]
 

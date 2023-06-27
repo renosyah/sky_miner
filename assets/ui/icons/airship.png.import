@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/circle.png-349448e193e967ca161e2b9755b03651.stex"
+path="res://.import/airship.png-f49c413550e04f6b4adfee59fff4c2af.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bar/circle.png"
-dest_files=[ "res://.import/circle.png-349448e193e967ca161e2b9755b03651.stex" ]
+source_file="res://assets/ui/icons/airship.png"
+dest_files=[ "res://.import/airship.png-f49c413550e04f6b4adfee59fff4c2af.stex" ]
 
 [params]
 

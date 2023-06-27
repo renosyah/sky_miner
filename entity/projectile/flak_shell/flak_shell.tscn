@@ -1,0 +1,55 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://entity/projectile/flak_shell/flak_shell.gd" type="Script" id=1]
+
+[sub_resource type="SphereMesh" id=6]
+radius = 0.08
+height = 0.15
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_unshaded = true
+albedo_color = Color( 1, 0.380392, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+albedo_color = Color( 0.164706, 0.164706, 0.164706, 1 )
+
+[sub_resource type="SphereMesh" id=3]
+material = SubResource( 4 )
+radius = 0.1
+height = 0.2
+
+[sub_resource type="Curve" id=5]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[node name="flak_shell" type="Spatial"]
+script = ExtResource( 1 )
+speed = 14
+magin = 0.7
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+mesh = SubResource( 6 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 7 )
+
+[node name="CPUParticles" type="CPUParticles" parent="."]
+emitting = false
+amount = 4
+lifetime = 0.6
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource( 3 )
+direction = Vector3( 1, 1, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+scale_amount_random = 0.45
+scale_amount_curve = SubResource( 5 )
+color = Color( 0.890196, 0.890196, 0.890196, 1 )
+
+[node name="explosion_timeout" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="explosion_timeout" to="." method="_on_explosion_timeout_timeout"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://gameplay/mp/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
@@ -6,6 +6,10 @@
 [ext_resource path="res://addons/joystick/virtual_joystick.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/ui/hurt/hurt.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/ui/airship_info/airship_info.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/ui/bar/circle.png" type="Texture" id=7]
+[ext_resource path="res://assets/ui/icons/airship.png" type="Texture" id=8]
+[ext_resource path="res://assets/ui/bar/circle_fill.png" type="Texture" id=9]
+[ext_resource path="res://assets/ui/icons/down.png" type="Texture" id=10]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -93,16 +97,90 @@ margin_bottom = 100.0
 rect_pivot_offset = Vector2( 100, 100 )
 joystick_mode = 1
 
-[node name="auto" type="Button" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control"]
+[node name="exit_enter" type="Button" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -100.0
-margin_top = -125.0
-rect_min_size = Vector2( 100, 125 )
-toggle_mode = true
-text = "Auto"
+margin_left = -120.0
+margin_top = -128.0
+rect_min_size = Vector2( 120, 128 )
+flat = true
+
+[node name="airship_potrait" type="Control" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 120, 128 )
+mouse_filter = 2
+
+[node name="bg" type="NinePatchRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 9 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+
+[node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
+modulate = Color( 0.239216, 0.239216, 0.239216, 0.733333 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 9 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+
+[node name="icon" type="TextureRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
+modulate = Color( 0, 0, 0, 0.552941 )
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -40.0
+margin_right = 40.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 80, 80 )
+texture = ExtResource( 8 )
+expand = true
+
+[node name="exit_icon" type="TextureRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
+visible = false
+modulate = Color( 1, 0.639216, 0.352941, 1 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 17.0
+margin_top = -9.0
+margin_right = 57.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 40, 40 )
+texture = ExtResource( 10 )
+expand = true
+
+[node name="enter_icon" type="TextureRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
+visible = false
+modulate = Color( 0.494118, 1, 0.352941, 1 )
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 17.0
+margin_top = -9.0
+margin_right = 57.0
+margin_bottom = 31.0
+rect_min_size = Vector2( 40, 40 )
+texture = ExtResource( 10 )
+expand = true
+flip_v = true
+
+[node name="border" type="NinePatchRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 7 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
 
 [node name="fps_ping_displayer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 999.0
@@ -117,4 +195,4 @@ margin_bottom = 1024.0
 rect_min_size = Vector2( 2, 0 )
 mouse_filter = 2
 
-[connection signal="pressed" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/auto" to="." method="_on_auto_pressed"]
+[connection signal="pressed" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_pressed"]

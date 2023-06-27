@@ -2,6 +2,7 @@ extends Spatial
 class_name Turret
 
 signal fired(_turret)
+signal reload(_turret, _finish)
 
 export var target :NodePath
 
@@ -20,7 +21,6 @@ export var gun :NodePath
 
 export var enable :bool
 export var is_master :bool
-export var enable_align :bool
 
 var _pivot :Spatial
 var _reload_timer :Timer
@@ -33,6 +33,7 @@ var _body :Spatial
 var _gun :Spatial
 
 var _sound :AudioStreamPlayer3D
+var _is_reloading :bool = false
 
 func _ready():
 	_pivot = Spatial.new()
@@ -41,6 +42,7 @@ func _ready():
 	_reload_timer = Timer.new()
 	_reload_timer.wait_time = reload_time
 	_reload_timer.one_shot = true
+	_reload_timer.connect("timeout", self, "_reload_timer_finish")
 	add_child(_reload_timer)
 	
 	_firing_timer = Timer.new()
@@ -112,8 +114,9 @@ func _aiming(_target :BaseUnit, delta :float):
 		var from_pos :Vector3 = _pivot.global_transform.origin
 		var to_pos :Vector3 = _target.global_transform.origin
 		
-		var _aim_dir :Vector3 = from_pos.direction_to(to_pos)
-		_pivot.look_at(_aim_dir * 100, Vector3.UP)
+		var _aim_dir :Vector3 = from_pos + from_pos.direction_to(to_pos) * 10
+		_pivot.look_at(_aim_dir, Vector3.UP)
+		
 		_pivot.rotation_degrees.y = wrapf(_pivot.rotation_degrees.y, 0.0, 360.0)
 		_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -60, 60)
 		
@@ -141,19 +144,23 @@ func _align_aim(_target :BaseUnit):
 	if not _reload_timer.is_stopped():
 		return
 		
-	if ammo < 0:
-		ammo = max_ammo
+	if ammo < 1:
 		_reload_timer.wait_time = rand_range(reload_time * 0.5, reload_time)
 		_reload_timer.start()
+		emit_signal("reload", self, false)
 		return
 		
-	if enable_align and not is_align(_target.global_transform.origin):
+	if not is_align(_target.global_transform.origin):
 		return
 		
 	if _firing_timer.is_stopped():
 		_firing_timer.wait_time = fire_rate
 		_firing_timer.start()
 		_firing(_target)
+		
+func _reload_timer_finish():
+	ammo = max_ammo
+	emit_signal("reload", self, true)
 		
 func is_align(_target_pos :Vector3) -> bool:
 	return true

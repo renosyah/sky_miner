@@ -1,10 +1,11 @@
 extends Spatial
 class_name Bot
 
-export var enable :bool = true setget _set_enable
+export var enable :bool = true
 export var unit :NodePath
 export var team :int
 export var chase_offset :float
+export var autochase :bool = true
 
 var _target :BaseUnit
 var _unit :BaseUnit
@@ -26,16 +27,12 @@ func _ready():
 func get_unit() -> BaseUnit:
 	return _unit
 	
-func _set_enable(_val:bool):
-	enable = _val
-	
-	if is_instance_valid(_unit):
-		_unit.is_bot = enable
-	
 func _process(_delta):
 	if enable:
 		_assign_target()
-		_chase_target()
+		
+		if autochase:
+			_chase_target()
 		
 func move_to(_at :Vector3):
 	if not is_instance_valid(_unit):

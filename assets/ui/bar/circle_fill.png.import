@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bar_empty.png-6b63f7bec97a1a9de5e6e7eed88f3e8f.stex"
+path="res://.import/circle_fill.png-064397d3714cdbe5dae24d1c36a7afcc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/bar/bar_empty.png"
-dest_files=[ "res://.import/bar_empty.png-6b63f7bec97a1a9de5e6e7eed88f3e8f.stex" ]
+source_file="res://assets/ui/bar/circle_fill.png"
+dest_files=[ "res://.import/circle_fill.png-064397d3714cdbe5dae24d1c36a7afcc.stex" ]
 
 [params]
 

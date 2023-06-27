@@ -3,7 +3,6 @@
 [ext_resource path="res://entity/resources/rock/rock.gd" type="Script" id=1]
 
 [node name="rock" type="StaticBody"]
-collision_layer = 0
 script = ExtResource( 1 )
 type_resource = 3
 

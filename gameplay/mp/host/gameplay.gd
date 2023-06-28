@@ -16,14 +16,33 @@ func on_map_ready():
 	
 	islands = _map.get_islands()
 	
+	spawn_player_heroes()
 	spawn_player_airship()
-	#spawn_bot_airship()
-	#spawn_defence_bot()
+	spawn_bot_airship()
+	spawn_defence_bot()
 	
 	.spawn_airships(airships_to_spawn)
-	#.spawn_emplacements(defences_to_spawn)
+	.spawn_emplacements(defences_to_spawn)
 	
 	enemy_airship_patrol.start()
+	
+func spawn_player_heroes():
+	var heroes :Array = []
+	var index :int = 10
+	for p in NetworkLobbyManager.get_players():
+		var player :NetworkPlayer = p
+		var hero :HeroData = preload("res://data/hero/list/airman.tres").duplicate()
+		hero.entity_name = player.player_name
+		hero.node_name = "player_%s" % player.player_network_unique_id
+		hero.network_id = player.player_network_unique_id
+		hero.position = Vector3(0, index, 0)
+		hero.level = 1
+		hero.team = player_team 
+		hero.color_coat = Color.green
+		index += 10
+		heroes.append(hero)
+	
+	.spawn_heroes(heroes)
 	
 func spawn_player_airship():
 	var index :int = 0
@@ -49,7 +68,6 @@ func spawn_player_airship():
 		airships_to_spawn.append(airship)
 		index += 1
 		
-		
 func spawn_bot_airship():
 	for i in 4:
 		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
@@ -71,7 +89,6 @@ func spawn_bot_airship():
 			
 		airships_to_spawn.append(airship)
 		
-	
 func spawn_defence_bot():
 	for i in 4:
 		var defence :EmplacementData = preload("res://data/emplacement/list/turret_platform.tres").duplicate()
@@ -135,7 +152,10 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMar
 	
 	.respawn(_unit, _unit.translation)
 	
+func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
+	.on_hero_dead(_unit, hp_bar)
 	
+	yield(get_tree().create_timer(15), "timeout")
 	
-	
-	
+	.respawn(_unit, last_landing_spot)
+

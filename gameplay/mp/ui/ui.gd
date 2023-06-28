@@ -11,12 +11,22 @@ onready var hurt_indicator = $CanvasLayer/Control/hurt
 onready var exit_enter = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter
 onready var exit_icon = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/exit_icon
 onready var enter_icon = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/enter_icon
+onready var button_cooldown = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/button_cooldown
+onready var texture_progress = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/TextureProgress
 
-onready var _is_exit :bool = false
+onready var _allow_exit :bool = false
+onready var _currently_exit :bool = false
 
 func _ready():
-	exit_icon.visible = not _is_exit
-	enter_icon.visible = _is_exit
+	_check_exit_status()
+	
+func make_ready():
+	button_cooldown.wait_time = 15
+	button_cooldown.start()
+
+func _process(_delta):
+	texture_progress.value = button_cooldown.time_left
+	texture_progress.max_value = button_cooldown.wait_time
 
 func get_joystick_direction() -> Vector3:
 	return virtual_joystick.get_v3_output()
@@ -31,19 +41,31 @@ func show_hurting():
 	hurt_indicator.show_hurting()
 	
 func show_exit_button(_show :bool):
-	if not _is_exit:
-		exit_enter.visible = _show
+	_allow_exit = _show
+	
+	if not _allow_exit:
+		exit_enter.modulate.a = 0.5
 		return
 		
-	exit_enter.visible = true
+	exit_enter.modulate.a = 1
+	
+func _check_exit_status():
+	exit_icon.visible = not _currently_exit
+	enter_icon.visible = _currently_exit
 	
 func _on_exit_enter_pressed():
-	_is_exit = not _is_exit
+	if not button_cooldown.is_stopped():
+		return
+		
+	if not _allow_exit:
+		return
+		
+	_currently_exit = not _currently_exit
 	
-	exit_icon.visible = not _is_exit
-	enter_icon.visible = _is_exit
+	button_cooldown.start()
+	_check_exit_status()
 	
-	if _is_exit:
+	if _currently_exit:
 		emit_signal("exit_airship")
 	else:
 		emit_signal("enter_airship")

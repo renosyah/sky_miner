@@ -34,11 +34,11 @@ func _process(_delta):
 		if autochase:
 			_chase_target()
 		
-func move_to(_at :Vector3):
+func move_to(_at :Vector3, force :bool = false):
 	if not is_instance_valid(_unit):
 		return
 		
-	if _unit.is_moving:
+	if _unit.is_moving and not force:
 		return
 		
 	if enable:

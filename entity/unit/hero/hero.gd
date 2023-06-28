@@ -1,13 +1,10 @@
 extends BaseUnit
 class_name Hero
 
-export var attack_damage :int
-export var attack_delay :float
-export var attack_range :float
+export var attack_damage :int = 1
+export var attack_delay :float = 1
+export var attack_range :float = 2
 export var color_coat :Color
-
-export var body :NodePath
-export var feet :NodePath
 
 var target # BaseUnit or BaseResources
 
@@ -45,6 +42,7 @@ func _ready():
 	enable_gravity = true
 	is_bot = true
 	is_moving = false
+	margin = attack_range
 	
 	_attack_delay_timer = Timer.new()
 	_attack_delay_timer.wait_time = attack_delay
@@ -58,7 +56,11 @@ func _ready():
 	
 func master_moving(delta :float) -> void:
 	if is_dead:
-		.master_moving(delta)
+		return
+		
+	if translation.y < -2:
+		dead()
+		set_process(false)
 		return
 		
 	var _input_power :float = move_direction.length()
@@ -68,8 +70,7 @@ func master_moving(delta :float) -> void:
 	_velocity = Vector3(_move.x, _velocity.y, _move.z)
 	
 	var _y_rotation :float = rotation_degrees.y
-	var _rotation_power :float = clamp(_input_power * speed, 0, 0.5)
-	.turn_spatial_pivot_to_moving(self, _rotation_power, delta)
+	.turn_spatial_pivot_to_moving(self, 5, delta)
 	
 	var _rotate_direction :float = clamp(rotation_degrees.y - _y_rotation, -1, 1)
 	var _roll_rotation_speed :float = _input_power if _is_moving else 1.0

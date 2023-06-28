@@ -53,7 +53,7 @@ func setup_map():
 		NetworkLobbyManager.set_host_ready()
 	
 func on_map_ready():
-	pass
+	_ui.make_ready()
 	
 func _generate_island():
 	_map.map_data = NetworkLobbyManager.argument["map_data"]
@@ -76,12 +76,20 @@ func on_exit_airship():
 	landing_zone_validator.enable = false
 	enable_airship_bot(player_airship_bot, true)
 	
+	if is_instance_valid(player_hero):
+		last_landing_spot = landing_zone_validator.position + Vector3(0,8,0)
+		enable_hero(player_hero, true, last_landing_spot)
+	
 func on_enter_airship():
 	if not is_instance_valid(landing_zone_validator):
 		return
 		
 	landing_zone_validator.enable = true
 	enable_airship_bot(player_airship_bot, false)
+	
+	if is_instance_valid(player_hero):
+		var _no_where :Vector3 = Vector3(0,150,0)
+		enable_hero(player_hero, false, _no_where)
 	
 ################################################################
 # network connection watcher
@@ -106,10 +114,15 @@ func all_player_ready():
 	
 ################################################################
 # holders
+var _hero_parent :Node
 var _airship_parent :Node
 var _defence_parent :Node
 
 func setup_parents():
+	_hero_parent = Node.new()
+	_hero_parent.name = "hero_parent"
+	add_child(_hero_parent)
+	
 	_airship_parent = Node.new()
 	_airship_parent.name = "airship_parent"
 	add_child(_airship_parent)
@@ -119,7 +132,7 @@ func setup_parents():
 	add_child(_defence_parent)
 	
 ################################################################
-# spawner
+# respawner
 func respawn(_unit :BaseUnit, _position :Vector3):
 	if not is_server():
 		return
@@ -135,11 +148,66 @@ remotesync func _respawn(_node_path :NodePath, _position :Vector3):
 	_unit.translation = _position
 	
 ################################################################
-var player_airship :AirShip
-var player_airship_bot :Bot
-var landing_zone_validator :LandingZoneValidator
+# player variables
 var player_team :int
 
+var player_airship :AirShip
+var player_airship_bot :Bot
+
+var player_hero :Hero
+
+var landing_zone_validator :LandingZoneValidator
+var last_landing_spot :Vector3
+
+################################################################
+# hero spawner
+func spawn_heroes(_datas :Array, _parent :Node = _hero_parent):
+	var _datas_dicts :Array = []
+	for i in _datas:
+		_datas_dicts.append(i.to_dictionary())
+		
+	rpc("_spawn_heroes", _datas_dicts, _parent.get_path())
+	
+remotesync func _spawn_heroes(_datas :Array, _parent_path :NodePath):
+	for data in _datas:
+		_spawn_hero(data, _parent_path)
+	
+func spawn_hero(_data :HeroData, _parent :Node = _hero_parent):
+	rpc("_spawn_hero", _data, _parent.get_path())
+	
+remotesync func _spawn_hero(_data :Dictionary, _parent_path :NodePath):
+	var _hero_data :HeroData = HeroData.new()
+	_hero_data.from_dictionary(_data)
+	
+	var _parent = get_node_or_null(_parent_path)
+	if not is_instance_valid(_parent):
+		return
+		
+	var hero :Hero = _hero_data.spawn_hero(_parent)
+	on_hero_spawned(_hero_data, hero)
+	
+func on_hero_spawned(_data :HeroData, hero :Hero):
+	var is_player = (_data.node_name == "player_%s" % NetworkLobbyManager.get_id())
+	var is_same_team = (hero.team == player_team)
+	
+	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
+	hp_bar.tag_name = _data.entity_name
+	hp_bar.level = _data.level
+	hp_bar.enable_label = true
+	hp_bar.color = Color.green if is_player else (Color.blue if is_same_team else Color.red)
+	hp_bar.attach_to = hero.get_path()
+	hp_bar.pos_offset = Vector3(0,2,0)
+	add_child(hp_bar)
+	hp_bar.update_bar(hero.hp, hero.max_hp)
+	
+	hero.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
+	hero.connect("dead", self, "on_hero_dead",[hp_bar])
+	hero.connect("reset", self, "on_hero_reset",[hp_bar])
+	
+	if is_player:
+		player_hero = hero
+
+################################################################
 # airship spawner
 func spawn_airships(_datas :Array, _parent :Node = _airship_parent):
 	var _datas_dicts :Array = []
@@ -260,8 +328,16 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bo
 	
 ################################################################
 # unit signals handler
-func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
-	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
+func on_unit_take_damage(_unit :BaseUnit, _damage :int, hp_bar :HpBar3D):
+	hp_bar.update_bar(_unit.hp, _unit.max_hp)
+	
+func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
+	hp_bar.update_bar(0, _unit.max_hp)
+	hp_bar.visible = false
+	
+func on_hero_reset(_unit :Hero, hp_bar :HpBar3D):
+	hp_bar.update_bar(_unit.hp, _unit.max_hp)
+	hp_bar.visible = true
 	
 func on_airship_dead(_unit :AirShip, hp_bar :HpBar3D, marker :ScreenMarker):
 	hp_bar.update_bar(0, _unit.max_hp)
@@ -279,8 +355,8 @@ func on_unit_reset(_unit :BaseUnit, hp_bar :HpBar3D, marker :ScreenMarker):
 	marker.visible = true
 	
 # player signals handler
-func on_player_airship_take_damage(_unit :BaseUnit, _damage :int):
-	if _unit.hp < _unit.max_hp * 0.15:
+func on_player_airship_take_damage(unit :BaseUnit, _damage :int):
+	if unit.hp < unit.max_hp * 0.15:
 		_ui.show_hurting()
 		return
 		
@@ -306,11 +382,30 @@ func airship_bot_updated(_bot :Bot):
 	pass
 	
 ################################################################
+# heroes
+func enable_hero(_hero :Hero, _val :bool, _position :Vector3):
+	rpc("_enable_hero", _hero.get_path(), _val, _position)
+	
+remotesync func _enable_hero(_hero_path :NodePath, _val :bool, _position :Vector3):
+	var _unit :Hero = get_node_or_null(_hero_path)
+	if not is_instance_valid(_unit):
+		return
+		
+	_unit.enable_network = _val
+	_unit.visible = _val
+	_unit.translation = _position
+	
+	hero_updated(_unit)
+	
+func hero_updated(_hero :Hero):
+	pass
+	
+################################################################
 # proccess
 func _process(_delta):
-	player_input_airship_control()
-	player_input_squad_control()
 	check_valid_landing_zone()
+	player_input_airship_control()
+	player_input_hero_control()
 	
 func player_input_airship_control():
 	if not is_instance_valid(player_airship_bot):
@@ -326,14 +421,32 @@ func player_input_airship_control():
 		_camera.translation = player_airship.translation
 		_camera.set_distance(player_airship.throttle * player_airship.speed)
 	
-func player_input_squad_control():
-	pass
-	
+func player_input_hero_control():
+	if not is_instance_valid(player_airship_bot):
+		return
+		
+	if not is_instance_valid(player_hero):
+		return
+		
+	if player_airship_bot.enable:
+		player_hero.move_direction = _ui.get_joystick_direction()
+		_camera.translation = player_hero.translation
+		_camera.set_distance(10)
+		player_airship_bot.move_to(player_hero.translation, true)
+		
 func check_valid_landing_zone():
 	if not is_instance_valid(landing_zone_validator):
 		return
 		
-	_ui.show_exit_button(landing_zone_validator.is_valid)
+	if not is_instance_valid(player_airship):
+		return
+		
+	if not is_instance_valid(player_hero):
+		return
+		
+	_ui.show_exit_button(
+		landing_zone_validator.is_valid and not player_airship.is_dead and not player_hero.is_dead
+	)
 	
 ################################################################
 # exit

@@ -24,10 +24,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta :float) -> void:
 	moving(delta)
-	
-	if not enable_network:
-		return
-		
 	if not _is_online:
 		return
 	

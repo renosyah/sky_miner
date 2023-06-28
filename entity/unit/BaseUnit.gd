@@ -69,6 +69,9 @@ remotesync func _reset():
 	emit_signal("reset", self)
 	
 func master_moving(_delta :float) -> void:
+	if not enable_network:
+		return
+		
 	_bot_move()
 	
 	if not is_on_floor() and enable_gravity:

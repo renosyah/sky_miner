@@ -18,11 +18,15 @@ func _ready():
 	
 func _set_enable(_val :bool):
 	enable = _val
+	
 	set_process(enable)
 	if _ray_casts and _main_raycast and _follow_body:
 		for _raycast in _ray_casts + [_main_raycast]:
 			_raycast.set_deferred("enabled", enable)
 			_raycast.add_exception(_follow_body)
+			
+	if _marker:
+		_marker.visible = enable
 	
 func _process(_delta):
 	var datas = _is_all_raycast_colliding()

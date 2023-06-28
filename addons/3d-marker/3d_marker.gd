@@ -11,7 +11,7 @@ export var camera :NodePath
 export var icon : Texture = preload("res://addons/3d-marker/empty.png")
 export var color : Color = Color.white
 export(Mode) var mode := Mode.show_offscreen
-export(Vector2) var screen_border_offset = Vector2( 80.0, 200.0 )
+export(Vector2) var screen_border_offset = Vector2( 80.0, 180.0 )
 export(bool) var is_tracked = true setget _set_tracked
 
 onready var _animate = $AnimationPlayer
@@ -40,6 +40,9 @@ func _ready():
 	set_process(is_tracked)
 	
 func _process(delta):
+	if not visible:
+		return
+		
 	if not is_instance_valid(_target_node):
 		return
 		
@@ -47,22 +50,21 @@ func _process(delta):
 		return
 		
 	var pos :Vector3 = global_transform.origin
-	var viewport_rect = _marker_item.get_viewport_rect()
-	
 	if _current_camera.is_position_behind(pos):
 		return
 		
+	var viewport_rect = _marker_item.get_viewport_rect()
+	var animate_playing :bool = _animate.is_playing()
 	var target_2d_position: Vector2 = _current_camera.unproject_position(pos)
+	var has_point :bool = viewport_rect.has_point(target_2d_position)
+	
 	_marker_item.position.x = clamp(target_2d_position.x, screen_border_offset.x, viewport_rect.size.x - screen_border_offset.x)
 	_marker_item.position.y = clamp(target_2d_position.y, screen_border_offset.y, viewport_rect.size.y - screen_border_offset.y)
 	
-	if viewport_rect.has_point(target_2d_position):
+	if has_point:
 		target_2d_position = _current_camera.unproject_position(_target_node.global_transform.origin)
 		
 	_marker_item.look_at(target_2d_position)
-	
-	var has_point :bool = viewport_rect.has_point(target_2d_position)
-	var animate_playing :bool = _animate.is_playing()
 	
 	match (mode):
 		Mode.show_offscreen:
@@ -97,10 +99,9 @@ func _process(delta):
 			_marker_item.visible = true
 			_marker_icon.visible = true
 			
-			
 func _set_tracked(tracked : bool):
 	is_tracked = tracked
-	if visible:
+	if _marker_item.visible:
 		_animate.play("hide")
 		yield(_animate, "animation_finished")
 		

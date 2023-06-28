@@ -70,9 +70,17 @@ func setup_ui():
 	add_child(_ui)
 	
 func on_exit_airship():
+	if not is_instance_valid(landing_zone_validator):
+		return
+		
+	landing_zone_validator.enable = false
 	enable_airship_bot(player_airship_bot, true)
 	
 func on_enter_airship():
+	if not is_instance_valid(landing_zone_validator):
+		return
+		
+	landing_zone_validator.enable = true
 	enable_airship_bot(player_airship_bot, false)
 	
 ################################################################
@@ -322,13 +330,10 @@ func player_input_squad_control():
 	pass
 	
 func check_valid_landing_zone():
-	if not is_instance_valid(player_airship):
-		return
-		
 	if not is_instance_valid(landing_zone_validator):
 		return
 		
-	landing_zone_validator.translation = player_airship.global_transform.origin
+	_ui.show_exit_button(landing_zone_validator.is_valid)
 	
 ################################################################
 # exit
@@ -357,11 +362,6 @@ func get_avg_position(list_pos :Array, y :float = 0) -> Vector3:
 	pos = pos / pos_len
 	pos.y = y
 	return pos
-	
-func get_move_direction_with_basis_camera() -> Vector3:
-	var move_direction = _ui.get_move_direction()
-	var camera_basis = _camera.transform.basis
-	return camera_basis.z * move_direction.z + camera_basis.x * move_direction.x
 	
 func get_closes(bodies :Array, from :Vector3) -> BaseUnit:
 	if bodies.empty():

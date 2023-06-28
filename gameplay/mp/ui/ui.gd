@@ -30,6 +30,13 @@ func show_hurt():
 func show_hurting():
 	hurt_indicator.show_hurting()
 	
+func show_exit_button(_show :bool):
+	if not _is_exit:
+		exit_enter.visible = _show
+		return
+		
+	exit_enter.visible = true
+	
 func _on_exit_enter_pressed():
 	_is_exit = not _is_exit
 	

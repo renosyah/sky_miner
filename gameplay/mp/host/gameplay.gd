@@ -17,11 +17,11 @@ func on_map_ready():
 	islands = _map.get_islands()
 	
 	spawn_player_airship()
-	spawn_bot_airship()
-	spawn_defence_bot()
+	#spawn_bot_airship()
+	#spawn_defence_bot()
 	
 	.spawn_airships(airships_to_spawn)
-	.spawn_emplacements(defences_to_spawn)
+	#.spawn_emplacements(defences_to_spawn)
 	
 	enemy_airship_patrol.start()
 	
@@ -126,7 +126,7 @@ func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D, marker :ScreenMarker):
 	var pos :Vector3 = _map.get_random_island().translation
 	pos.y = _unit.altitude
 	
-	.respawn(_unit,pos)
+	.respawn(_unit, pos)
 	
 func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMarker):
 	.on_emplacement_dead(_unit, _hp_bar, marker)

@@ -335,9 +335,10 @@ func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
 	hp_bar.update_bar(0, _unit.max_hp)
 	hp_bar.visible = false
 	
-func on_hero_reset(_unit :Hero, hp_bar :HpBar3D):
-	hp_bar.update_bar(_unit.hp, _unit.max_hp)
+func on_hero_reset(unit :Hero, hp_bar :HpBar3D):
+	hp_bar.update_bar(unit.hp, unit.max_hp)
 	hp_bar.visible = true
+	unit.move_direction = Vector3.FORWARD
 	
 func on_airship_dead(_unit :AirShip, hp_bar :HpBar3D, marker :ScreenMarker):
 	hp_bar.update_bar(0, _unit.max_hp)
@@ -394,6 +395,7 @@ remotesync func _enable_hero(_hero_path :NodePath, _val :bool, _position :Vector
 	_unit.enable_network = _val
 	_unit.visible = _val
 	_unit.translation = _position
+	_unit.move_direction = Vector3.FORWARD
 	
 	hero_updated(_unit)
 	

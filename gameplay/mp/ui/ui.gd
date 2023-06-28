@@ -1,36 +1,19 @@
 extends Control
 class_name UiMp
 
-signal exit_airship()
-signal enter_airship()
+signal exit_airship
+signal enter_airship
 
 onready var airship_info = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer/airship_info
 onready var virtual_joystick =  $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/virtual_joystick
 onready var hurt_indicator = $CanvasLayer/Control/hurt
 
 onready var exit_enter = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter
-onready var exit_icon = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/exit_icon
-onready var enter_icon = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/enter_icon
-onready var button_cooldown = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/button_cooldown
-onready var texture_progress = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/TextureProgress
-
 onready var action_delay = $CanvasLayer/Control/action_delay
 
-onready var _allow_exit :bool = false
-onready var _currently_exit :bool = false
-
-func _ready():
-	_check_exit_status()
-	
 func make_ready():
-	button_cooldown.wait_time = 15
-	button_cooldown.start()
+	exit_enter.start()
 
-func _process(_delta):
-	if not button_cooldown.is_stopped():
-		texture_progress.value = button_cooldown.time_left
-		texture_progress.max_value = button_cooldown.wait_time
-		
 func get_joystick_direction() -> Vector3:
 	if action_delay.is_progress():
 		return Vector3.ZERO
@@ -47,49 +30,23 @@ func show_hurting():
 	hurt_indicator.show_hurting()
 	
 func show_exit_button(_show :bool):
-	_allow_exit = _show
+	exit_enter.enable = _show
+	exit_enter.modulate.a = 1.0 if exit_enter.enable else 0.5
 	
-	if not _allow_exit:
-		exit_enter.modulate.a = 0.5
+func _on_exit_enter_press():
+	if action_delay.is_progress():
 		return
 		
-	exit_enter.modulate.a = 1
-	
-func _check_exit_status():
-	exit_icon.visible = not _currently_exit
-	enter_icon.visible = _currently_exit
-	
-func _on_exit_enter_pressed():
-	var _is_not_ok = [
-		action_delay.is_progress(),
-		not button_cooldown.is_stopped(),
-		not _allow_exit
-	]
-	if _is_not_ok.has(true):
-		return
-		
-	_currently_exit = not _currently_exit
-	
-	action_delay.start("Exiting" if _currently_exit else "Entering", 5)
+	action_delay.start("Boarding" if exit_enter.currently_exit else "Exiting", 5)
 	yield(action_delay,"finish")
-
-	button_cooldown.start()
-	_check_exit_status()
 	
-	if _currently_exit:
-		emit_signal("exit_airship")
-		
-	else:
-		emit_signal("enter_airship")
-
-
-
-
-
-
-
-
-
+	exit_enter.press()
+	
+func _on_exit_enter_enter():
+	emit_signal("enter_airship")
+	
+func _on_exit_enter_exit():
+	emit_signal("exit_airship")
 
 
 

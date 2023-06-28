@@ -12,7 +12,7 @@ func _ready():
 	
 func is_progress():
 	return not action_delay_timer.is_stopped()
-
+	
 func start(text :String ,wait_time :float):
 	action_delay_label.text = text
 	action_delay_timer.wait_time = wait_time 

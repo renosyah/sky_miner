@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://gameplay/mp/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
@@ -6,14 +6,8 @@
 [ext_resource path="res://addons/joystick/virtual_joystick.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/ui/hurt/hurt.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/ui/airship_info/airship_info.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/ui/bar/circle.png" type="Texture" id=7]
-[ext_resource path="res://assets/ui/icons/airship.png" type="Texture" id=8]
-[ext_resource path="res://assets/ui/bar/circle_fill.png" type="Texture" id=9]
-[ext_resource path="res://assets/ui/icons/down.png" type="Texture" id=10]
-[ext_resource path="res://assets/ui/bar/rect.png" type="Texture" id=11]
+[ext_resource path="res://assets/ui/button/exit_enter.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/ui/loading/action_delay.tscn" type="PackedScene" id=12]
-
-[sub_resource type="StyleBoxEmpty" id=1]
 
 [node name="ui" type="Control"]
 anchor_right = 1.0
@@ -101,121 +95,15 @@ margin_bottom = 100.0
 rect_pivot_offset = Vector2( 100, 100 )
 joystick_mode = 1
 
-[node name="exit_enter" type="Button" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control"]
+[node name="exit_enter" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control" instance=ExtResource( 7 )]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = -120.0
 margin_top = -128.0
-rect_min_size = Vector2( 120, 128 )
-custom_styles/focus = SubResource( 1 )
-flat = true
-
-[node name="airship_potrait" type="Control" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_min_size = Vector2( 120, 128 )
-mouse_filter = 2
-
-[node name="bg" type="NinePatchRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 9 )
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
-
-[node name="NinePatchRect2" type="NinePatchRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-modulate = Color( 0.239216, 0.239216, 0.239216, 0.733333 )
-anchor_right = 1.0
-anchor_bottom = 1.0
-rect_clip_content = true
-texture = ExtResource( 9 )
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
-
-[node name="icon" type="TextureRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-modulate = Color( 0, 0, 0, 0.552941 )
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -40.0
-margin_top = -40.0
-margin_right = 40.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 80, 80 )
-mouse_filter = 2
-texture = ExtResource( 8 )
-expand = true
-
-[node name="exit_icon" type="TextureRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-visible = false
-modulate = Color( 1, 0.639216, 0.352941, 1 )
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 17.0
-margin_top = -9.0
-margin_right = 57.0
-margin_bottom = 31.0
-rect_min_size = Vector2( 40, 40 )
-mouse_filter = 2
-texture = ExtResource( 10 )
-expand = true
-
-[node name="enter_icon" type="TextureRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-visible = false
-modulate = Color( 0.494118, 1, 0.352941, 1 )
-anchor_top = 0.5
-anchor_bottom = 0.5
-margin_left = 17.0
-margin_top = -9.0
-margin_right = 57.0
-margin_bottom = 31.0
-rect_min_size = Vector2( 40, 40 )
-mouse_filter = 2
-texture = ExtResource( 10 )
-expand = true
-flip_v = true
-
-[node name="border" type="NinePatchRect" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource( 7 )
-patch_margin_left = 32
-patch_margin_top = 32
-patch_margin_right = 32
-patch_margin_bottom = 32
-
-[node name="TextureProgress" type="TextureProgress" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -53.0
-margin_top = -57.0
-margin_right = 53.0
-margin_bottom = 57.0
-mouse_filter = 2
-max_value = 5.0
-step = 0.1
-value = 3.0
-texture_progress = ExtResource( 11 )
-fill_mode = 5
-tint_progress = Color( 1, 1, 1, 0.431373 )
-nine_patch_stretch = true
-stretch_margin_left = 32
-stretch_margin_top = 32
-stretch_margin_right = 32
-stretch_margin_bottom = 32
-
-[node name="button_cooldown" type="Timer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait"]
-wait_time = 5.0
-one_shot = true
+margin_right = 0.0
+margin_bottom = 0.0
 
 [node name="fps_ping_displayer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer" instance=ExtResource( 3 )]
 margin_top = 999.0
@@ -232,4 +120,6 @@ mouse_filter = 2
 
 [node name="action_delay" parent="CanvasLayer/Control" instance=ExtResource( 12 )]
 
-[connection signal="pressed" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_pressed"]
+[connection signal="enter" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_enter"]
+[connection signal="exit" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_exit"]
+[connection signal="press" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_press"]

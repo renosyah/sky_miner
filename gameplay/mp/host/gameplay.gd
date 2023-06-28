@@ -17,11 +17,11 @@ func on_map_ready():
 	islands = _map.get_islands()
 	
 	spawn_player_airship()
-	#spawn_bot_airship()
-	#spawn_defence_bot()
+	spawn_bot_airship()
+	spawn_defence_bot()
 	
 	.spawn_airships(airships_to_spawn)
-	#.spawn_emplacements(defences_to_spawn)
+	.spawn_emplacements(defences_to_spawn)
 	
 	enemy_airship_patrol.start()
 	
@@ -34,7 +34,7 @@ func spawn_player_airship():
 		airship.node_name = "player_%s" % player.player_network_unique_id
 		airship.network_id = player.player_network_unique_id
 		airship.position = islands[index].translation + Vector3(-10, 0, -10)
-		airship.level = int(rand_range(50, 100))
+		airship.level = 1
 		airship.team = player_team 
 		airship.color_coat = Color.green
 		airship.enable_bot = false
@@ -56,7 +56,7 @@ func spawn_bot_airship():
 		airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
 		airship.node_name = "airship_%s" % i
 		airship.network_id = Network.PLAYER_HOST_ID
-		airship.level = int(rand_range(1, 25))
+		airship.level = 1
 		airship.position = islands[i].translation + Vector3(10, 0, 10)
 		airship.team = 2
 		airship.color_coat = Color.red
@@ -79,7 +79,7 @@ func spawn_defence_bot():
 		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.position = islands[i].translation
-		defence.level = int(rand_range(50, 125))
+		defence.level = 1
 		defence.team = 3
 		defence.color_coat = Color.orange
 		defence.enable_bot = true

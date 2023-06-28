@@ -25,7 +25,6 @@ var _explosion_sfx :CPUParticles
 var _fire_sfx :Spatial
 var _hit_particle :HitParticle
 
-
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
 	
@@ -112,7 +111,7 @@ func master_moving(delta :float) -> void:
 	throttle = lerp(throttle, throttle + _acc, delta)
 	throttle = clamp(throttle, 0, speed)
 	
-	var _move :Vector3 = -transform.basis.z * throttle
+	var _move :Vector3 = -global_transform.basis.z * throttle
 	_velocity = Vector3(_move.x, _velocity.y, _move.z)
 	
 	_ajust_altitude()

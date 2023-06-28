@@ -150,7 +150,7 @@ func _align_aim(_target :BaseUnit):
 		emit_signal("reload", self, false)
 		return
 		
-	if not is_align(_target.global_transform.origin):
+	if not _is_align(_target.global_transform.origin):
 		return
 		
 	if _firing_timer.is_stopped():
@@ -161,9 +161,17 @@ func _align_aim(_target :BaseUnit):
 func _reload_timer_finish():
 	ammo = max_ammo
 	emit_signal("reload", self, true)
-		
-func is_align(_target_pos :Vector3) -> bool:
-	return true
+	
+# get turret body position, add foward direction
+# and appy rotation from basis to get aiming position
+# align it, if distance between aligment & target less than 5
+# open fired
+func _is_align(_target_pos :Vector3) -> bool:
+	var _from_pos :Vector3 = _body.global_transform.origin
+	var _dist :float = _from_pos.distance_to(_target_pos)
+	var _to_pos :Vector3 = _from_pos + -_body.global_transform.basis.z * _dist
+	_to_pos.y = _target_pos.y
+	return _to_pos.distance_to(_target_pos) < 5
 	
 func _firing(_target :BaseUnit):
 	if not is_instance_valid(_target):

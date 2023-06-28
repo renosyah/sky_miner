@@ -146,9 +146,6 @@ material/0 = SubResource( 6 )
 [node name="from" type="Position3D" parent="body/gun"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00569241, -0.775 )
 
-[node name="to" type="Position3D" parent="body/gun"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00569241, -2 )
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 7 )
 anims/firing = SubResource( 8 )

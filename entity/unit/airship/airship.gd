@@ -70,12 +70,15 @@ func assign_turret_target(_targets :Array):
 		
 remotesync func _take_damage(_damage :int, _remain_hp :int):
 	._take_damage(_damage, _remain_hp)
-	_hit_particle.display_hit(
-		"-%s" % _damage, Color.orangered, global_transform.origin
-	)
+	
+	if _visibility_notifier.is_on_screen():
+		_hit_particle.display_hit(
+			"-%s" % _damage, Color.orangered, global_transform.origin
+		)
 	
 remotesync func _dead():
 	._dead()
+	
 	for _turret in turrets:
 		_turret.enable = false
 		
@@ -85,6 +88,7 @@ remotesync func _dead():
 	
 remotesync func _reset():
 	._reset()
+	
 	for _turret in turrets:
 		_turret.enable = true
 		
@@ -173,10 +177,13 @@ func _explode():
 	
 	yield(get_tree(),"idle_frame")
 	
-	_sound.stream = explosions[rand_range(0, explosions.size())]
-	_sound.play()
+	var _in_on_screen :bool = _visibility_notifier.is_on_screen()
 	
-	if translation.y > -5:
+	if _in_on_screen:
+		_sound.stream = explosions[rand_range(0, explosions.size())]
+		_sound.play()
+	
+	if translation.y > -5 and _in_on_screen:
 		_explosion_sfx.emitting = true
 		
 	_fire_sfx.set_is_burning(true)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://gameplay/mp/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://assets/ui/bar/circle_fill.png" type="Texture" id=9]
 [ext_resource path="res://assets/ui/icons/down.png" type="Texture" id=10]
 [ext_resource path="res://assets/ui/bar/rect.png" type="Texture" id=11]
+[ext_resource path="res://assets/ui/loading/action_delay.tscn" type="PackedScene" id=12]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -77,15 +78,15 @@ size_flags_horizontal = 3
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
 margin_top = 138.0
 margin_right = 588.0
-margin_bottom = 491.0
+margin_bottom = 591.0
 mouse_filter = 2
 size_flags_vertical = 3
 
 [node name="Control" type="Control" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
-margin_top = 495.0
+margin_top = 595.0
 margin_right = 588.0
 margin_bottom = 995.0
-rect_min_size = Vector2( 0, 500 )
+rect_min_size = Vector2( 0, 400 )
 mouse_filter = 2
 
 [node name="virtual_joystick" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control" instance=ExtResource( 4 )]
@@ -228,5 +229,7 @@ margin_right = 600.0
 margin_bottom = 1024.0
 rect_min_size = Vector2( 2, 0 )
 mouse_filter = 2
+
+[node name="action_delay" parent="CanvasLayer/Control" instance=ExtResource( 12 )]
 
 [connection signal="pressed" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_pressed"]

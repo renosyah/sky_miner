@@ -14,6 +14,8 @@ onready var enter_icon = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContain
 onready var button_cooldown = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/button_cooldown
 onready var texture_progress = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter/airship_potrait/TextureProgress
 
+onready var action_delay = $CanvasLayer/Control/action_delay
+
 onready var _allow_exit :bool = false
 onready var _currently_exit :bool = false
 
@@ -25,10 +27,14 @@ func make_ready():
 	button_cooldown.start()
 
 func _process(_delta):
-	texture_progress.value = button_cooldown.time_left
-	texture_progress.max_value = button_cooldown.wait_time
-
+	if not button_cooldown.is_stopped():
+		texture_progress.value = button_cooldown.time_left
+		texture_progress.max_value = button_cooldown.wait_time
+		
 func get_joystick_direction() -> Vector3:
+	if action_delay.is_progress():
+		return Vector3.ZERO
+		
 	return virtual_joystick.get_v3_output()
 	
 func hide_hurt():
@@ -54,19 +60,25 @@ func _check_exit_status():
 	enter_icon.visible = _currently_exit
 	
 func _on_exit_enter_pressed():
-	if not button_cooldown.is_stopped():
-		return
-		
-	if not _allow_exit:
+	var _is_not_ok = [
+		action_delay.is_progress(),
+		not button_cooldown.is_stopped(),
+		not _allow_exit
+	]
+	if _is_not_ok.has(true):
 		return
 		
 	_currently_exit = not _currently_exit
 	
+	action_delay.start("Exiting" if _currently_exit else "Entering", 5)
+	yield(action_delay,"finish")
+
 	button_cooldown.start()
 	_check_exit_status()
 	
 	if _currently_exit:
 		emit_signal("exit_airship")
+		
 	else:
 		emit_signal("enter_airship")
 

@@ -67,9 +67,9 @@ func spawn_hero(parent :Node) -> Hero:
 	hero.attack_damage = LevelSystem.get_value(level, attack_damage)
 	hero.attack_delay = attack_delay
 	hero.attack_range = attack_range
+	hero.enable_network = false
 	parent.add_child(hero)
 	hero.translation = position
-	hero.enable_network = false
 	hero.visible = false
 	return hero
 	

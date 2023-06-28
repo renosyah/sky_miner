@@ -36,7 +36,7 @@ height = 4.0
 [node name="cruiser" type="KinematicBody"]
 script = ExtResource( 2 )
 speed = 4
-turret_positions = [ Vector3( 0, 0.823, 0 ), Vector3( 0, -0.864, -1.488 ), Vector3( 0, -0.864, 0.826 ) ]
+turret_positions = [ Vector3( 0, 0.823, 0 ), Vector3( 0, -1.033, -1.527 ), Vector3( 0, -1.033, 0.846 ) ]
 
 [node name="main_body" type="MeshInstance" parent="."]
 mesh = ExtResource( 1 )

@@ -34,6 +34,7 @@ func _ready() -> void:
 	_visibility_notifier.connect("camera_exited", self , "_on_camera_exited")
 	add_child(_visibility_notifier)
 	
+	
 func _on_camera_entered(_camera: Camera):
 	if is_depleted:
 		return

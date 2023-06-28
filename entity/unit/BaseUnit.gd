@@ -26,6 +26,9 @@ var _velocity :Vector3 = Vector3.ZERO
 var _sound :AudioStreamPlayer3D
 onready var _gravity :float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
+# performace
+var _visibility_notifier :VisibilityNotifier
+
 ############################################################
 # multiplayer func
 puppet var _puppet_rotation :Vector3
@@ -52,6 +55,10 @@ func _ready():
 	_sound.unit_size = Global.sound_amplified
 	add_child(_sound)
 	input_ray_pickable = false
+	
+	_visibility_notifier = VisibilityNotifier.new()
+	_visibility_notifier.max_distance = 120
+	add_child(_visibility_notifier)
 	
 remotesync func _take_damage(_damage :int, _remain_hp :int):
 	hp = _remain_hp

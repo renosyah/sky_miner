@@ -35,7 +35,7 @@ func spawn_player_heroes():
 		hero.entity_name = player.player_name
 		hero.node_name = "player_%s" % player.player_network_unique_id
 		hero.network_id = player.player_network_unique_id
-		hero.position = Vector3(0, index, 0)
+		hero.position = Vector3(index, 150, index)
 		hero.level = 1
 		hero.team = player_team 
 		hero.color_coat = Color.green

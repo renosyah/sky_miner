@@ -172,17 +172,16 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	add_child(hp_bar)
 	hp_bar.update_bar(airship.hp, airship.max_hp)
 	
-	if not is_player:
-		var marker = preload("res://addons/3d-marker/3d_marker.tscn").instance()
-		marker.camera = _camera.get_camera().get_path()
-		marker.icon = preload("res://assets/ui/icons/airship.png")
-		marker.color = Color.blue if is_same_team else Color.red
-		airship.add_child(marker)
+	var marker :ScreenMarker = preload("res://addons/3d-marker/3d_marker.tscn").instance()
+	marker.camera = _camera.get_camera().get_path()
+	marker.icon = preload("res://assets/ui/icons/airship.png")
+	marker.color = Color.blue if is_same_team else Color.red
+	airship.add_child(marker)
 	
 	airship.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
-	airship.connect("dead", self, "on_airship_dead",[hp_bar])
-	airship.connect("reset", self, "on_unit_reset",[hp_bar])
-		
+	airship.connect("dead", self, "on_airship_dead",[hp_bar, marker])
+	airship.connect("reset", self, "on_unit_reset",[hp_bar, marker])
+	
 	if is_player:
 		player_airship = airship
 		player_airship_bot = bot
@@ -241,29 +240,35 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bo
 	add_child(hp_bar)
 	hp_bar.update_bar(emplacement.hp, emplacement.max_hp)
 
-	var marker = preload("res://addons/3d-marker/3d_marker.tscn").instance()
+	var marker :ScreenMarker = preload("res://addons/3d-marker/3d_marker.tscn").instance()
 	marker.camera = _camera.get_camera().get_path()
 	marker.icon = preload("res://assets/ui/icons/castle.png")
 	marker.color = Color.blue if is_same_team else Color.red
 	emplacement.add_child(marker)
 	
 	emplacement.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
-	emplacement.connect("dead", self, "on_emplacement_dead",[hp_bar])
-	emplacement.connect("reset", self, "on_unit_reset",[hp_bar])
+	emplacement.connect("dead", self, "on_emplacement_dead",[hp_bar, marker])
+	emplacement.connect("reset", self, "on_unit_reset",[hp_bar, marker])
 	
 ################################################################
 # unit signals handler
 func on_unit_take_damage(_unit :BaseUnit, _damage :int, _hp_bar :HpBar3D):
 	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
-func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):
-	_hp_bar.update_bar(0, _unit.max_hp)
+func on_airship_dead(_unit :AirShip, hp_bar :HpBar3D, marker :ScreenMarker):
+	hp_bar.update_bar(0, _unit.max_hp)
+	hp_bar.visible = false
+	marker.visible = false
 	
-func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D):
-	_hp_bar.update_bar(0, _unit.max_hp)
+func on_emplacement_dead(_unit :Emplacement, hp_bar :HpBar3D, marker :ScreenMarker):
+	hp_bar.update_bar(0, _unit.max_hp)
+	hp_bar.visible = false
+	marker.visible = false
 	
-func on_unit_reset(_unit :BaseUnit, _hp_bar :HpBar3D):
-	_hp_bar.update_bar(_unit.hp, _unit.max_hp)
+func on_unit_reset(_unit :BaseUnit, hp_bar :HpBar3D, marker :ScreenMarker):
+	hp_bar.update_bar(_unit.hp, _unit.max_hp)
+	hp_bar.visible = true
+	marker.visible = true
 	
 # player signals handler
 func on_player_airship_take_damage(_unit :BaseUnit, _damage :int):

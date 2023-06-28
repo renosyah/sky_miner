@@ -118,8 +118,8 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, bot
 	.on_emplacement_spawned(data, emplacement, bot)
 	ai_bots.append(bot)
 	
-func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):
-	.on_airship_dead(_unit, _hp_bar)
+func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D, marker :ScreenMarker):
+	.on_airship_dead(_unit, _hp_bar, marker)
 	
 	yield(get_tree().create_timer(15), "timeout")
 	
@@ -128,10 +128,10 @@ func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D):
 	
 	.respawn(_unit,pos)
 	
-func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D):
-	.on_emplacement_dead(_unit, _hp_bar)
+func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMarker):
+	.on_emplacement_dead(_unit, _hp_bar, marker)
 	
-	yield(get_tree().create_timer(15), "timeout")
+	yield(get_tree().create_timer(25), "timeout")
 	
 	.respawn(_unit, _unit.translation)
 	

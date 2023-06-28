@@ -1,4 +1,5 @@
 extends Spatial
+class_name ScreenMarker
 
 enum Mode {
 	show_offscreen

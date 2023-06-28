@@ -22,7 +22,7 @@ func _set_enable(_val :bool):
 	if is_instance_valid(_ray_cast):
 		_ray_cast.set_deferred("enabled", enable)
 	
-func _process(delta):
+func _process(_delta):
 	is_valid = false
 	_marker.visible = is_valid
 	

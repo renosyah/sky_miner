@@ -7,6 +7,9 @@ var ai_bots :Array = []
 var islands :Array = []
 onready var enemy_airship_patrol = $enemy_airship_patrol
 
+func _ready():
+	player_team = 1
+
 # test
 func on_map_ready():
 	.on_map_ready()
@@ -32,7 +35,7 @@ func spawn_player_airship():
 		airship.network_id = player.player_network_unique_id
 		airship.position = islands[index].translation + Vector3(-10, 0, -10)
 		airship.level = int(rand_range(50, 100))
-		airship.team = 1
+		airship.team = player_team 
 		airship.color_coat = Color.green
 		airship.enable_bot = false
 		

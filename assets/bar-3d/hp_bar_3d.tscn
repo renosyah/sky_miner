@@ -8,6 +8,8 @@
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8626, 0 )
 cast_shadow = 0
 billboard = 1
+double_sided = false
+no_depth_test = true
 texture = ExtResource( 3 )
 script = ExtResource( 1 )
 

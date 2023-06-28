@@ -130,6 +130,7 @@ remotesync func _respawn(_node_path :NodePath, _position :Vector3):
 var player_airship :AirShip
 var player_airship_bot :Bot
 var landing_zone_validator :LandingZoneValidator
+var player_team :int
 
 # airship spawner
 func spawn_airships(_datas :Array, _parent :Node = _airship_parent):
@@ -159,16 +160,24 @@ remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
 	
 func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	var is_player = (data.node_name == "player_%s" % NetworkLobbyManager.get_id())
+	var is_same_team = (airship.team == player_team)
 	
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
 	hp_bar.tag_name = data.entity_name
 	hp_bar.level = data.level
 	hp_bar.enable_label = true
-	hp_bar.color = Color.green if is_player else Color.red
+	hp_bar.color = Color.green if is_player else (Color.blue if is_same_team else Color.red)
 	hp_bar.attach_to = airship.get_path()
 	hp_bar.pos_offset = Vector3(0,3,0)
 	add_child(hp_bar)
 	hp_bar.update_bar(airship.hp, airship.max_hp)
+	
+	if not is_player:
+		var marker = preload("res://addons/3d-marker/3d_marker.tscn").instance()
+		marker.camera = _camera.get_camera().get_path()
+		marker.icon = preload("res://assets/ui/icons/airship.png")
+		marker.color = Color.blue if is_same_team else Color.red
+		airship.add_child(marker)
 	
 	airship.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
 	airship.connect("dead", self, "on_airship_dead",[hp_bar])
@@ -220,15 +229,23 @@ remotesync func _spawn_emplacement(_data :Dictionary, _parent_path :NodePath):
 	on_emplacement_spawned(_emplacement_data, spawns[0], spawns[1])
 	
 func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bot :Bot):
+	var is_same_team = (emplacement.team == player_team)
+	
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
 	hp_bar.tag_name = data.entity_name
 	hp_bar.level = data.level
 	hp_bar.enable_label = true
-	hp_bar.color = Color.orange
+	hp_bar.color = Color.blue if is_same_team else Color.red
 	hp_bar.attach_to = emplacement.get_path()
 	hp_bar.pos_offset = Vector3(0,3,0)
 	add_child(hp_bar)
 	hp_bar.update_bar(emplacement.hp, emplacement.max_hp)
+
+	var marker = preload("res://addons/3d-marker/3d_marker.tscn").instance()
+	marker.camera = _camera.get_camera().get_path()
+	marker.icon = preload("res://assets/ui/icons/castle.png")
+	marker.color = Color.blue if is_same_team else Color.red
+	emplacement.add_child(marker)
 	
 	emplacement.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
 	emplacement.connect("dead", self, "on_emplacement_dead",[hp_bar])

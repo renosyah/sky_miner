@@ -5,6 +5,9 @@ onready var _camera = $Spatial/Camera
 
 func set_distance(_distance :float):
 	_camera.translation.z = clamp(_distance, 10, 25)
+	
+func get_camera() -> Camera:
+	return _camera
 
 func capture_screenshot():
 	var camera_image :Image = _camera.get_viewport().get_texture().get_data()

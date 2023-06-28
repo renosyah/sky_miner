@@ -17,11 +17,11 @@ func on_map_ready():
 	islands = _map.get_islands()
 	
 	spawn_player_airship()
-	spawn_bot_airship()
-	spawn_defence_bot()
+	#spawn_bot_airship()
+	#spawn_defence_bot()
 	
 	.spawn_airships(airships_to_spawn)
-	.spawn_emplacements(defences_to_spawn)
+	#.spawn_emplacements(defences_to_spawn)
 	
 	enemy_airship_patrol.start()
 	

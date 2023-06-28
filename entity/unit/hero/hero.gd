@@ -6,7 +6,10 @@ export var attack_delay :float
 export var attack_range :float
 export var color_coat :Color
 
-var target :BaseUnit
+export var body :NodePath
+export var feet :NodePath
+
+var target # BaseUnit or BaseResources
 
 var _attack_delay_timer :Timer
 var _hit_particle :HitParticle
@@ -20,10 +23,8 @@ func _network_timmer_timeout() -> void:
 	if not _is_master or not _is_online:
 		return
 		
-	if not is_instance_valid(target):
-		return
-		
-	rset_unreliable("_puppet_target", target.get_path())
+	if is_instance_valid(target):
+		rset_unreliable("_puppet_target", target.get_path())
 		
 # multiplayer func
 puppet var _puppet_target :NodePath
@@ -42,6 +43,8 @@ remotesync func _reset():
 	
 func _ready():
 	enable_gravity = true
+	is_bot = true
+	is_moving = false
 	
 	_attack_delay_timer = Timer.new()
 	_attack_delay_timer.wait_time = attack_delay
@@ -97,7 +100,7 @@ func moving(delta :float) -> void:
 	if _attack_delay_timer.is_stopped():
 		perform_attack()
 		_attack_delay_timer.start()
-		
+	
 func _is_align(_target_pos :Vector3) -> bool:
 	var _from_pos :Vector3 = global_transform.origin
 	var _dist :float = _from_pos.distance_to(_target_pos)
@@ -106,10 +109,18 @@ func _is_align(_target_pos :Vector3) -> bool:
 	return _to_pos.distance_to(_target_pos) < 2
 	
 func perform_attack():
-	if _is_master:
+	if not _is_master:
+		return
+	
+	if target is BaseUnit:
 		target.take_damage(attack_damage)
 		
+	elif target is BaseResources:
+		target.harvest(attack_damage)
+	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	target = get_node_or_null(_puppet_target)
-	
+
+
+

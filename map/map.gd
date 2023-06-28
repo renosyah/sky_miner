@@ -135,8 +135,8 @@ func _generate_island(x, y :float, template :String) -> Dictionary:
 func _generate_resource(_at :Vector3, _island_name :String, _resource_name :String, count :int) -> Array:
 	var resources :Array = []
 	var index = 0
-	var _resource_pos :Array = _generate_random_spawn_positions(_at, count)
-	for i in _resource_pos:
+	var resource_pos :Array = _generate_random_spawn_positions(_at, count)
+	for i in resource_pos:
 		resources.append({
 			"name" : "%s_%s_%s" % [_island_name, _resource_name, index],
 			"position" : i,

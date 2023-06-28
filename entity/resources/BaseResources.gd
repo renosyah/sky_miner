@@ -3,15 +3,30 @@ class_name BaseResources
 
 enum type_resource_enum { none,wood,food,stone }
 
+signal harvest(_resource, _amount_taken)
+signal depleted(_resource)
+
 var rng :RandomNumberGenerator
 export(type_resource_enum) var type_resource = type_resource_enum.none
-export var amount :int = 1
+
+export var is_depleted :bool = false
+export var amount :int = 10
+export var max_amount :int = 10
 
 var collision :CollisionShape
 
 # performace
 var _visibility_notifier :VisibilityNotifier
 
+remotesync func _harvest(_amount_taken :int, _remain :int):
+	amount = _remain
+	emit_signal("harvest", self, _amount_taken)
+	
+remotesync func _depleted():
+	is_depleted = true
+	amount = 0
+	emit_signal("depleted", self)
+	
 func _ready() -> void:
 	_visibility_notifier = VisibilityNotifier.new()
 	_visibility_notifier.max_distance = 80
@@ -20,9 +35,15 @@ func _ready() -> void:
 	add_child(_visibility_notifier)
 	
 func _on_camera_entered(_camera: Camera):
+	if is_depleted:
+		return
+		
 	visible = true
 	
 func _on_camera_exited(_camera: Camera):
+	if is_depleted:
+		return
+		
 	visible = false
 	
 func _create_collision_shape(_mesh :MeshInstance):
@@ -35,3 +56,20 @@ func _create_collision_shape(_mesh :MeshInstance):
 	_mesh.get_child(0).queue_free()
 	
 	collision.rotation_degrees.y = _mesh.rotation_degrees.y
+	
+func harvest(_amount_taken :int):
+	if is_depleted:
+		return
+		
+	amount -= _amount_taken
+	rpc_unreliable("_harvest", _amount_taken, amount)
+	
+	if amount < 0:
+		depleted()
+		
+func depleted():
+	if is_depleted:
+		return
+		
+	rpc("_depleted")
+	

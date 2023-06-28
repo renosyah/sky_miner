@@ -162,9 +162,10 @@ func _reload_timer_finish():
 	ammo = max_ammo
 	emit_signal("reload", self, true)
 	
-# get turret body position, add foward direction
-# and appy rotation from basis to get aiming position
-# align it, if distance between aligment & target less than 5
+# get turret body position & add foward direction
+# with appy rotation from basis and ajust elevation 
+# to get aiming position then align it
+# if distance between aligment & target less than 5m
 # open fired
 func _is_align(_target_pos :Vector3) -> bool:
 	var _from_pos :Vector3 = _body.global_transform.origin

@@ -37,6 +37,7 @@ func press():
 		return
 		
 	currently_exit = not currently_exit
+	_check_exit_status()
 	
 	if currently_exit:
 		emit_signal("exit")

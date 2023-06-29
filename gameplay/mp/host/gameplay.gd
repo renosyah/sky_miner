@@ -56,7 +56,6 @@ func spawn_player_airship():
 		airship.level = 1
 		airship.team = player_team 
 		airship.color_coat = Color.green
-		airship.enable_bot = false
 		
 		airship.turrets = []
 		for turret_index in airship.turrets_count:
@@ -78,7 +77,6 @@ func spawn_bot_airship():
 		airship.position = islands[i].translation + Vector3(10, 0, 10)
 		airship.team = 2
 		airship.color_coat = Color.red
-		airship.enable_bot = true
 		
 		airship.turrets = []
 		for index in airship.turrets_count:
@@ -97,9 +95,8 @@ func spawn_defence_bot():
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.position = islands[i].translation
 		defence.level = 1
-		defence.team = 3
+		defence.team = 2
 		defence.color_coat = Color.orange
-		defence.enable_bot = true
 		
 		defence.turrets = []
 		for index in defence.turrets_count:
@@ -125,14 +122,8 @@ func _test_on_enemy_airship_patrol_timeout():
 		
 	enemy_airship_patrol.start()
 	
-func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
-	.on_airship_spawned(data, airship, bot)
-	
-	if airship != player_airship:
-		ai_bots.append(bot)
-	
-func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, bot :Bot):
-	.on_emplacement_spawned(data, emplacement, bot)
+func on_bot_spawned(bot :Bot):
+	.on_bot_spawned(bot)
 	ai_bots.append(bot)
 	
 func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D, marker :ScreenMarker):

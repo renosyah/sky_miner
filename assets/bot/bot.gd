@@ -1,7 +1,6 @@
 extends Spatial
 class_name Bot
 
-export var enable :bool = true
 export var unit :NodePath
 export var team :int
 export var chase_offset :float
@@ -18,21 +17,14 @@ func _ready():
 	_spotter.ignore_body = _unit
 	_spotter.team = team
 	
-	var is_master :bool = _unit.is_master()
-	
-	_unit.is_bot = enable
-	_spotter.set_enable(is_master)
-	set_process(is_master)
-	
 func get_unit() -> BaseUnit:
 	return _unit
 	
 func _process(_delta):
-	if enable:
-		_assign_target()
-		
-		if autochase:
-			_chase_target()
+	_assign_target()
+	
+	if autochase:
+		_chase_target()
 		
 func move_to(_at :Vector3, force :bool = false):
 	if not is_instance_valid(_unit):
@@ -41,9 +33,8 @@ func move_to(_at :Vector3, force :bool = false):
 	if _unit.is_moving and not force:
 		return
 		
-	if enable:
-		_unit.is_moving = true
-		_unit.move_to = _at
+	_unit.is_moving = true
+	_unit.move_to = _at
 	
 func get_node_path_targets() -> Array:
 	var _targets :Array = []

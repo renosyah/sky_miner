@@ -16,8 +16,6 @@ export var color_coat:Color
 export var turrets :Array
 export var turrets_count :int
 
-export var enable_bot :bool
-
 func from_dictionary(data : Dictionary):
 	.from_dictionary(data)
 	
@@ -41,8 +39,6 @@ func from_dictionary(data : Dictionary):
 		
 	turrets_count = data["turrets_count"]
 	
-	enable_bot = data["enable_bot"]
-	
 func to_dictionary() -> Dictionary :
 	var data = .to_dictionary()
 	
@@ -64,11 +60,9 @@ func to_dictionary() -> Dictionary :
 		data["turrets"].append(t.to_dictionary())
 		
 	data["turrets_count"] = turrets_count
-	
-	data["enable_bot"] = enable_bot
 	return data
 	
-func spawn_airship(parent :Node) -> Array:
+func spawn_airship(parent :Node) -> AirShip:
 	var airship :AirShip = load(scene_path).instance()
 	airship.name = node_name
 	airship.set_network_master(network_id)
@@ -97,13 +91,7 @@ func spawn_airship(parent :Node) -> Array:
 		turret.ammo = turret.max_ammo
 		airship.assign_turret_position(turret, turret_data.position)
 	
-	var bot :Bot = preload("res://assets/bot/bot.tscn").instance()
-	bot.enable = enable_bot
-	bot.team = team
-	bot.unit = airship.get_path()
-	airship.add_child(bot)
-	
-	return [airship, bot]
+	return airship
 	
 
 

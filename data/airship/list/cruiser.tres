@@ -15,4 +15,3 @@ team = 0
 color_coat = Color( 0, 0, 0, 1 )
 turrets = [  ]
 turrets_count = 3
-enable_bot = false

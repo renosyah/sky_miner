@@ -231,12 +231,13 @@ remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
 	if not is_instance_valid(_parent):
 		return
 		
-	var spawns :Array = _airship_data.spawn_airship(_parent)
-	on_airship_spawned(_airship_data, spawns[0], spawns[1])
+	var airship :AirShip = _airship_data.spawn_airship(_parent)
+	on_airship_spawned(_airship_data, airship)
 	
-func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
+func on_airship_spawned(data :AirshipData, airship :AirShip):
 	var is_player = (data.node_name == "player_%s" % NetworkLobbyManager.get_id())
 	var is_same_team = (airship.team == player_team)
+	var is_master = (NetworkLobbyManager.get_id() == data.network_id)
 	
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
 	hp_bar.tag_name = data.entity_name
@@ -258,11 +259,23 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 	airship.connect("dead", self, "on_airship_dead",[hp_bar, marker])
 	airship.connect("reset", self, "on_unit_reset",[hp_bar, marker])
 	
+	if is_master:
+		var bot :Bot = preload("res://assets/bot/bot.tscn").instance()
+		bot.team = data.team
+		bot.unit = airship.get_path()
+		airship.add_child(bot)
+		
+		if is_player:
+			player_airship_bot = bot
+			player_airship_bot.autochase = false
+			
+		else:
+			airship.is_bot = true
+			on_bot_spawned(bot)
+		
+		
 	if is_player:
 		player_airship = airship
-		player_airship_bot = bot
-		
-		player_airship_bot.autochase = false
 		
 		player_airship.connect("take_damage", self, "on_player_airship_take_damage")
 		player_airship.connect("dead", self, "on_player_airship_dead")
@@ -275,7 +288,7 @@ func on_airship_spawned(data :AirshipData, airship :AirShip, bot :Bot):
 		landing_zone_validator.enable = true
 		landing_zone_validator.follow_body = player_airship.get_path()
 		add_child(landing_zone_validator)
-		
+
 ################################################################
 # emplacement spawner
 func spawn_emplacements(_datas :Array, _parent :Node = _defence_parent):
@@ -300,11 +313,12 @@ remotesync func _spawn_emplacement(_data :Dictionary, _parent_path :NodePath):
 	if not is_instance_valid(_parent):
 		return
 		
-	var spawns :Array = _emplacement_data.spawn_emplacement(_parent)
-	on_emplacement_spawned(_emplacement_data, spawns[0], spawns[1])
+	var emplacement :Emplacement = _emplacement_data.spawn_emplacement(_parent)
+	on_emplacement_spawned(_emplacement_data, emplacement)
 	
-func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bot :Bot):
+func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement):
 	var is_same_team = (emplacement.team == player_team)
+	var is_master = (NetworkLobbyManager.get_id() == data.network_id)
 	
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
 	hp_bar.tag_name = data.entity_name
@@ -325,6 +339,16 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement, _bo
 	emplacement.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
 	emplacement.connect("dead", self, "on_emplacement_dead",[hp_bar, marker])
 	emplacement.connect("reset", self, "on_unit_reset",[hp_bar, marker])
+	
+	if is_master:
+		var bot :Bot = preload("res://assets/bot/bot.tscn").instance()
+		bot.team = data.team
+		bot.unit = emplacement.get_path()
+		emplacement.add_child(bot)
+		on_bot_spawned(bot)
+		
+func on_bot_spawned(bot :Bot):
+	pass
 	
 ################################################################
 # unit signals handler
@@ -375,7 +399,6 @@ func enable_airship_bot(_bot :Bot, _val :bool):
 	if not is_instance_valid(_bot):
 		return
 		
-	_bot.enable = _val
 	_bot.get_unit().is_bot = _val
 	airship_bot_updated(_bot)
 	
@@ -416,7 +439,7 @@ func player_input_airship_control():
 	if not is_instance_valid(player_airship):
 		return
 		
-	if not player_airship_bot.enable:
+	if not player_airship.is_bot:
 		player_airship.move_direction = _ui.get_joystick_direction()
 		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
 		
@@ -430,7 +453,7 @@ func player_input_hero_control():
 	if not is_instance_valid(player_hero):
 		return
 		
-	if player_airship_bot.enable:
+	if player_airship.is_bot:
 		player_hero.move_direction = _ui.get_joystick_direction()
 		_camera.translation = player_hero.translation
 		_camera.set_distance(10)

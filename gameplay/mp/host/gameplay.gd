@@ -44,7 +44,7 @@ func spawn_player_heroes():
 		hero.node_name = "player_%s" % player.player_network_unique_id
 		hero.network_id = player.player_network_unique_id
 		hero.position = Vector3(index, 150, index)
-		hero.level = 10
+		hero.level = 1
 		hero.team = player_team 
 		hero.color_coat = Color.green
 		index += 10
@@ -76,7 +76,7 @@ func spawn_player_airship():
 		player_index += 1
 		
 func spawn_bot_airship():
-	for i in 4:
+	for i in 2:
 		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
 		airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
 		airship.node_name = "airship_%s" % i
@@ -96,7 +96,7 @@ func spawn_bot_airship():
 		airships_to_spawn.append(airship)
 		
 func spawn_defence_bot():
-	for i in 4:
+	for i in 2:
 		var defence :EmplacementData = preload("res://data/emplacement/list/turret_platform.tres").duplicate()
 		defence.entity_name = "Defence (Bot)"
 		defence.node_name = "defence_%s" % i

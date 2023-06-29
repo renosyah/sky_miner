@@ -211,7 +211,7 @@ func on_hero_spawned(_data :HeroData, hero :Hero):
 	hp_bar.enable_label = true
 	hp_bar.color = Color.green if is_player else (Color.blue if is_same_team else Color.red)
 	hp_bar.attach_to = hero.get_path()
-	hp_bar.pos_offset = Vector3(0,2,0)
+	hp_bar.pos_offset = Vector3(0,3,0)
 	add_child(hp_bar)
 	hp_bar.update_bar(hero.hp, hero.max_hp)
 	
@@ -483,9 +483,18 @@ func player_input_hero_control():
 	# hero
 	if player_airship.is_bot:
 		player_hero.move_direction = _ui.get_joystick_direction()
-		_camera.translation = player_hero.translation
-		_camera.set_distance(10)
-		player_airship_bot.move_to(player_hero.translation, true)
+		var post_to_follow :Vector3 = player_hero.translation * Vector3(1, 0, 1)
+		post_to_follow += Vector3(0, player_airship.translation.y, 0)
+		
+		player_airship_bot.move_to(post_to_follow, 10, true)
+		
+		if player_airship.translation.distance_to(post_to_follow) > 15:
+			_camera.translation = player_hero.translation
+			_camera.set_distance(10)
+			
+		else:
+			_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
+			_camera.set_distance(player_airship.throttle * player_airship.speed)
 		
 func check_valid_landing_zone():
 	if not is_instance_valid(landing_zone_validator):

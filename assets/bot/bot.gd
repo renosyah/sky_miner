@@ -8,6 +8,7 @@ export var autochase :bool = true
 
 var _target :BaseUnit
 var _unit :BaseUnit
+var _unit_default_margin :float
 
 onready var _spotter = $spotter
 
@@ -16,6 +17,8 @@ func _ready():
 	_unit = get_node_or_null(unit)
 	_spotter.ignore_body = _unit
 	_spotter.team = team
+	
+	_unit_default_margin = _unit.margin
 	
 func get_unit() -> BaseUnit:
 	return _unit
@@ -26,13 +29,14 @@ func _process(_delta):
 	if autochase:
 		_chase_target()
 		
-func move_to(_at :Vector3, force :bool = false):
+func move_to(_at :Vector3, margin :int = 0, force :bool = false):
 	if not is_instance_valid(_unit):
 		return
 		
 	if _unit.is_moving and not force:
 		return
 		
+	_unit.margin = _unit_default_margin if margin == 0 else float(margin)
 	_unit.is_moving = true
 	_unit.move_to = _at
 	

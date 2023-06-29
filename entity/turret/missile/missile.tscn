@@ -1,0 +1,77 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://entity/turret/missile/turret_body.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://entity/turret/missile/missile.gd" type="Script" id=2]
+[ext_resource path="res://entity/projectile/missile_ammo/missile.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://entity/projectile/missile_ammo/missile_ammo.tscn" type="PackedScene" id=4]
+
+[sub_resource type="SpatialMaterial" id=10]
+albedo_color = Color( 0.521569, 0.521569, 0.521569, 1 )
+
+[sub_resource type="SpatialMaterial" id=11]
+albedo_color = Color( 0.254902, 0.254902, 0.254902, 1 )
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.407843, 0.407843, 0.407843, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.87451, 0.87451, 0.87451, 1 )
+
+[node name="missile" type="Spatial"]
+script = ExtResource( 2 )
+aiming_speed = 1.0
+projectile = ExtResource( 4 )
+attack_damage = 25
+ammo = 4
+max_ammo = 4
+reload_time = 12.0
+fire_rate = 6.0
+body = NodePath("body")
+gun = NodePath("body/gun")
+
+[node name="body" type="Spatial" parent="."]
+
+[node name="base" type="MeshInstance" parent="body"]
+mesh = ExtResource( 1 )
+skeleton = NodePath("../..")
+software_skinning_transform_normals = false
+material/0 = SubResource( 10 )
+material/1 = SubResource( 11 )
+
+[node name="missiles" type="Spatial" parent="body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.153305, 0.258199, 0 )
+
+[node name="missile_1" type="MeshInstance" parent="body/missiles"]
+mesh = ExtResource( 3 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="missile_2" type="MeshInstance" parent="body/missiles"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.302033, 0, 0 )
+mesh = ExtResource( 3 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="missile_3" type="MeshInstance" parent="body/missiles"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.302033, 0.162203, 0 )
+mesh = ExtResource( 3 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="missile_4" type="MeshInstance" parent="body/missiles"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00372881, 0.162203, 0 )
+mesh = ExtResource( 3 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="gun" type="Spatial" parent="body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.150686, 0 )
+
+[node name="from" type="Position3D" parent="body/gun"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0822441, -0.24454 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]

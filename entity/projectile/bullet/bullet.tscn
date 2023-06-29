@@ -5,6 +5,7 @@
 [sub_resource type="SphereMesh" id=1]
 radius = 0.08
 height = 0.15
+radial_segments = 16
 
 [sub_resource type="SpatialMaterial" id=2]
 flags_unshaded = true

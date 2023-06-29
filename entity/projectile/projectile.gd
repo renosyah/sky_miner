@@ -35,6 +35,9 @@ func _get_pos() -> Vector3:
 	return global_transform.origin
 	
 func _process(delta):
+	projectile_travel(delta)
+	
+func projectile_travel(delta):
 	_target = target.global_transform.origin
 	
 	if _get_pos().distance_to(_target) < magin:

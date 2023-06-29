@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/gun.obj-f89d74d0a518c7c1ff13aa92b0933e8d.mesh"
+
+[deps]
+
+files=[ "res://.import/gun.obj-f89d74d0a518c7c1ff13aa92b0933e8d.mesh" ]
+
+source_file="res://entity/turret/flak/gun.obj"
+dest_files=[ "res://.import/gun.obj-f89d74d0a518c7c1ff13aa92b0933e8d.mesh", "res://.import/gun.obj-f89d74d0a518c7c1ff13aa92b0933e8d.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

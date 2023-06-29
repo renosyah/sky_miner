@@ -42,7 +42,7 @@ func _ready():
 	_reload_timer = Timer.new()
 	_reload_timer.wait_time = reload_time
 	_reload_timer.one_shot = true
-	_reload_timer.connect("timeout", self, "_reload_timer_finish")
+	_reload_timer.connect("timeout", self, "reload_finish")
 	add_child(_reload_timer)
 	
 	_firing_timer = Timer.new()
@@ -158,7 +158,7 @@ func _align_aim(_target :BaseUnit):
 		_firing_timer.start()
 		_firing(_target)
 		
-func _reload_timer_finish():
+func reload_finish():
 	ammo = max_ammo
 	emit_signal("reload", self, true)
 	

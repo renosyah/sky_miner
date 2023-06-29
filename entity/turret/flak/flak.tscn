@@ -1,9 +1,9 @@
 [gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://entity/turret/mg/mg.gd" type="Script" id=1]
-[ext_resource path="res://entity/projectile/bullet/bullet.tscn" type="PackedScene" id=2]
-[ext_resource path="res://entity/turret/mg/gun.obj" type="ArrayMesh" id=3]
-[ext_resource path="res://entity/turret/mg/turret_body.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://entity/turret/flak/turret_body.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://entity/turret/flak/gun.obj" type="ArrayMesh" id=2]
+[ext_resource path="res://entity/turret/mg/mg.gd" type="Script" id=3]
+[ext_resource path="res://entity/projectile/flak_shell/flak_shell.tscn" type="PackedScene" id=4]
 
 [sub_resource type="SpatialMaterial" id=10]
 albedo_color = Color( 0.521569, 0.521569, 0.521569, 1 )
@@ -106,33 +106,32 @@ tracks/2/keys = {
 "values": [ Vector3( 0, 0, 0.11526 ), Vector3( 0, 0, 0 ) ]
 }
 
-[node name="mg" type="Spatial"]
-script = ExtResource( 1 )
-aiming_speed = 2.0
-projectile = ExtResource( 2 )
-attack_damage = 1
-ammo = 10
-max_ammo = 10
-reload_time = 3.0
-fire_rate = 0.3
+[node name="flak" type="Spatial"]
+script = ExtResource( 3 )
+aiming_speed = 1.5
+projectile = ExtResource( 4 )
+attack_damage = 10
+ammo = 4
+max_ammo = 4
+reload_time = 5.0
+fire_rate = 0.6
 body = NodePath("body")
 gun = NodePath("body/gun")
 
 [node name="body" type="Spatial" parent="."]
 
 [node name="base" type="MeshInstance" parent="body"]
-mesh = ExtResource( 4 )
+mesh = ExtResource( 1 )
 skeleton = NodePath("../..")
 software_skinning_transform_normals = false
 material/0 = SubResource( 10 )
 material/1 = SubResource( 11 )
 
 [node name="gun" type="Spatial" parent="body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.150686, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000297964, 0.148673, -0.000643253 )
 
 [node name="gun" type="MeshInstance" parent="body/gun"]
-mesh = ExtResource( 3 )
-software_skinning_transform_normals = false
+mesh = ExtResource( 2 )
 material/0 = SubResource( 12 )
 material/1 = SubResource( 13 )
 

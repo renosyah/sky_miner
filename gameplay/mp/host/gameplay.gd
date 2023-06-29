@@ -58,12 +58,22 @@ func spawn_player_airship():
 		airship.color_coat = Color.green
 		
 		airship.turrets = []
-		for turret_index in airship.turrets_count:
-			var t :TurretData = preload("res://data/turret/list/mg.tres").duplicate()
-			t.node_name = "%s_turret_%s" % [airship.node_name, turret_index]
-			t.level = airship.level
-			airship.turrets.append(t)
-			
+		
+		var t1 :TurretData = preload("res://data/turret/list/missile.tres").duplicate()
+		t1.node_name = "%s_turret_%s" % [airship.node_name, 1]
+		t1.level = airship.level
+		airship.turrets.append(t1)
+		
+		var t2 :TurretData = preload("res://data/turret/list/flak.tres").duplicate()
+		t2.node_name = "%s_turret_%s" % [airship.node_name, 2]
+		t2.level = airship.level
+		airship.turrets.append(t2)
+		
+		var t3 :TurretData = preload("res://data/turret/list/mg.tres").duplicate()
+		t3.node_name = "%s_turret_%s" % [airship.node_name, 3]
+		t3.level = airship.level
+		airship.turrets.append(t3)
+		
 		airships_to_spawn.append(airship)
 		index += 1
 		
@@ -95,15 +105,25 @@ func spawn_defence_bot():
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.position = islands[i].translation
 		defence.level = 1
-		defence.team = 2
+		defence.team = 3
 		defence.color_coat = Color.orange
 		
 		defence.turrets = []
-		for index in defence.turrets_count:
-			var t :TurretData = preload("res://data/turret/list/mg.tres").duplicate()
-			t.node_name = "%s_turret_%s" % [defence.node_name, index]
-			t.level = defence.level
-			defence.turrets.append(t)
+		
+		var t1 :TurretData = preload("res://data/turret/list/missile.tres").duplicate()
+		t1.node_name = "%s_turret_%s" % [defence.node_name, 1]
+		t1.level = defence.level
+		defence.turrets.append(t1)
+		
+		var t2 :TurretData = preload("res://data/turret/list/flak.tres").duplicate()
+		t2.node_name = "%s_turret_%s" % [defence.node_name, 2]
+		t2.level = defence.level
+		defence.turrets.append(t2)
+		
+		var t3 :TurretData = preload("res://data/turret/list/mg.tres").duplicate()
+		t3.node_name = "%s_turret_%s" % [defence.node_name, 3]
+		t3.level = defence.level
+		defence.turrets.append(t3)
 			
 		defences_to_spawn.append(defence)
 	

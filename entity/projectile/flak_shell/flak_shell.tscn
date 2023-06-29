@@ -3,12 +3,13 @@
 [ext_resource path="res://entity/projectile/flak_shell/flak_shell.gd" type="Script" id=1]
 
 [sub_resource type="SphereMesh" id=6]
-radius = 0.08
-height = 0.15
+radius = 0.1
+height = 0.18
+radial_segments = 16
 
 [sub_resource type="SpatialMaterial" id=7]
 flags_unshaded = true
-albedo_color = Color( 1, 0.380392, 0, 1 )
+albedo_color = Color( 1, 0.109804, 0, 1 )
 
 [sub_resource type="SpatialMaterial" id=4]
 flags_unshaded = true
@@ -35,15 +36,14 @@ material/0 = SubResource( 7 )
 
 [node name="CPUParticles" type="CPUParticles" parent="."]
 emitting = false
-amount = 4
-lifetime = 0.6
+lifetime = 0.8
 one_shot = true
 explosiveness = 1.0
 mesh = SubResource( 3 )
 direction = Vector3( 1, 1, 0 )
 spread = 180.0
 gravity = Vector3( 0, 0, 0 )
-initial_velocity = 1.0
+initial_velocity = 2.0
 scale_amount_random = 0.45
 scale_amount_curve = SubResource( 5 )
 color = Color( 0.890196, 0.890196, 0.890196, 1 )

@@ -105,7 +105,7 @@ func _bot_move():
 			is_moving = false
 	
 func puppet_moving(delta :float) -> void:
-	if not enable_network:
+	if not enable_network or not _puppet_ready:
 		return
 		
 	translation = translation.linear_interpolate(_puppet_translation, 2.5 * delta)

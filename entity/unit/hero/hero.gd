@@ -121,6 +121,9 @@ func perform_attack():
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
+	if not enable_network or not _puppet_ready:
+		return
+		
 	target = get_node_or_null(_puppet_target)
 
 

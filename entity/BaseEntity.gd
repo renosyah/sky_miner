@@ -4,6 +4,7 @@ class_name BaseEntity
 var enable_network :bool = true
 
 # misc network
+var _puppet_ready :bool
 var _network_timmer :Timer
 var _is_online :bool = false
 var _is_master :bool = false
@@ -20,6 +21,10 @@ func _network_timmer_timeout() -> void:
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	_setup_network_timer()
+	
+	if not _is_master:
+		yield(get_tree().create_timer(0.5), "timeout")
+		_puppet_ready = true
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta :float) -> void:

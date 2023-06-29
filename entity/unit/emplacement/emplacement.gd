@@ -75,6 +75,9 @@ func master_moving(_delta :float) -> void:
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
+	if not enable_network or not _puppet_ready:
+		return
+		
 	targets = _puppet_targets
 	
 func _turret_get_target():

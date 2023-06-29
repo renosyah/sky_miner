@@ -1,6 +1,7 @@
 extends Turret
 
 const firing_sound = preload("res://assets/sounds/flak/flak.wav")
+
 onready var animation_player = $AnimationPlayer
 onready var from = $body/gun/from
 

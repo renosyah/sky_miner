@@ -1,6 +1,7 @@
-[gd_resource type="ShaderMaterial" load_steps=11 format=2]
+[gd_resource type="ShaderMaterial" load_steps=12 format=2]
 
 [ext_resource path="res://addons/explosion/smokeshader.tres" type="Shader" id=1]
+[ext_resource path="res://addons/explosion/normal+.png" type="Texture" id=2]
 [ext_resource path="res://addons/explosion/smokesprite.png" type="Texture" id=3]
 
 [sub_resource type="Gradient" id=1]
@@ -46,3 +47,4 @@ shader_param/Smoke_color_ramp = SubResource( 2 )
 shader_param/blend_help = SubResource( 4 )
 shader_param/emission_falloff = SubResource( 8 )
 shader_param/emission_color_ramp = SubResource( 6 )
+shader_param/tex_frg_16 = ExtResource( 2 )

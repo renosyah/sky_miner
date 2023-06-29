@@ -11,6 +11,10 @@ onready var _missiles = [
 
 onready var from = $body/gun/from
 
+func _ready():
+	max_ammo = clamp(max_ammo, 0 ,4)
+	ammo = max_ammo
+
 func reload_finish():
 	.reload_finish()
 	for i in _missiles:

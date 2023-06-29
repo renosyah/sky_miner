@@ -182,12 +182,14 @@ func _firing(_target :BaseUnit):
 	if not is_instance_valid(_projectile):
 		return
 		
+	ammo -= 1
+	
 	firing(_target)
 	
 	_projectile.translation = _muzzle_position
 	_projectile.target = _target
 	_projectile.launch()
-	ammo -= 1
+	
 	
 func firing(_target :BaseUnit):
 	emit_signal("fired", self)

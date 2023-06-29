@@ -2,7 +2,7 @@
 
 [ext_resource path="res://entity/turret/flak/turret_body.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://entity/turret/flak/gun.obj" type="ArrayMesh" id=2]
-[ext_resource path="res://entity/turret/mg/mg.gd" type="Script" id=3]
+[ext_resource path="res://entity/turret/flak/flak.gd" type="Script" id=3]
 [ext_resource path="res://entity/projectile/flak_shell/flak_shell.tscn" type="PackedScene" id=4]
 
 [sub_resource type="SpatialMaterial" id=10]
@@ -108,13 +108,13 @@ tracks/2/keys = {
 
 [node name="flak" type="Spatial"]
 script = ExtResource( 3 )
-aiming_speed = 1.5
+aiming_speed = 1.0
 projectile = ExtResource( 4 )
 attack_damage = 10
 ammo = 4
 max_ammo = 4
-reload_time = 5.0
-fire_rate = 0.6
+reload_time = 6.0
+fire_rate = 0.8
 body = NodePath("body")
 gun = NodePath("body/gun")
 

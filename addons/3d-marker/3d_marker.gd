@@ -50,20 +50,16 @@ func _process(delta):
 		return
 		
 	var pos :Vector3 = global_transform.origin
-	if _current_camera.is_position_behind(pos):
-		return
-		
 	var viewport_rect = _marker_item.get_viewport_rect()
 	var animate_playing :bool = _animate.is_playing()
 	var target_2d_position: Vector2 = _current_camera.unproject_position(pos)
 	var has_point :bool = viewport_rect.has_point(target_2d_position)
 	
-	_marker_item.position.x = clamp(target_2d_position.x, screen_border_offset.x, viewport_rect.size.x - screen_border_offset.x)
-	_marker_item.position.y = clamp(target_2d_position.y, screen_border_offset.y, viewport_rect.size.y - screen_border_offset.y)
-	
 	if has_point:
 		target_2d_position = _current_camera.unproject_position(_target_node.global_transform.origin)
 		
+	_marker_item.position.x = clamp(target_2d_position.x, screen_border_offset.x, viewport_rect.size.x - screen_border_offset.x)
+	_marker_item.position.y = clamp(target_2d_position.y, screen_border_offset.y, viewport_rect.size.y - screen_border_offset.y)
 	_marker_item.look_at(target_2d_position)
 	
 	match (mode):

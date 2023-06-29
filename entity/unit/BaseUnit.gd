@@ -54,6 +54,7 @@ func _ready():
 	_sound = AudioStreamPlayer3D.new()
 	_sound.unit_size = Global.sound_amplified
 	add_child(_sound)
+	
 	input_ray_pickable = false
 	
 	_visibility_notifier = VisibilityNotifier.new()
@@ -104,6 +105,9 @@ func _bot_move():
 			is_moving = false
 	
 func puppet_moving(delta :float) -> void:
+	if not enable_network:
+		return
+		
 	translation = translation.linear_interpolate(_puppet_translation, 2.5 * delta)
 	rotation.x = lerp_angle(rotation.x, _puppet_rotation.x, 5 * delta)
 	rotation.y = lerp_angle(rotation.y, _puppet_rotation.y, 5 * delta)

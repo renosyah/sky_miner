@@ -88,8 +88,7 @@ func on_enter_airship():
 	enable_airship_bot(player_airship_bot, false)
 	
 	if is_instance_valid(player_hero):
-		var _no_where :Vector3 = Vector3(0,150,0)
-		enable_hero(player_hero, false, _no_where)
+		enable_hero(player_hero, false, player_hero_spawn_pos)
 	
 ################################################################
 # network connection watcher
@@ -155,6 +154,7 @@ var player_airship :AirShip
 var player_airship_bot :Bot
 
 var player_hero :Hero
+var player_hero_spawn_pos :Vector3
 
 var landing_zone_validator :LandingZoneValidator
 var last_landing_spot :Vector3
@@ -206,6 +206,7 @@ func on_hero_spawned(_data :HeroData, hero :Hero):
 	
 	if is_player:
 		player_hero = hero
+		player_hero_spawn_pos = hero.translation
 
 ################################################################
 # airship spawner
@@ -347,7 +348,7 @@ func on_emplacement_spawned(data :EmplacementData, emplacement :Emplacement):
 		emplacement.add_child(bot)
 		on_bot_spawned(bot)
 		
-func on_bot_spawned(bot :Bot):
+func on_bot_spawned(_bot :Bot):
 	pass
 	
 ################################################################
@@ -417,8 +418,16 @@ remotesync func _enable_hero(_hero_path :NodePath, _val :bool, _position :Vector
 		
 	_unit.enable_network = _val
 	_unit.visible = _val
+	
+	var _is_master = _unit.is_master()
+	
+	if _val and _is_master:
+		_unit.move_direction = Vector3.FORWARD
+		
+	if not _is_master:
+		yield(get_tree().create_timer(1),"timeout")
+		
 	_unit.translation = _position
-	_unit.move_direction = Vector3.FORWARD
 	
 	hero_updated(_unit)
 	

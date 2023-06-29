@@ -9,9 +9,10 @@ const explosions = [
 onready var explosion_1 = $Explosion1
 onready var explosion_timeout = $explosion_timeout
 onready var body = $body
-onready var _sound = $AudioStreamPlayer3D
+onready var sound = $AudioStreamPlayer3D
 
 func _ready():
+	sound.unit_size = Global.sound_amplified
 	visible = false
 
 func projectile_travel(delta):
@@ -32,8 +33,8 @@ func projectile_dismiss():
 	body.visible = false
 	explosion_1.emitting = true
 	
-	_sound.stream = explosions[rand_range(0, explosions.size())]
-	_sound.play()
+	sound.stream = explosions[rand_range(0, explosions.size())]
+	sound.play()
 	
 	explosion_timeout.start()
 	

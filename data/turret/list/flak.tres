@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 entity_name = "Flak Gun"
-entity_icon = "res://assets/ui/icons/turret/mg.png"
+entity_icon = "res://assets/ui/icons/turret/flak.png"
 node_name = ""
 scene_path = "res://entity/turret/flak/flak.tscn"
 position = Vector3( 0, 0, 0 )

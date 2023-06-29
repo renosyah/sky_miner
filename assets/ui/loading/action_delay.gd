@@ -20,7 +20,7 @@ func start(text :String ,wait_time :float):
 	show()
 	set_process(true)
 	
-func _process(delta):
+func _process(_delta):
 	action_delay_progress.value = action_delay_timer.time_left
 	action_delay_progress.max_value = action_delay_timer.wait_time
 

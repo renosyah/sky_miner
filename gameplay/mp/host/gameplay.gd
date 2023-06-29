@@ -18,11 +18,11 @@ func on_map_ready():
 	
 	spawn_player_heroes()
 	spawn_player_airship()
-	spawn_bot_airship()
-	spawn_defence_bot()
+	#spawn_bot_airship()
+	#spawn_defence_bot()
 	
 	.spawn_airships(airships_to_spawn)
-	.spawn_emplacements(defences_to_spawn)
+	#.spawn_emplacements(defences_to_spawn)
 	
 	enemy_airship_patrol.start()
 	
@@ -105,7 +105,7 @@ func spawn_defence_bot():
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.position = islands[i].translation
 		defence.level = 1
-		defence.team = 3
+		defence.team = 2
 		defence.color_coat = Color.orange
 		
 		defence.turrets = []

@@ -9,7 +9,6 @@ onready var _missiles = [
 	$body/missiles/missile_4
 ]
 
-onready var audio_stream_player_3d = $AudioStreamPlayer3D
 onready var from = $body/gun/from
 
 func reload_finish():
@@ -21,8 +20,8 @@ func firing(_target :BaseUnit):
 	_muzzle_position = from.global_transform.origin
 	.firing(_target)
 	
-	audio_stream_player_3d.stream = launch
-	audio_stream_player_3d.play()
+	_sound.stream = launch
+	_sound.play()
 	
 	if ammo <= 4:
 		for i in _missiles:

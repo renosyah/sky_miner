@@ -73,5 +73,3 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.150686, 0 )
 
 [node name="from" type="Position3D" parent="body/gun"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0822441, -0.24454 )
-
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]

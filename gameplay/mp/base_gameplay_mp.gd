@@ -45,6 +45,8 @@ var _map :Map
 func setup_map():
 	_map = preload("res://map/map.tscn").instance()
 	_map.connect("on_map_ready", self, "on_map_ready")
+	_map.connect("on_resource_harvest", self, "on_resource_harvest")
+	_map.connect("on_resource_depleted", self, "on_resource_depleted")
 	add_child(_map)
 	
 	if is_server():
@@ -58,6 +60,19 @@ func on_map_ready():
 func _generate_island():
 	_map.map_data = NetworkLobbyManager.argument["map_data"]
 	_map.spawn_islands()
+	
+func on_resource_harvest(_resource :BaseResources, _amount_taken :int):
+	pass
+	
+func on_resource_depleted(_resource :BaseResources):
+	rpc("_remove_resource", _resource.get_path())
+	
+remotesync func _remove_resource(_node_path :NodePath):
+	var _resource :BaseResources = get_node_or_null(_node_path)
+	if not is_instance_valid(_resource):
+		return
+		
+	_resource.queue_free()
 	
 ################################################################
 # ui
@@ -448,10 +463,12 @@ func player_input_airship_control():
 	if not is_instance_valid(player_airship):
 		return
 		
+	player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
+	
+	# player control
+	# airship
 	if not player_airship.is_bot:
 		player_airship.move_direction = _ui.get_joystick_direction()
-		player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
-		
 		_camera.translation = player_airship.translation
 		_camera.set_distance(player_airship.throttle * player_airship.speed)
 	
@@ -462,6 +479,8 @@ func player_input_hero_control():
 	if not is_instance_valid(player_hero):
 		return
 		
+	# player control
+	# hero
 	if player_airship.is_bot:
 		player_hero.move_direction = _ui.get_joystick_direction()
 		_camera.translation = player_hero.translation

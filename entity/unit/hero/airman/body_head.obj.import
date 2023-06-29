@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/body_head.obj-db9055575f7ca29ebdca7e7ff80546dc.mesh"
+
+[deps]
+
+files=[ "res://.import/body_head.obj-db9055575f7ca29ebdca7e7ff80546dc.mesh" ]
+
+source_file="res://entity/unit/hero/airman/body_head.obj"
+dest_files=[ "res://.import/body_head.obj-db9055575f7ca29ebdca7e7ff80546dc.mesh", "res://.import/body_head.obj-db9055575f7ca29ebdca7e7ff80546dc.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

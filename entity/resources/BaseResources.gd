@@ -17,9 +17,14 @@ var collision :CollisionShape
 
 # performace
 var _visibility_notifier :VisibilityNotifier
+var _tween :Tween
 
 remotesync func _harvest(_amount_taken :int, _remain :int):
 	amount = _remain
+	if _visibility_notifier.is_on_screen():
+		_tween.interpolate_property(self, "scale", Vector3.ONE * 0.7, Vector3.ONE,0.2,Tween.TRANS_BOUNCE)
+		_tween.start()
+	
 	emit_signal("harvest", self, _amount_taken)
 	
 remotesync func _depleted():
@@ -34,6 +39,8 @@ func _ready() -> void:
 	_visibility_notifier.connect("camera_exited", self , "_on_camera_exited")
 	add_child(_visibility_notifier)
 	
+	_tween = Tween.new()
+	add_child(_tween)
 	
 func _on_camera_entered(_camera: Camera):
 	if is_depleted:

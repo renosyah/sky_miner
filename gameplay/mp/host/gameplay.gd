@@ -44,7 +44,7 @@ func spawn_player_heroes():
 		hero.node_name = "player_%s" % player.player_network_unique_id
 		hero.network_id = player.player_network_unique_id
 		hero.position = Vector3(index, 150, index)
-		hero.level = 1
+		hero.level = 10
 		hero.team = player_team 
 		hero.color_coat = Color.green
 		index += 10
@@ -137,6 +137,9 @@ func on_bot_spawned(bot :Bot):
 func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D, marker :ScreenMarker):
 	.on_airship_dead(_unit, _hp_bar, marker)
 	
+	if _unit == player_airship:
+		_ui.action_delay.start("Respawn", 15)
+		
 	yield(get_tree().create_timer(15), "timeout")
 	
 	var pos :Vector3 = _map.get_random_island().translation
@@ -154,6 +157,9 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMar
 func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
 	.on_hero_dead(_unit, hp_bar)
 	
+	if _unit == player_airship:
+		_ui.action_delay.start("Respawn", 15)
+		
 	yield(get_tree().create_timer(15), "timeout")
 	
 	.respawn(_unit, last_landing_spot)

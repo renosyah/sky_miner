@@ -1,15 +1,24 @@
 extends BaseUnit
 class_name Hero
 
-export var attack_damage :int = 1
-export var attack_delay :float = 1
-export var attack_range :float = 2
+const hit_melee_sounds = [
+	preload("res://assets/sounds/hero/hit_melee_1.wav"), 
+	preload("res://assets/sounds/hero/hit_melee_2.wav"), 
+	preload("res://assets/sounds/hero/hit_melee_3.wav")
+]
+
+export var attack_damage :int
+export var attack_delay :float
+export var attack_range :float
 export var color_coat :Color
 
 var target # BaseUnit or BaseResources
 
 var _attack_delay_timer :Timer
 var _hit_particle :HitParticle
+var _hero_spotter :HeroSpotter
+
+var _animation_state :String
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
@@ -22,9 +31,11 @@ func _network_timmer_timeout() -> void:
 		
 	if is_instance_valid(target):
 		rset_unreliable("_puppet_target", target.get_path())
+		rset_unreliable("_puppet_target", _animation_state)
 		
 # multiplayer func
 puppet var _puppet_target :NodePath
+puppet var _puppet_animation_state :String
 
 remotesync func _take_damage(_damage :int, _remain_hp :int):
 	._take_damage(_damage, _remain_hp)
@@ -54,6 +65,12 @@ func _ready():
 	add_child(_hit_particle)
 	_hit_particle.set_as_toplevel(true)
 	
+	if _check_is_master():
+		_hero_spotter = preload("res://assets/utils/spotter/hero_spotter.tscn").instance()
+		_hero_spotter.team = team
+		_hero_spotter.ignore_body = self
+		add_child(_hero_spotter)
+	
 func master_moving(delta :float) -> void:
 	if is_dead:
 		return
@@ -62,6 +79,8 @@ func master_moving(delta :float) -> void:
 		dead()
 		set_process(false)
 		return
+		
+	_check_target()
 		
 	var _input_power :float = move_direction.length()
 	var _is_moving :bool = _input_power > 0.1
@@ -110,6 +129,9 @@ func _is_align(_target_pos :Vector3) -> bool:
 	return _to_pos.distance_to(_target_pos) < 2
 	
 func perform_attack():
+	_sound.stream = hit_melee_sounds[rand_range(0, 3)]
+	_sound.play()
+	
 	if not _is_master:
 		return
 	
@@ -119,12 +141,27 @@ func perform_attack():
 	elif target is BaseResources:
 		target.harvest(attack_damage)
 	
+func _check_target():
+	if _hero_spotter.targets.empty():
+		return
+		
+	var from :Vector3 = global_transform.origin
+	var default = _hero_spotter.targets[0]
+	for i in _hero_spotter.targets:
+		var dis_1 = from.distance_squared_to(default.global_transform.origin)
+		var dis_2 = from.distance_squared_to(i.global_transform.origin)
+		
+		if dis_2 < dis_1:
+			default = i
+		
+	target = default
+	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	if not enable_network or not _puppet_ready:
 		return
 		
 	target = get_node_or_null(_puppet_target)
-
+	_animation_state = _puppet_animation_state
 
 

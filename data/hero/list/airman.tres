@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-entity_name = ""
+entity_name = "Airman"
 entity_icon = ""
 node_name = ""
 network_id = 0
@@ -14,5 +14,5 @@ level = 1
 team = 0
 color_coat = Color( 0, 0, 0, 1 )
 attack_damage = 1
-attack_delay = 0.8
-attack_range = 1.0
+attack_delay = 1.0
+attack_range = 3.0

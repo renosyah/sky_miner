@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/leg.obj-b9388fe78e5259b452eaf4d32cd71c66.mesh"
+
+[deps]
+
+files=[ "res://.import/leg.obj-b9388fe78e5259b452eaf4d32cd71c66.mesh" ]
+
+source_file="res://entity/unit/hero/airman/leg.obj"
+dest_files=[ "res://.import/leg.obj-b9388fe78e5259b452eaf4d32cd71c66.mesh", "res://.import/leg.obj-b9388fe78e5259b452eaf4d32cd71c66.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

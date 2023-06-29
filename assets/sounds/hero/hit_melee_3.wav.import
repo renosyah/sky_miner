@@ -1,0 +1,23 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/hit_melee_3.wav-78e6aeebb3af4f7652650849b03c813b.sample"
+
+[deps]
+
+source_file="res://assets/sounds/hero/hit_melee_3.wav"
+dest_files=[ "res://.import/hit_melee_3.wav-78e6aeebb3af4f7652650849b03c813b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

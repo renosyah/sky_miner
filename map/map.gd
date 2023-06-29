@@ -2,6 +2,8 @@ extends Node
 class_name Map
 
 signal on_map_ready
+signal on_resource_harvest(_resource, _amount_taken)
+signal on_resource_depleted(_resource)
 
 var island_templates = [
 	"res://map/floating_island/island_1"
@@ -55,6 +57,8 @@ func spawn_islands():
 		resource.name = tree["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
 		resource.rng = rng
+		resource.connect("harvest", self, "_on_resource_harvest")
+		resource.connect("depleted", self, "_on_resource_depleted")
 		_trees.add_child(resource)
 		resource.translation = tree["position"]
 		
@@ -63,12 +67,20 @@ func spawn_islands():
 		resource.name = ore["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
 		resource.rng = rng
+		resource.connect("harvest", self, "_on_resource_harvest")
+		resource.connect("depleted", self, "_on_resource_depleted")
 		_ores.add_child(resource)
 		resource.translation = ore["position"]
 		
 	yield(get_tree(),"idle_frame")
 	
 	emit_signal("on_map_ready")
+	
+func _on_resource_harvest(_resource :BaseResources, _amount_taken :int):
+	emit_signal("on_resource_harvest", _resource, _amount_taken)
+	
+func _on_resource_depleted(_resource :BaseResources):
+	emit_signal("on_resource_depleted", _resource)
 	
 func generate_islands():
 	map_data["map_seed"] = rand_range(-100, 100)

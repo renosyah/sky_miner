@@ -12,14 +12,16 @@ signal take_damage(_resource, _damage)
 signal dead(_resource)
 signal reset(_resource)
 
-var rng :RandomNumberGenerator
+
 export(type_resource_enum) var type_resource = type_resource_enum.none
+export var map_seed :int
 
 export var is_dead :bool = false
 export var hp :int = 10
 export var max_hp :int = 10
 
-var collision :CollisionShape
+var _collision :CollisionShape
+onready var _rng :RandomNumberGenerator = RandomNumberGenerator.new()
 
 # performace
 var _visibility_notifier :VisibilityNotifier
@@ -70,13 +72,13 @@ func _on_camera_exited(_camera: Camera):
 func _create_collision_shape(_mesh :MeshInstance):
 	_mesh.create_convex_collision()
 	_mesh.software_skinning_transform_normals = false
-
-	collision = _mesh.get_child(0).get_child(0)
-	_mesh.get_child(0).remove_child(collision)
-	add_child(collision)
+	
+	_collision = _mesh.get_child(0).get_child(0)
+	_mesh.get_child(0).remove_child(_collision)
+	add_child(_collision)
 	_mesh.get_child(0).queue_free()
 	
-	collision.rotation_degrees.y = _mesh.rotation_degrees.y
+	_collision.rotation_degrees.y = _mesh.rotation_degrees.y
 	
 func get_resource_icon() -> Resource:
 	match (type_resource):

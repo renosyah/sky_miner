@@ -63,10 +63,8 @@ func get_random_entry_point(z_offset :float = 0) -> Vector3:
 	return points[rand_range(0, points.size())]
 	
 func spawn_islands():
-	var map_seed = map_data["map_seed"]
-	var rng = RandomNumberGenerator.new()
-	rng.seed = map_seed
-		
+	var map_seed :int = map_data["map_seed"]
+	
 	for i in map_data["islands"]:
 		var island = island_scene.instance()
 		island.island = load(i["mesh"])
@@ -81,7 +79,7 @@ func spawn_islands():
 		var resource :BaseResources = tree_scene.instance()
 		resource.name = tree["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
-		resource.rng = rng
+		resource.map_seed = map_seed
 		resource.connect("take_damage", self, "_resource_take_damage")
 		resource.connect("dead", self, "_resource_dead")
 		resource.connect("reset", self, "_resource_reset")
@@ -92,7 +90,7 @@ func spawn_islands():
 		var resource :BaseResources = ore_scene.instance()
 		resource.name = ore["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
-		resource.rng = rng
+		resource.map_seed = map_seed
 		resource.connect("take_damage", self, "_resource_take_damage")
 		resource.connect("dead", self, "_resource_dead")
 		resource.connect("reset", self, "_resource_reset")
@@ -113,7 +111,7 @@ func _resource_reset(_resource :BaseResources):
 	emit_signal("resource_reset", _resource)
 	
 func generate_islands():
-	map_data["map_seed"] = rand_range(-100, 100)
+	map_data["map_seed"] = int(rand_range(-100, 100))
 	map_data["islands"] = []
 	map_data["trees"] = []
 	map_data["ores"] = []

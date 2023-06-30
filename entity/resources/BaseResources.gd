@@ -12,16 +12,15 @@ signal take_damage(_resource, _damage)
 signal dead(_resource)
 signal reset(_resource)
 
-
 export(type_resource_enum) var type_resource = type_resource_enum.none
-export var map_seed :int
+export var resource_mesh_path :String
+export var rotate_value :float
 
 export var is_dead :bool = false
 export var hp :int = 10
 export var max_hp :int = 10
 
 var _collision :CollisionShape
-onready var _rng :RandomNumberGenerator = RandomNumberGenerator.new()
 
 # performace
 var _visibility_notifier :VisibilityNotifier

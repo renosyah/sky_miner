@@ -64,6 +64,11 @@ func get_random_entry_point(z_offset :float = 0) -> Vector3:
 	
 func spawn_islands():
 	var map_seed :int = map_data["map_seed"]
+	var rng_tree = RandomNumberGenerator.new()
+	rng_tree.seed = map_seed
+	
+	var rng_ore = RandomNumberGenerator.new()
+	rng_ore.seed = map_seed
 	
 	for i in map_data["islands"]:
 		var island = island_scene.instance()
@@ -79,7 +84,8 @@ func spawn_islands():
 		var resource :BaseResources = tree_scene.instance()
 		resource.name = tree["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
-		resource.map_seed = map_seed
+		resource.resource_mesh_path = tree["mesh_path"]
+		resource.rotate_value = tree["rotate"]
 		resource.connect("take_damage", self, "_resource_take_damage")
 		resource.connect("dead", self, "_resource_dead")
 		resource.connect("reset", self, "_resource_reset")
@@ -90,7 +96,8 @@ func spawn_islands():
 		var resource :BaseResources = ore_scene.instance()
 		resource.name = ore["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
-		resource.map_seed = map_seed
+		resource.resource_mesh_path = ore["mesh_path"]
+		resource.rotate_value = ore["rotate"]
 		resource.connect("take_damage", self, "_resource_take_damage")
 		resource.connect("dead", self, "_resource_dead")
 		resource.connect("reset", self, "_resource_reset")
@@ -146,7 +153,8 @@ func generate_islands():
 		map_data["trees"].append_array(
 			_generate_resource(
 				island["position"],
-				island["name"],"tree",
+				island["name"],
+				"tree",
 				rand_range(2, 3) * island["size"]
 			)
 		)
@@ -184,10 +192,32 @@ func _generate_resource(_at :Vector3, _island_name :String, _resource_name :Stri
 	var resources :Array = []
 	var index = 0
 	var resource_pos :Array = _generate_random_spawn_positions(_at, count)
+	var mesh_path :String
+	
+	var rocks = [
+		 "res://entity/resources/rock/Rock1.obj", 
+		 "res://entity/resources/rock/Rock2.obj", 
+		 "res://entity/resources/rock/Rock3.obj" 
+	]
+	var trees = [
+		"res://entity/resources/trees/Tree1.obj",
+		"res://entity/resources/trees/Tree2.obj",
+		"res://entity/resources/trees/Tree3.obj",
+		"res://entity/resources/trees/Tree4.obj"
+	]
+	
+	if _resource_name == "ore":
+		mesh_path = rocks[rand_range(0, rocks.size())]
+		
+	elif _resource_name == "tree":
+		mesh_path = trees[rand_range(0, trees.size())]
+		
 	for i in resource_pos:
 		resources.append({
 			"name" : "%s_%s_%s" % [_island_name, _resource_name, index],
 			"position" : i,
+			"mesh_path" : mesh_path,
+			"rotate" : rand_range(0, 360)
 		})
 		index += 1
 		

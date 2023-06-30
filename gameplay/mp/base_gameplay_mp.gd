@@ -502,13 +502,12 @@ func player_input_hero_control():
 	# hero
 	if player_airship.is_bot:
 		player_hero.move_direction = _ui.get_joystick_direction()
-		var post_to_follow :Vector3 = player_hero.translation * Vector3(1, 0, 1)
-		post_to_follow += Vector3(0, player_airship.translation.y, 0)
+		var post_to_follow :Vector3 = player_hero.translation 
+		post_to_follow.y = player_airship.translation.y
 		
 		var is_in_area :bool = player_airship.translation.distance_to(post_to_follow) < 15
-		
-		player_airship_bot.move_to(post_to_follow, 10, true)
-		_camera.set_angle(-55)
+		if not is_in_area:
+			player_airship_bot.move_to(post_to_follow, 10, true)
 		
 		if is_in_area and not player_airship.is_dead:
 			_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
@@ -518,6 +517,8 @@ func player_input_hero_control():
 			_camera.translation = player_hero.translation
 			_camera.set_distance(10)
 			
+		_camera.set_angle(-55)
+		
 func check_valid_landing_zone():
 	if not is_instance_valid(landing_zone_validator):
 		return

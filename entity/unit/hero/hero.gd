@@ -123,6 +123,8 @@ func moving(delta :float) -> void:
 		_attack_delay_timer.start()
 		
 	if target is BaseResources:
+		_gather_indicator.update_indicator(target.hp, target.max_hp)
+		_gather_indicator.set_icon(target.get_resource_icon())
 		_gather_indicator.visible = true
 		_gather_indicator.translation = target_pos
 	
@@ -159,10 +161,6 @@ func _check_target():
 			default = i
 		
 	target = default
-	
-	if target is BaseResources:
-		_gather_indicator.update_indicator(target.hp, target.max_hp)
-		_gather_indicator.set_icon(target.get_resource_icon())
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)

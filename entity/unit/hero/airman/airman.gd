@@ -5,6 +5,7 @@ onready var _body_animation_tree = $BodyAnimationTree.get("parameters/playback")
 
 remotesync func _dead():
 	._dead()
+	_animation_states["upper_body"] = "idle"
 	_animation_states["body"] = "dead"
 	
 remotesync func _reset():

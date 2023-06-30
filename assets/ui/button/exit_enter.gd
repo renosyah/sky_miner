@@ -15,7 +15,7 @@ onready var button_cooldown = $airship_potrait/button_cooldown
 onready var currently_exit :bool = false
 
 func _ready():
-	_check_exit_status()
+	check_exit_status()
 
 func start():
 	button_cooldown.wait_time = wait_time
@@ -37,7 +37,7 @@ func press():
 		return
 		
 	currently_exit = not currently_exit
-	_check_exit_status()
+	check_exit_status()
 	
 	if currently_exit:
 		emit_signal("exit")
@@ -47,7 +47,7 @@ func press():
 		
 	start()
 	
-func _check_exit_status():
+func check_exit_status():
 	exit_icon.visible = not currently_exit
 	enter_icon.visible = currently_exit
 	

@@ -1,17 +1,23 @@
 extends StaticBody
 class_name BaseResources
 
-enum type_resource_enum { none,wood,food,stone }
+const coal_icon = preload("res://assets/ui/icons/resources/coal.png")
+const food_icon = preload("res://assets/ui/icons/resources/food.png")
+const iron_icon = preload("res://assets/ui/icons/resources/iron.png")
+const wood_icon = preload("res://assets/ui/icons/resources/wood.png")
 
-signal harvest(_resource, _amount_taken)
-signal depleted(_resource)
+enum type_resource_enum { none,wood,food,iron,coal }
+
+signal take_damage(_resource, _damage)
+signal dead(_resource)
+signal reset(_resource)
 
 var rng :RandomNumberGenerator
 export(type_resource_enum) var type_resource = type_resource_enum.none
 
-export var is_depleted :bool = false
-export var amount :int = 10
-export var max_amount :int = 10
+export var is_dead :bool = false
+export var hp :int = 10
+export var max_hp :int = 10
 
 var collision :CollisionShape
 
@@ -19,18 +25,25 @@ var collision :CollisionShape
 var _visibility_notifier :VisibilityNotifier
 var _tween :Tween
 
-remotesync func _harvest(_amount_taken :int, _remain :int):
-	amount = _remain
+remotesync func _take_damage(_damage :int, _remain_hp :int):
+	hp = _remain_hp
+	
 	if _visibility_notifier.is_on_screen():
 		_tween.interpolate_property(self, "scale", Vector3.ONE * 0.7, Vector3.ONE,0.2,Tween.TRANS_BOUNCE)
 		_tween.start()
+		
+	emit_signal("take_damage", self, _damage)
 	
-	emit_signal("harvest", self, _amount_taken)
+remotesync func _dead():
+	is_dead = true
+	hp = 0
+	emit_signal("dead", self)
 	
-remotesync func _depleted():
-	is_depleted = true
-	amount = 0
-	emit_signal("depleted", self)
+remotesync func _reset():
+	is_dead = false
+	hp = max_hp
+	set_process(true)
+	emit_signal("reset", self)
 	
 func _ready() -> void:
 	_visibility_notifier = VisibilityNotifier.new()
@@ -43,13 +56,13 @@ func _ready() -> void:
 	add_child(_tween)
 	
 func _on_camera_entered(_camera: Camera):
-	if is_depleted:
+	if is_dead:
 		return
 		
 	visible = true
 	
 func _on_camera_exited(_camera: Camera):
-	if is_depleted:
+	if is_dead:
 		return
 		
 	visible = false
@@ -65,19 +78,40 @@ func _create_collision_shape(_mesh :MeshInstance):
 	
 	collision.rotation_degrees.y = _mesh.rotation_degrees.y
 	
-func harvest(_amount_taken :int):
-	if is_depleted:
+func get_resource_icon() -> Resource:
+	match (type_resource):
+		type_resource_enum.wood:
+			return wood_icon
+		type_resource_enum.iron:
+			return iron_icon
+		type_resource_enum.coal:
+			return coal_icon
+		type_resource_enum.none:
+			return null
+	return null
+	
+func take_damage(_damage :int):
+	if is_dead:
 		return
 		
-	amount -= _amount_taken
-	rpc_unreliable("_harvest", _amount_taken, amount)
+	hp -= _damage
+	rpc_unreliable("_take_damage", _damage, hp)
 	
-	if amount < 0:
-		depleted()
+	if hp < 0:
+		dead()
 		
-func depleted():
-	if is_depleted:
+func dead():
+	if is_dead:
 		return
 		
-	rpc("_depleted")
+	rpc("_dead")
 	
+func reset(_sync :bool = true):
+	if _sync:
+		rpc("_reset")
+		
+	else:
+		_reset()
+	
+
+

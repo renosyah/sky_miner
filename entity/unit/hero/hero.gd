@@ -17,6 +17,7 @@ var target # BaseUnit or BaseResources
 var _attack_delay_timer :Timer
 var _hit_particle :HitParticle
 var _hero_spotter :HeroSpotter
+var _gather_indicator :GatherIndicator
 
 var _animation_state :String
 
@@ -43,12 +44,6 @@ remotesync func _take_damage(_damage :int, _remain_hp :int):
 		"-%s" % _damage, Color.orangered, global_transform.origin
 	)
 	
-remotesync func _dead():
-	._dead()
-	
-remotesync func _reset():
-	._reset()
-	
 func _ready():
 	enable_gravity = true
 	is_bot = true
@@ -64,6 +59,10 @@ func _ready():
 	_hit_particle.custom_particle_scene =  preload("res://assets/visual_effect/hit_particle/custom_particle/text/custom_text_particle.tscn")
 	add_child(_hit_particle)
 	_hit_particle.set_as_toplevel(true)
+	
+	_gather_indicator = preload("res://assets/gather_indicator/gather_indicator.tscn").instance()
+	add_child(_gather_indicator)
+	_gather_indicator.set_as_toplevel(true)
 	
 	if _check_is_master():
 		_hero_spotter = preload("res://assets/utils/spotter/hero_spotter.tscn").instance()
@@ -102,6 +101,8 @@ func master_moving(delta :float) -> void:
 func moving(delta :float) -> void:
 	.moving(delta)
 	
+	_gather_indicator.visible = false
+	
 	if is_dead:
 		return
 	
@@ -120,6 +121,10 @@ func moving(delta :float) -> void:
 	if _attack_delay_timer.is_stopped():
 		perform_attack()
 		_attack_delay_timer.start()
+		
+	_gather_indicator.visible = target is BaseResources
+	_gather_indicator.visible = true
+	_gather_indicator.translation = target_pos
 	
 func _is_align(_target_pos :Vector3) -> bool:
 	var _from_pos :Vector3 = global_transform.origin
@@ -139,7 +144,9 @@ func perform_attack():
 		target.take_damage(attack_damage)
 		
 	elif target is BaseResources:
-		target.harvest(attack_damage)
+		target.take_damage(attack_damage)
+		_gather_indicator.set_icon(target.get_resource_icon())
+		_gather_indicator.update_indicator(target.hp, target.max_hp)
 	
 func _check_target():
 	if _hero_spotter.targets.empty():

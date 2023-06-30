@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://entity/unit/hero/airman/airman.gd" type="Script" id=1]
 [ext_resource path="res://entity/unit/hero/airman/body_head.obj" type="ArrayMesh" id=2]
@@ -131,11 +131,22 @@ tracks/8/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
 }
+tracks/9/type = "value"
+tracks/9/path = NodePath("pivot:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=18]
 resource_name = "attack_punch"
 length = 0.7
-loop = true
 tracks/0/type = "value"
 tracks/0/path = NodePath("pivot/legs_r:translation")
 tracks/0/interp = 1
@@ -243,6 +254,141 @@ tracks/8/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, -0.059894 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("pivot:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=24]
+resource_name = "dead"
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/legs_r:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.105143, -0.328648, 0.104153 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/legs_l:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.112816, -0.331669, 0.106373 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/legs_r:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/legs_l:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/arms_l:translation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.30009, 0.0821473, 0.117671 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot/arms_l:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("pivot/arms_r:translation")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.298458, 0.0821473, 0.11545 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("pivot/arms_r:rotation_degrees")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("pivot:translation")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.1, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, -0.059894 ), Vector3( 0, 0.266641, -0.059894 ), Vector3( 0, 0, -0.059894 ) ]
+}
+tracks/9/type = "value"
+tracks/9/path = NodePath("pivot:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 90, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=8]
@@ -356,6 +502,18 @@ tracks/8/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0, -0.059894 ) ]
 }
+tracks/9/type = "value"
+tracks/9/path = NodePath("pivot:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=9]
 resource_name = "walk"
@@ -468,9 +626,24 @@ tracks/8/keys = {
 "update": 0,
 "values": [ Vector3( -0.30009, 0.0821473, 0.117671 ) ]
 }
+tracks/9/type = "value"
+tracks/9/path = NodePath("pivot:rotation_degrees")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
 
 [sub_resource type="AnimationNodeAnimation" id=19]
 animation = "attack_punch"
+
+[sub_resource type="AnimationNodeAnimation" id=25]
+animation = "dead"
 
 [sub_resource type="AnimationNodeAnimation" id=10]
 animation = "idle"
@@ -492,16 +665,24 @@ switch_mode = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id=23]
 switch_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=27]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+
 [sub_resource type="AnimationNodeStateMachine" id=14]
 states/attack_punch/node = SubResource( 19 )
-states/attack_punch/position = Vector2( 405, 183 )
+states/attack_punch/position = Vector2( 499, 237 )
+states/dead/node = SubResource( 25 )
+states/dead/position = Vector2( 241, 237 )
 states/idle/node = SubResource( 10 )
 states/idle/position = Vector2( 241, 91 )
 states/walk/node = SubResource( 11 )
-states/walk/position = Vector2( 405, 91 )
-transitions = [ "idle", "walk", SubResource( 12 ), "walk", "idle", SubResource( 13 ), "idle", "attack_punch", SubResource( 20 ), "walk", "attack_punch", SubResource( 21 ), "attack_punch", "walk", SubResource( 22 ), "attack_punch", "idle", SubResource( 23 ) ]
+states/walk/position = Vector2( 499, 91 )
+transitions = [ "idle", "walk", SubResource( 12 ), "walk", "idle", SubResource( 13 ), "idle", "attack_punch", SubResource( 20 ), "walk", "attack_punch", SubResource( 21 ), "attack_punch", "walk", SubResource( 22 ), "attack_punch", "idle", SubResource( 23 ), "walk", "dead", SubResource( 26 ), "attack_punch", "dead", SubResource( 27 ), "idle", "dead", SubResource( 28 ) ]
 start_node = "idle"
-graph_offset = Vector2( 4, -6 )
+graph_offset = Vector2( 4, -80.7243 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=15]
 
@@ -557,6 +738,7 @@ shape = SubResource( 2 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 7 )
 anims/attack_punch = SubResource( 18 )
+anims/dead = SubResource( 24 )
 anims/idle = SubResource( 8 )
 anims/walk = SubResource( 9 )
 

@@ -45,8 +45,9 @@ var _map :Map
 func setup_map():
 	_map = preload("res://map/map.tscn").instance()
 	_map.connect("on_map_ready", self, "on_map_ready")
-	_map.connect("on_resource_harvest", self, "on_resource_harvest")
-	_map.connect("on_resource_depleted", self, "on_resource_depleted")
+	_map.connect("resource_take_damage", self, "_resource_take_damage")
+	_map.connect("resource_dead", self, "_resource_dead")
+	_map.connect("resource_reset", self, "_resource_reset")
 	add_child(_map)
 	
 	if is_server():
@@ -61,18 +62,14 @@ func _generate_island():
 	_map.map_data = NetworkLobbyManager.argument["map_data"]
 	_map.spawn_islands()
 	
-func on_resource_harvest(_resource :BaseResources, _amount_taken :int):
+func _resource_take_damage(_resource :BaseResources, _damage :int):
 	pass
 	
-func on_resource_depleted(_resource :BaseResources):
-	rpc("_remove_resource", _resource.get_path())
-	
-remotesync func _remove_resource(_node_path :NodePath):
-	var _resource :BaseResources = get_node_or_null(_node_path)
-	if not is_instance_valid(_resource):
-		return
-		
+func _resource_dead(_resource :BaseResources):
 	_resource.queue_free()
+	
+func _resource_reset(_resource :BaseResources):
+	pass
 	
 ################################################################
 # ui
@@ -494,7 +491,7 @@ func player_input_hero_control():
 			
 		else:
 			_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
-			_camera.set_distance(player_airship.throttle * player_airship.speed)
+			_camera.set_distance(12)
 		
 func check_valid_landing_zone():
 	if not is_instance_valid(landing_zone_validator):

@@ -2,6 +2,14 @@ extends Hero
 
 onready var animation_tree = $AnimationTree.get("parameters/playback")
 
+remotesync func _dead():
+	._dead()
+	_animation_state = "dead"
+	
+remotesync func _reset():
+	._reset()
+	_animation_state = "idle"
+	
 func master_moving(delta :float) -> void:
 	.master_moving(delta)
 	
@@ -14,13 +22,8 @@ func master_moving(delta :float) -> void:
 	
 func moving(delta :float) -> void:
 	.moving(delta)
-	
-	if is_dead:
-		return
-		
 	animation_tree.travel(_animation_state)
 	
-
 func perform_attack():
 	.perform_attack()
 	_animation_state = "attack_punch"

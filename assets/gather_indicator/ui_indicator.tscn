@@ -1,0 +1,40 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/gather_indicator/ui_indicator.gd" type="Script" id=1]
+[ext_resource path="res://assets/ui/bar/circle.png" type="Texture" id=3]
+[ext_resource path="res://assets/ui/bar/circle_fill.png" type="Texture" id=4]
+
+[node name="ui_indicator" type="MarginContainer"]
+margin_right = 207.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 200, 200 )
+script = ExtResource( 1 )
+
+[node name="progress" type="TextureProgress" parent="."]
+margin_right = 207.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 100, 100 )
+mouse_filter = 2
+max_value = 1.0
+step = 0.1
+value = 1.0
+texture_under = ExtResource( 4 )
+texture_progress = ExtResource( 3 )
+fill_mode = 5
+tint_under = Color( 0.0784314, 0.0784314, 0.0784314, 0.145098 )
+tint_progress = Color( 0.811765, 0.439216, 0, 1 )
+nine_patch_stretch = true
+stretch_margin_left = 32
+stretch_margin_top = 32
+stretch_margin_right = 32
+stretch_margin_bottom = 32
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 63.0
+margin_top = 60.0
+margin_right = 143.0
+margin_bottom = 140.0
+rect_min_size = Vector2( 80, 80 )
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand = true

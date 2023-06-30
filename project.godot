@@ -99,6 +99,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/godot-uuid/uuid.gd"
 }, {
+"base": "Spatial",
+"class": "GatherIndicator",
+"language": "GDScript",
+"path": "res://assets/gather_indicator/gather_indicator.gd"
+}, {
 "base": "BaseUnit",
 "class": "Hero",
 "language": "GDScript",
@@ -283,6 +288,7 @@ _global_script_class_icons={
 "FixCamera": "",
 "FloatingIsland": "",
 "GDUUID": "",
+"GatherIndicator": "",
 "Hero": "",
 "HeroData": "",
 "HeroSpotter": "",

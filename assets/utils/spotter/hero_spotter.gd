@@ -39,7 +39,7 @@ func _check_is_resource(body):
 	if not body is BaseResources:
 		return
 		
-	if body.is_depleted:
+	if body.is_dead:
 		return
 		
 	targets.append(body)

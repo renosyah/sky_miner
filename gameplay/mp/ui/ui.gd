@@ -15,9 +15,6 @@ func make_ready():
 	exit_enter.start()
 
 func get_joystick_direction() -> Vector3:
-	if action_delay.is_progress():
-		return Vector3.ZERO
-		
 	return virtual_joystick.get_v3_output()
 	
 func hide_hurt():
@@ -40,6 +37,7 @@ func _on_exit_enter_press():
 	action_delay.start("Boarding" if exit_enter.currently_exit else "Exiting", 5)
 	yield(action_delay,"finish")
 	
+	exit_enter.wait_time = 15
 	exit_enter.press()
 	
 func _on_exit_enter_enter():

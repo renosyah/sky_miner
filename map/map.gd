@@ -2,8 +2,9 @@ extends Node
 class_name Map
 
 signal on_map_ready
-signal on_resource_harvest(_resource, _amount_taken)
-signal on_resource_depleted(_resource)
+signal resource_take_damage(_resource, _damage)
+signal resource_dead(_resource)
+signal resource_reset(_resource)
 
 var island_templates = [
 	"res://map/floating_island/island_1"
@@ -57,8 +58,9 @@ func spawn_islands():
 		resource.name = tree["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
 		resource.rng = rng
-		resource.connect("harvest", self, "_on_resource_harvest")
-		resource.connect("depleted", self, "_on_resource_depleted")
+		resource.connect("take_damage", self, "_resource_take_damage")
+		resource.connect("dead", self, "_resource_dead")
+		resource.connect("reset", self, "_resource_reset")
 		_trees.add_child(resource)
 		resource.translation = tree["position"]
 		
@@ -67,8 +69,9 @@ func spawn_islands():
 		resource.name = ore["name"]
 		resource.set_network_master(Network.PLAYER_HOST_ID)
 		resource.rng = rng
-		resource.connect("harvest", self, "_on_resource_harvest")
-		resource.connect("depleted", self, "_on_resource_depleted")
+		resource.connect("take_damage", self, "_resource_take_damage")
+		resource.connect("dead", self, "_resource_dead")
+		resource.connect("reset", self, "_resource_reset")
 		_ores.add_child(resource)
 		resource.translation = ore["position"]
 		
@@ -76,11 +79,14 @@ func spawn_islands():
 	
 	emit_signal("on_map_ready")
 	
-func _on_resource_harvest(_resource :BaseResources, _amount_taken :int):
-	emit_signal("on_resource_harvest", _resource, _amount_taken)
+func _resource_take_damage(_resource :BaseResources, _damage :int):
+	emit_signal("resource_take_damage", _resource, _damage)
 	
-func _on_resource_depleted(_resource :BaseResources):
-	emit_signal("on_resource_depleted", _resource)
+func _resource_dead(_resource :BaseResources):
+	emit_signal("resource_dead", _resource)
+	
+func _resource_reset(_resource :BaseResources):
+	emit_signal("resource_reset", _resource)
 	
 func generate_islands():
 	map_data["map_seed"] = rand_range(-100, 100)
@@ -134,7 +140,7 @@ func generate_islands():
 func _generate_island(x, y :float, template :String) -> Dictionary:
 	var island_name = "island_%s_%s" % [x,y]
 	var pos = Vector3(x * 30, 10, y * 30)
-	var size = rand_range(1, 2)
+	var size = rand_range(1, 3)
 	var rotate = rand_range(0, 360)
 	return {
 		"name" : island_name,

@@ -157,10 +157,15 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMar
 func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
 	.on_hero_dead(_unit, hp_bar)
 	
-	if _unit == player_airship:
-		_ui.action_delay.start("Respawn", 15)
-		
-	yield(get_tree().create_timer(15), "timeout")
+	yield(get_tree().create_timer(5), "timeout")
 	
-	.respawn(_unit, last_landing_spot)
+	_unit.reset()
+	
+	if _unit == player_hero:
+		.on_enter_airship()
+		_ui.exit_enter.currently_exit = false
+		_ui.exit_enter.check_exit_status()
+		_ui.exit_enter.wait_time = 30
+		_ui.exit_enter.start()
+		
 

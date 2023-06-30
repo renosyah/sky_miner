@@ -71,11 +71,11 @@ func spawn_islands():
 		var island = island_scene.instance()
 		island.island = load(i["mesh"])
 		island.name = i["name"]
-		island.size = i["size"]
 		island.rotate = i["rotate"]
 		island.curve = load(i["curve"])
 		_islands.add_child(island)
 		island.translation = i["position"]
+		island.scale = i["scale"]
 		
 	for tree in map_data["trees"]:
 		var resource :BaseResources = tree_scene.instance()
@@ -139,7 +139,7 @@ func generate_islands():
 		map_data["islands"].append(island)
 		
 		_spawn_position.translation = island["position"]
-		_spawn_position.scale = Vector3.ONE * island["size"]
+		_spawn_position.scale = island["scale"]
 		_spawn_position.rotation_degrees = Vector3.ZERO
 		_spawn_position.rotate_y(deg2rad(island["rotate"]))
 		
@@ -169,13 +169,15 @@ func generate_islands():
 func _generate_island(x, y :float, template :String) -> Dictionary:
 	var island_name = "island_%s_%s" % [x,y]
 	var pos = Vector3(x * 30, 10, y * 30)
-	var size = rand_range(1, 3)
+	var size_x = rand_range(1, 3)
+	var size_z = rand_range(1, 3)
 	var rotate = rand_range(0, 360)
 	return {
 		"name" : island_name,
 		"mesh" : template + "/island.obj",
 		"curve" : template + "/curve.tres",
-		"size" : size,
+		"size" : max(size_x, size_z),
+		"scale" : Vector3(size_x, 1, size_z),
 		"rotate" : rotate,
 		"position" :pos,
 	}

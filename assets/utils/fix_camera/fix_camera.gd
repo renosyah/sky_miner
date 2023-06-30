@@ -2,9 +2,13 @@ extends Spatial
 class_name FixCamera
 
 onready var _camera = $pivot/Camera
+onready var _pivot = $pivot
 
 func set_distance(_distance :float):
 	_camera.translation.z = clamp(_distance, 10, 25)
+	
+func set_angle(_angle :float):
+	_pivot.rotation_degrees.x = clamp(_angle, -60, -15)
 	
 func get_camera() -> Camera:
 	return _camera

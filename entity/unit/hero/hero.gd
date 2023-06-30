@@ -19,7 +19,7 @@ var _hit_particle :HitParticle
 var _hero_spotter :HeroSpotter
 var _gather_indicator :GatherIndicator
 
-var _animation_state :String
+var _animation_states :Dictionary = {}
 
 func _network_timmer_timeout() -> void:
 	._network_timmer_timeout()
@@ -32,11 +32,11 @@ func _network_timmer_timeout() -> void:
 		
 	if is_instance_valid(target):
 		rset_unreliable("_puppet_target", target.get_path())
-		rset_unreliable("_puppet_target", _animation_state)
+		rset_unreliable("_puppet_animation_states", _animation_states)
 		
 # multiplayer func
 puppet var _puppet_target :NodePath
-puppet var _puppet_animation_state :String
+puppet var _puppet_animation_states :Dictionary
 
 remotesync func _take_damage(_damage :int, _remain_hp :int):
 	._take_damage(_damage, _remain_hp)
@@ -122,9 +122,9 @@ func moving(delta :float) -> void:
 		perform_attack()
 		_attack_delay_timer.start()
 		
-	_gather_indicator.visible = target is BaseResources
-	_gather_indicator.visible = true
-	_gather_indicator.translation = target_pos
+	if target is BaseResources:
+		_gather_indicator.visible = true
+		_gather_indicator.translation = target_pos
 	
 func _is_align(_target_pos :Vector3) -> bool:
 	var _from_pos :Vector3 = global_transform.origin
@@ -136,17 +136,14 @@ func _is_align(_target_pos :Vector3) -> bool:
 func perform_attack():
 	_sound.stream = hit_melee_sounds[rand_range(0, 3)]
 	_sound.play()
-	
-	if not _is_master:
-		return
-	
+
 	if target is BaseUnit:
-		target.take_damage(attack_damage)
+		if _is_master:
+			target.take_damage(attack_damage)
 		
 	elif target is BaseResources:
-		target.take_damage(attack_damage)
-		_gather_indicator.set_icon(target.get_resource_icon())
-		_gather_indicator.update_indicator(target.hp, target.max_hp)
+		if _is_master:
+			target.take_damage(attack_damage)
 	
 func _check_target():
 	if _hero_spotter.targets.empty():
@@ -163,12 +160,16 @@ func _check_target():
 		
 	target = default
 	
+	if target is BaseResources:
+		_gather_indicator.update_indicator(target.hp, target.max_hp)
+		_gather_indicator.set_icon(target.get_resource_icon())
+	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)
 	if not enable_network or not _puppet_ready:
 		return
 		
 	target = get_node_or_null(_puppet_target)
-	_animation_state = _puppet_animation_state
+	_animation_states = _puppet_animation_states
 
 

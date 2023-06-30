@@ -414,7 +414,7 @@ func on_player_airship_dead(_unit :AirShip):
 func on_player_airship_reset(_unit :AirShip):
 	_ui.hurt_indicator.hide_hurt()
 	
-func on_player_hero_take_damage(unit :BaseUnit, _damage :int):
+func on_player_hero_take_damage(_unit :BaseUnit, _damage :int):
 	pass
 	
 func on_player_hero_dead(_unit :AirShip):
@@ -489,6 +489,7 @@ func player_input_airship_control():
 		player_airship.move_direction = _ui.get_joystick_direction()
 		_camera.translation = player_airship.translation
 		_camera.set_distance(player_airship.throttle * player_airship.speed)
+		_camera.set_angle(-60)
 	
 func player_input_hero_control():
 	if not is_instance_valid(player_airship_bot):
@@ -504,16 +505,19 @@ func player_input_hero_control():
 		var post_to_follow :Vector3 = player_hero.translation * Vector3(1, 0, 1)
 		post_to_follow += Vector3(0, player_airship.translation.y, 0)
 		
-		player_airship_bot.move_to(post_to_follow, 10, true)
+		var is_in_area :bool = player_airship.translation.distance_to(post_to_follow) < 15
 		
-		if player_airship.translation.distance_to(post_to_follow) > 15:
+		player_airship_bot.move_to(post_to_follow, 10, true)
+		_camera.set_angle(-55)
+		
+		if is_in_area and not player_airship.is_dead:
+			_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
+			_camera.set_distance(12)
+			
+		else:
 			_camera.translation = player_hero.translation
 			_camera.set_distance(10)
 			
-		else:
-			_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
-			_camera.set_distance(12)
-		
 func check_valid_landing_zone():
 	if not is_instance_valid(landing_zone_validator):
 		return

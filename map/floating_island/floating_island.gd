@@ -3,7 +3,6 @@ class_name FloatingIsland
 
 export var island :Resource = preload("res://map/floating_island/island_1/island.obj")
 
-export var size :float = 1
 export var rotate :float = 0
 export var curve :Curve3D
 
@@ -29,7 +28,6 @@ func _ready():
 	_path_follow = PathFollow.new()
 	_spawn_path.add_child(_path_follow)
 	
-	scale = Vector3.ONE * size
 	rotate_y(deg2rad(rotate))
 
 

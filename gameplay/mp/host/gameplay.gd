@@ -10,7 +10,8 @@ const turrets = [
 	preload("res://data/turret/list/cannon.tres"),
 	preload("res://data/turret/list/flak.tres"),
 	preload("res://data/turret/list/mg.tres"),
-	preload("res://data/turret/list/missile.tres")
+	preload("res://data/turret/list/missile.tres"),
+	preload("res://data/turret/list/ciwis.tres"),
 ]
 
 onready var enemy_airship_patrol = $enemy_airship_patrol
@@ -53,27 +54,27 @@ func spawn_player_heroes():
 	.spawn_heroes(heroes)
 	
 func spawn_player_airship():
-	var player_index :int = 0
+	var player_index :int = 10
 	for p in NetworkLobbyManager.get_players():
 		var player :NetworkPlayer = p
 		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
 		airship.entity_name = player.player_name
 		airship.node_name = "player_%s" % player.player_network_unique_id
 		airship.network_id = player.player_network_unique_id
-		airship.position = islands[player_index].translation + Vector3(-10, 0, -10)
+		airship.position = _map.get_entry_points(player_index)[1]
 		airship.level = 1
 		airship.team = player_team 
 		airship.color_coat = Color.green
 		
 		airship.turrets = []
 		for index in airship.turrets_count:
-			var t :TurretData = turrets[rand_range(0, 4)].duplicate()
+			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
 			t.node_name = "%s_turret_%s" % [airship.node_name, index]
 			t.level = airship.level
 			airship.turrets.append(t)
 		
 		airships_to_spawn.append(airship)
-		player_index += 1
+		player_index += 10
 		
 func spawn_bot_airship():
 	for i in 2:
@@ -82,13 +83,13 @@ func spawn_bot_airship():
 		airship.node_name = "airship_%s" % i
 		airship.network_id = Network.PLAYER_HOST_ID
 		airship.level = 1
-		airship.position = islands[i].translation + Vector3(10, 0, 10)
+		airship.position = islands[i].get_random_position()
 		airship.team = 2
 		airship.color_coat = Color.red
 		
 		airship.turrets = []
 		for index in airship.turrets_count:
-			var t :TurretData = turrets[rand_range(0, 4)].duplicate()
+			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
 			t.node_name = "%s_turret_%s" % [airship.node_name, index]
 			t.level = airship.level
 			airship.turrets.append(t)
@@ -101,14 +102,14 @@ func spawn_defence_bot():
 		defence.entity_name = "Defence (Bot)"
 		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
-		defence.position = islands[i].translation
+		defence.position = islands[i].get_random_position()
 		defence.level = 1
 		defence.team = 2
 		defence.color_coat = Color.orange
 		
 		defence.turrets = []
 		for index in defence.turrets_count:
-			var t :TurretData = turrets[rand_range(0, 4)].duplicate()
+			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
 			t.node_name = "%s_turret_%s" % [defence.node_name, index]
 			t.level = defence.level
 			defence.turrets.append(t)
@@ -126,7 +127,7 @@ func _process(_delta):
 func _test_on_enemy_airship_patrol_timeout():
 	for ai_bot in ai_bots:
 		if ai_bot.get_unit() is AirShip:
-			ai_bot.move_to(_map.get_random_island().translation)
+			ai_bot.move_to(_map.get_random_island().get_random_position())
 		
 	enemy_airship_patrol.start()
 	
@@ -137,12 +138,9 @@ func on_bot_spawned(bot :Bot):
 func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D, marker :ScreenMarker):
 	.on_airship_dead(_unit, _hp_bar, marker)
 	
-	if _unit == player_airship:
-		_ui.action_delay.start("Respawn", 15)
-		
 	yield(get_tree().create_timer(15), "timeout")
 	
-	var pos :Vector3 = _map.get_random_island().translation
+	var pos :Vector3 = _map.get_random_entry_point()
 	pos.y = _unit.altitude
 	
 	.respawn(_unit, pos)
@@ -160,12 +158,4 @@ func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
 	yield(get_tree().create_timer(5), "timeout")
 	
 	_unit.reset()
-	
-	if _unit == player_hero:
-		.on_enter_airship()
-		_ui.exit_enter.currently_exit = false
-		_ui.exit_enter.check_exit_status()
-		_ui.exit_enter.wait_time = 30
-		_ui.exit_enter.start()
-		
 

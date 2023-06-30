@@ -32,19 +32,19 @@ transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, -15, 0 )
 shape = SubResource( 3 )
 disabled = true
 
-[node name="south" type="CollisionShape" parent="wall"]
+[node name="north" type="CollisionShape" parent="wall"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 25, 50 )
 shape = SubResource( 6 )
 
-[node name="north" type="CollisionShape" parent="wall"]
+[node name="south" type="CollisionShape" parent="wall"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 25, -50 )
 shape = SubResource( 6 )
 
-[node name="east" type="CollisionShape" parent="wall"]
+[node name="west" type="CollisionShape" parent="wall"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 50, 25, 0 )
 shape = SubResource( 7 )
 
-[node name="west" type="CollisionShape" parent="wall"]
+[node name="east" type="CollisionShape" parent="wall"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -50, 25, 0 )
 shape = SubResource( 7 )
 

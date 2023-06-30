@@ -17,15 +17,6 @@ func make_ready():
 func get_joystick_direction() -> Vector3:
 	return virtual_joystick.get_v3_output()
 	
-func hide_hurt():
-	hurt_indicator.hide_hurt()
-	
-func show_hurt():
-	hurt_indicator.show_hurt()
-	
-func show_hurting():
-	hurt_indicator.show_hurting()
-	
 func show_exit_button(_show :bool):
 	exit_enter.enable = _show
 	exit_enter.modulate.a = 1.0 if exit_enter.enable else 0.5

@@ -219,7 +219,11 @@ func on_hero_spawned(_data :HeroData, hero :Hero):
 	if is_player:
 		player_hero = hero
 		player_hero_spawn_pos = hero.translation
-
+		
+		player_hero.connect("take_damage", self, "on_player_hero_take_damage")
+		player_hero.connect("dead", self, "on_player_hero_dead")
+		player_hero.connect("reset", self, "on_player_hero_reset")
+		
 ################################################################
 # airship spawner
 func spawn_airships(_datas :Array, _parent :Node = _airship_parent):
@@ -245,6 +249,7 @@ remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
 		return
 		
 	var airship :AirShip = _airship_data.spawn_airship(_parent)
+	airship.look_at(Vector3.ZERO + Vector3(0,0, airship.altitude), Vector3.UP)
 	on_airship_spawned(_airship_data, airship)
 	
 func on_airship_spawned(data :AirshipData, airship :AirShip):
@@ -395,16 +400,32 @@ func on_unit_reset(_unit :BaseUnit, hp_bar :HpBar3D, marker :ScreenMarker):
 # player signals handler
 func on_player_airship_take_damage(unit :BaseUnit, _damage :int):
 	if unit.hp < unit.max_hp * 0.15:
-		_ui.show_hurting()
+		_ui.hurt_indicator.show_hurting()
 		return
 		
-	_ui.show_hurt()
+	_ui.hurt_indicator.show_hurt()
 	
 func on_player_airship_dead(_unit :AirShip):
-	_ui.hide_hurt()
+	if _unit == player_airship:
+		_ui.airship_info.repawn_indicator.start("Respawn", 15)
+		
+	_ui.hurt_indicator.hide_hurt()
 	
 func on_player_airship_reset(_unit :AirShip):
-	_ui.hide_hurt()
+	_ui.hurt_indicator.hide_hurt()
+	
+func on_player_hero_take_damage(unit :BaseUnit, _damage :int):
+	pass
+	
+func on_player_hero_dead(_unit :AirShip):
+	pass
+	
+func on_player_hero_reset(_unit :AirShip):
+	on_enter_airship()
+	_ui.exit_enter.currently_exit = false
+	_ui.exit_enter.check_exit_status()
+	_ui.exit_enter.wait_time = 30
+	_ui.exit_enter.start()
 	
 ################################################################
 # airships bot

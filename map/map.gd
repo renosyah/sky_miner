@@ -14,6 +14,7 @@ var island_scene = preload("res://map/floating_island/floating_island.tscn")
 var tree_scene = preload("res://entity/resources/trees/trees.tscn")
 var ore_scene = preload("res://entity/resources/rock/rock.tscn")
 
+onready var _wall = $wall
 onready var _islands = $islands
 onready var _trees = $trees
 onready var _ores = $ores
@@ -24,13 +25,19 @@ var _path_follow :PathFollow
 
 export var map_data :Dictionary
 
+onready var _entry_points :Array = [
+	$wall/west,
+	$wall/east,
+	$wall/north,
+	$wall/south
+]
+
 func _ready():
 	_spawn_path = Path.new()
 	_spawn_position.add_child(_spawn_path)
 	
 	_path_follow = PathFollow.new()
 	_spawn_path.add_child(_path_follow)
-
 	
 func get_islands() -> Array:
 	return _islands.get_children()
@@ -38,6 +45,22 @@ func get_islands() -> Array:
 func get_random_island() -> FloatingIsland:
 	var islands :Array = get_islands()
 	return islands[rand_range(0, islands.size())]
+	
+func get_entry_points(z_offset :float = 0) -> Array:
+	var points :Array = []
+	var center_point :Vector3 = _wall.global_transform.origin
+	
+	for i in _entry_points:
+		var pos :Vector3 = i.global_transform.origin
+		var dir_to_center :Vector3 = pos.direction_to(center_point)
+		points.append(pos + (dir_to_center * 20) + Vector3(0, 0, z_offset))
+		
+	return points
+	
+func get_random_entry_point(z_offset :float = 0) -> Vector3:
+	randomize()
+	var points :Array = get_entry_points(z_offset)
+	return points[rand_range(0, points.size())]
 	
 func spawn_islands():
 	var map_seed = map_data["map_seed"]
@@ -50,6 +73,7 @@ func spawn_islands():
 		island.name = i["name"]
 		island.size = i["size"]
 		island.rotate = i["rotate"]
+		island.curve = load(i["curve"])
 		_islands.add_child(island)
 		island.translation = i["position"]
 		
@@ -119,17 +143,22 @@ func generate_islands():
 		_spawn_position.rotation_degrees = Vector3.ZERO
 		_spawn_position.rotate_y(deg2rad(island["rotate"]))
 		
-		_spawn_path.curve = load(template + "/curve.tres")
+		_spawn_path.curve = load(island["curve"])
 		
 		map_data["trees"].append_array(
 			_generate_resource(
-				island["position"],island["name"],"tree",rand_range(2, 3) * island["size"]
+				island["position"],
+				island["name"],"tree",
+				rand_range(2, 3) * island["size"]
 			)
 		)
 		
 		map_data["ores"].append_array(
 			_generate_resource(
-				island["position"],island["name"],"ore",rand_range(1, 3) * island["size"]
+				island["position"],
+				island["name"],
+				"ore",
+				rand_range(1, 3) * island["size"]
 			)
 		)
 		
@@ -145,6 +174,7 @@ func _generate_island(x, y :float, template :String) -> Dictionary:
 	return {
 		"name" : island_name,
 		"mesh" : template + "/island.obj",
+		"curve" : template + "/curve.tres",
 		"size" : size,
 		"rotate" : rotate,
 		"position" :pos,

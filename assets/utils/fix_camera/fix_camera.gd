@@ -1,7 +1,7 @@
 extends Spatial
 class_name FixCamera
 
-onready var _camera = $Spatial/Camera
+onready var _camera = $pivot/Camera
 
 func set_distance(_distance :float):
 	_camera.translation.z = clamp(_distance, 10, 25)

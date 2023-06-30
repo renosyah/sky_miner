@@ -9,6 +9,8 @@ onready var _name = $VBoxContainer/name
 onready var _border = $airship_potrait/border
 onready var _turret_holder = $VBoxContainer/HBoxContainer
 
+onready var repawn_indicator = $airship_potrait/repawn
+
 func display_info(_nm :String, _ic :String, _val :Color):
 	_icon.texture = load(_ic)
 	_name.text = _nm

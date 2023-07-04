@@ -88,9 +88,10 @@ func on_exit_airship():
 	landing_zone_validator.enable = false
 	enable_airship_bot(player_airship_bot, true)
 	
-	if is_instance_valid(player_hero):
-		last_landing_spot = landing_zone_validator.position + Vector3(0,8,0)
-		enable_hero(player_hero, true, last_landing_spot)
+	last_landing_spot = landing_zone_validator.position + Vector3(0,8,0)
+	enable_hero(player_hero, true, last_landing_spot)
+	
+	control_mode = controlFocus.hero
 	
 func on_enter_airship():
 	if not is_instance_valid(landing_zone_validator):
@@ -98,9 +99,9 @@ func on_enter_airship():
 		
 	landing_zone_validator.enable = true
 	enable_airship_bot(player_airship_bot, false)
+	enable_hero(player_hero, false, player_hero_spawn_pos)
 	
-	if is_instance_valid(player_hero):
-		enable_hero(player_hero, false, player_hero_spawn_pos)
+	control_mode = controlFocus.airship
 	
 ################################################################
 # network connection watcher
@@ -170,6 +171,9 @@ var player_hero_spawn_pos :Vector3
 
 var landing_zone_validator :LandingZoneValidator
 var last_landing_spot :Vector3
+
+enum controlFocus { airship, hero }
+var control_mode = controlFocus.airship
 
 ################################################################
 # hero spawner
@@ -427,6 +431,7 @@ func on_player_hero_reset(_unit :AirShip):
 	_ui.exit_enter.wait_time = 30
 	_ui.exit_enter.start()
 	
+	
 ################################################################
 # airships bot
 func enable_airship_bot(_bot :Bot, _val :bool):
@@ -441,8 +446,11 @@ func airship_bot_updated(_bot :Bot):
 	
 ################################################################
 # heroes
-func enable_hero(_hero :Hero, _val :bool, _position :Vector3):
-	rpc("_enable_hero", _hero.get_path(), _val, _position)
+func enable_hero(hero :Hero, _val :bool, _position :Vector3):
+	if not is_instance_valid(hero):
+		return
+		
+	rpc("_enable_hero", hero.get_path(), _val, _position)
 	
 remotesync func _enable_hero(_hero_path :NodePath, _val :bool, _position :Vector3):
 	var _unit :Hero = get_node_or_null(_hero_path)
@@ -470,67 +478,68 @@ func hero_updated(_hero :Hero):
 ################################################################
 # proccess
 func _process(_delta):
-	check_valid_landing_zone()
-	player_input_airship_control()
-	player_input_hero_control()
+	if not is_all_valid():
+		return
+		
+	player_airship.assign_turret_target(
+		player_airship_bot.get_node_path_targets()
+	)
 	
+	match (control_mode):
+		controlFocus.airship:
+			player_input_airship_control()
+			validate_landing_zone()
+			
+		controlFocus.hero:
+			player_input_hero_control()
+			
+	
+func is_all_valid() -> bool:
+	var _valid_objects :Array = [
+		is_instance_valid(player_airship),
+		is_instance_valid(player_airship_bot),
+		is_instance_valid(landing_zone_validator),
+		is_instance_valid(player_hero)
+	]
+	return not _valid_objects.has(false)
+	
+# player control airship
 func player_input_airship_control():
-	if not is_instance_valid(player_airship_bot):
-		return
-		
-	if not is_instance_valid(player_airship):
-		return
-		
-	player_airship.assign_turret_target(player_airship_bot.get_node_path_targets())
+	player_airship.move_direction = _ui.get_joystick_direction()
+	_camera.translation = player_airship.translation
+	_camera.set_distance(player_airship.throttle * player_airship.speed)
+	_camera.set_angle(-60)
 	
-	# player control
-	# airship
-	if not player_airship.is_bot:
-		player_airship.move_direction = _ui.get_joystick_direction()
-		_camera.translation = player_airship.translation
-		_camera.set_distance(player_airship.throttle * player_airship.speed)
-		_camera.set_angle(-60)
-	
+# player control hero
 func player_input_hero_control():
-	if not is_instance_valid(player_airship_bot):
-		return
+	player_hero.move_direction = _ui.get_joystick_direction()
+	var post_to_follow :Vector3 = player_hero.translation 
+	post_to_follow.y = player_airship.translation.y
+	
+	var is_in_area :bool = player_airship.translation.distance_to(post_to_follow) < 15
+	if not is_in_area:
+		player_airship_bot.move_to(post_to_follow, 10, true)
+	
+	if is_in_area and not player_airship.is_dead:
+		_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
+		_camera.set_distance(12)
 		
-	if not is_instance_valid(player_hero):
-		return
+	else:
+		_camera.translation = player_hero.translation
+		_camera.set_distance(10)
 		
-	# player control
-	# hero
-	if player_airship.is_bot:
-		player_hero.move_direction = _ui.get_joystick_direction()
-		var post_to_follow :Vector3 = player_hero.translation 
-		post_to_follow.y = player_airship.translation.y
+	_camera.set_angle(-55)
 		
-		var is_in_area :bool = player_airship.translation.distance_to(post_to_follow) < 15
-		if not is_in_area:
-			player_airship_bot.move_to(post_to_follow, 10, true)
 		
-		if is_in_area and not player_airship.is_dead:
-			_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
-			_camera.set_distance(12)
-			
-		else:
-			_camera.translation = player_hero.translation
-			_camera.set_distance(10)
-			
-		_camera.set_angle(-55)
-		
-func check_valid_landing_zone():
-	if not is_instance_valid(landing_zone_validator):
-		return
-		
-	if not is_instance_valid(player_airship):
-		return
-		
-	if not is_instance_valid(player_hero):
-		return
-		
+func validate_landing_zone():
+	var _valid_objects :Array = [
+		landing_zone_validator.is_valid,
+		not player_airship.is_dead,
+		not player_hero.is_dead
+	]
+	
 	_ui.show_exit_button(
-		landing_zone_validator.is_valid and not player_airship.is_dead and not player_hero.is_dead
+		not _valid_objects.has(false)
 	)
 	
 ################################################################

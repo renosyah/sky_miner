@@ -150,7 +150,7 @@ func _align_aim(_target :BaseUnit):
 		emit_signal("reload", self, false)
 		return
 		
-	if not _is_align(_target.global_transform.origin):
+	if not is_align(_target.global_transform.origin):
 		return
 		
 	if _firing_timer.is_stopped():
@@ -167,7 +167,7 @@ func reload_finish():
 # to get aiming position then align it
 # if distance between aligment & target less than 5m
 # open fired
-func _is_align(_target_pos :Vector3) -> bool:
+func is_align(_target_pos :Vector3) -> bool:
 	var _from_pos :Vector3 = _body.global_transform.origin
 	var _dist :float = _from_pos.distance_to(_target_pos)
 	var _to_pos :Vector3 = _from_pos + -_body.global_transform.basis.z * _dist
@@ -184,14 +184,14 @@ func _firing(_target :BaseUnit):
 		
 	ammo -= 1
 	
-	firing(_target)
+	firing(_projectile, _target)
 	
 	_projectile.translation = _muzzle_position
 	_projectile.target = _target
 	_projectile.launch()
 	
 	
-func firing(_target :BaseUnit):
+func firing(_projectile :Projectile, _target :BaseUnit):
 	emit_signal("fired", self)
 	
 func projectile_reach_target(_p :Projectile, _t :BaseUnit):

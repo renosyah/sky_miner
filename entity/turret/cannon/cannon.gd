@@ -13,12 +13,12 @@ func _ready():
 	max_ammo = clamp(max_ammo, 0 ,1)
 	ammo = max_ammo
 	
-func firing(_target :BaseUnit):
+func firing(_projectile :Projectile, _target :BaseUnit):
 	_sound.stream = firing_sounds[rand_range(0, firing_sounds.size())]
 	_sound.play()
 	animation_player.play("firing")
 	_muzzle_position = from.global_transform.origin
-	.firing(_target)
+	.firing(_projectile, _target)
 
 
 

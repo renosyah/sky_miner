@@ -20,9 +20,9 @@ func reload_finish():
 	for i in _missiles:
 		i.visible = true
 		
-func firing(_target :BaseUnit):
+func firing(_projectile :Projectile, _target :BaseUnit):
 	_muzzle_position = from.global_transform.origin
-	.firing(_target)
+	.firing(_projectile, _target)
 	
 	_sound.stream = launch
 	_sound.play()

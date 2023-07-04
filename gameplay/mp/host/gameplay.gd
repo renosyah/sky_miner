@@ -12,6 +12,7 @@ const turrets = [
 	preload("res://data/turret/list/mg.tres"),
 	preload("res://data/turret/list/missile.tres"),
 	preload("res://data/turret/list/ciwis.tres"),
+	preload("res://data/turret/list/guided_missile.tres")
 ]
 
 onready var enemy_airship_patrol = $enemy_airship_patrol
@@ -72,7 +73,7 @@ func spawn_player_airship():
 			t.node_name = "%s_turret_%s" % [airship.node_name, index]
 			t.level = airship.level
 			airship.turrets.append(t)
-		
+
 		airships_to_spawn.append(airship)
 		player_index += 10
 		

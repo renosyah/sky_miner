@@ -85,24 +85,26 @@ func spawn_player_airship():
 		player_index += 10
 		
 func spawn_bot_airship():
-	for i in 2:
-		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
-		airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
-		airship.node_name = "airship_%s" % i
-		airship.network_id = Network.PLAYER_HOST_ID
-		airship.level = 1
-		airship.position = islands[i].get_random_position()
-		airship.team = 2
-		airship.color_coat = Color.red
-		
-		airship.turrets = []
-		for index in airship.turrets_count:
-			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
-			t.node_name = "%s_turret_%s" % [airship.node_name, index]
-			t.level = airship.level
-			airship.turrets.append(t)
+	var teams = {1 : 2, 2: 2}
+	for key in teams.keys():
+		for i in teams[key]:
+			var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
+			airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
+			airship.node_name = "airship_%s_%s" % [key, i]
+			airship.network_id = Network.PLAYER_HOST_ID
+			airship.level = 1
+			airship.position = islands[i].get_random_position()
+			airship.team = key
+			airship.color_coat = Color.red if key == 2 else Color.green
 			
-		airships_to_spawn.append(airship)
+			airship.turrets = []
+			for index in airship.turrets_count:
+				var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
+				t.node_name = "%s_turret_%s" % [airship.node_name, index]
+				t.level = airship.level
+				airship.turrets.append(t)
+				
+			airships_to_spawn.append(airship)
 		
 func spawn_defence_bot():
 	for i in 2:

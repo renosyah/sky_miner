@@ -11,6 +11,7 @@ onready var exit_icon = $airship_potrait/exit_icon
 onready var enter_icon = $airship_potrait/enter_icon
 onready var texture_progress = $airship_potrait/TextureProgress
 onready var button_cooldown = $airship_potrait/button_cooldown
+onready var tween = $Tween
 
 onready var currently_exit :bool = false
 
@@ -30,6 +31,9 @@ func _on_exit_enter_pressed():
 	if not button_cooldown.is_stopped() or not enable:
 		return
 		
+	tween.interpolate_property(self,"rect_scale",Vector2.ONE * 0.6, Vector2.ONE,0.12,Tween.TRANS_BOUNCE)
+	tween.start()
+	
 	emit_signal("press")
 	
 func press():

@@ -1,6 +1,9 @@
 extends Spatial
 class_name Bot
 
+signal enemy_detected
+signal enemy_lose
+
 export var unit :NodePath
 export var team :int
 export var chase_offset :float
@@ -17,16 +20,23 @@ func _ready():
 	_unit = get_node_or_null(unit)
 	_spotter.ignore_body = _unit
 	_spotter.team = team
+	_spotter.connect("enemy_detected", self, "_enemy_detected")
+	_spotter.connect("enemy_lose", self, "_enemy_lose")
 	
 	_unit_default_margin = _unit.margin
+	
+func _enemy_detected():
+	emit_signal("enemy_detected")
+	
+func _enemy_lose():
+	emit_signal("enemy_lose")
 	
 func get_unit() -> BaseUnit:
 	return _unit
 	
 func _process(_delta):
-	_assign_target()
-	
 	if autochase:
+		_assign_target()
 		_chase_target()
 		
 func move_to(_at :Vector3, margin :int = 0, force :bool = false):
@@ -80,11 +90,15 @@ func _get_closes() -> BaseUnit:
 		
 	var from :Vector3 = global_transform.origin
 	var default :BaseUnit = _spotter.targets[0]
+	
 	for i in _spotter.targets:
 		var dis_1 = from.distance_squared_to(default.global_transform.origin)
 		var dis_2 = from.distance_squared_to(i.global_transform.origin)
 		
 		if dis_2 < dis_1:
 			default = i
+		
+	if default.is_dead:
+		return null
 		
 	return default

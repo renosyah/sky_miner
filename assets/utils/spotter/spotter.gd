@@ -1,6 +1,8 @@
 extends Area
 class_name Spotter
 
+signal enemy_detected
+signal enemy_lose
 
 export var detection_range :int = 15
 export var team :int
@@ -34,6 +36,7 @@ func _on_spotter_body_entered(body):
 		return
 		
 	targets.append(body)
+	emit_signal("enemy_detected")
 	
 	
 func _on_spotter_body_exited(body):
@@ -41,3 +44,5 @@ func _on_spotter_body_exited(body):
 		return
 		
 	targets.erase(body)
+	emit_signal("enemy_lose")
+

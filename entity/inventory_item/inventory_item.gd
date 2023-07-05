@@ -20,6 +20,7 @@ export var item_name :String
 var _pickup_area :Area
 var _collision :CollisionShape
 var _interact_tween :Tween
+var _sound :AudioStreamPlayer3D
 
 func _ready():
 	set_as_toplevel(true)
@@ -38,6 +39,10 @@ func _ready():
 	
 	_interact_tween = Tween.new()
 	add_child(_interact_tween)
+	
+	_sound = AudioStreamPlayer3D.new()
+	_sound.unit_size = Global.sound_amplified
+	add_child(_sound)
 	
 func _process(delta):
 	rotate_y(4 * delta)
@@ -75,12 +80,15 @@ func pickup(_by :BaseUnit):
 	)
 	_interact_tween.start()
 	
-	emit_signal("picked_up", self)
+	picked_up()
 	
 	yield(_interact_tween,"tween_completed")
 	set_as_toplevel(false)
 	visible = false
 	set_process(false)
+	
+func picked_up():
+	emit_signal("picked_up", self)
 	
 	
 func drop(_to :Node):
@@ -105,13 +113,16 @@ func drop(_to :Node):
 	)
 	_interact_tween.start()
 	
-	emit_signal("droped", self)
+	droped()
 	
 	yield(_interact_tween,"tween_completed")
 	_pickup_area.set_deferred("monitoring", true)
 	set_process(true)
 
-
+func droped():
+	emit_signal("droped", self)
+	
+	
 
 
 

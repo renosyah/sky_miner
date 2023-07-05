@@ -13,6 +13,7 @@
 margin_right = 120.0
 margin_bottom = 128.0
 rect_min_size = Vector2( 120, 128 )
+rect_pivot_offset = Vector2( 60, 64 )
 custom_styles/focus = SubResource( 1 )
 flat = true
 script = ExtResource( 6 )
@@ -121,6 +122,8 @@ stretch_margin_bottom = 32
 [node name="button_cooldown" type="Timer" parent="airship_potrait"]
 wait_time = 5.0
 one_shot = true
+
+[node name="Tween" type="Tween" parent="."]
 
 [connection signal="pressed" from="." to="." method="_on_exit_enter_pressed"]
 [connection signal="timeout" from="airship_potrait/button_cooldown" to="." method="_on_button_cooldown_timeout"]

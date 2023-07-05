@@ -37,7 +37,7 @@ func firing(_projectile :Projectile, _target :BaseUnit):
 	
 	missile.visible = false
 	
-func _process(delta):
+func _process(_delta):
 	if is_instance_valid(projectile_fired):
 		projectile_fired.guided_direction = laser_pointing.global_transform.origin
 	

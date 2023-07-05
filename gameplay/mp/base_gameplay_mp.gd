@@ -12,6 +12,7 @@ func _ready():
 	
 	setup_map()
 	setup_camera()
+	setup_sound()
 	setup_ui()
 	setup_parents()
 	
@@ -37,6 +38,14 @@ var _camera :FixCamera
 func setup_camera():
 	_camera = preload("res://assets/utils/fix_camera/fix_camera.tscn").instance()
 	add_child(_camera)
+	
+################################################################
+# sounds
+var _sound :AudioStreamPlayer
+
+func setup_sound():
+	_sound = AudioStreamPlayer.new()
+	add_child(_sound)
 	
 ################################################################
 # map
@@ -291,6 +300,9 @@ func on_airship_spawned(data :AirshipData, airship :AirShip):
 			player_airship_bot = bot
 			player_airship_bot.autochase = false
 			
+			player_airship_bot.connect("enemy_lose", self, "_on_player_airship_bot_enemy_lose")
+			player_airship_bot.connect("enemy_detected", self, "_on_player_airship_bot_enemy_detected")
+			
 		else:
 			airship.is_bot = true
 			on_bot_spawned(bot)
@@ -310,7 +322,13 @@ func on_airship_spawned(data :AirshipData, airship :AirShip):
 		landing_zone_validator.enable = true
 		landing_zone_validator.follow_body = player_airship.get_path()
 		add_child(landing_zone_validator)
-
+	
+func _on_player_airship_bot_enemy_lose():
+	pass
+	
+func _on_player_airship_bot_enemy_detected():
+	pass
+	
 ################################################################
 # emplacement spawner
 func spawn_emplacements(_datas :Array, _parent :Node = _defence_parent):

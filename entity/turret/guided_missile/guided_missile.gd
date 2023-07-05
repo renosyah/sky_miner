@@ -2,9 +2,8 @@ extends Turret
 
 const launch = preload("res://assets/sounds/explosions/missile_away.wav")
 
-onready var _missiles = [
-	 $body/missiles/missile_1,
-]
+onready var missile = $body/missiles/missile_1
+
 onready var from = $body/gun/from
 onready var laser = $body/gun/laser
 onready var laser_pointing = $body/gun/laser_pointing
@@ -23,9 +22,8 @@ func _ready():
 
 func reload_finish():
 	.reload_finish()
-	for i in _missiles:
-		i.visible = true
-		
+	missile.visible = true
+	
 func firing(_projectile :Projectile, _target :BaseUnit):
 	projectile_fired = _projectile
 	laser.visible = true
@@ -37,10 +35,12 @@ func firing(_projectile :Projectile, _target :BaseUnit):
 	_sound.stream = launch
 	_sound.play()
 	
-	for i in _missiles:
-		if i.visible:
-			i.visible = false
-			return
+	missile.visible = false
+	
+	if ammo < 1:
+		_reload_timer.wait_time = rand_range(reload_time * 0.5, reload_time)
+		_reload_timer.start()
+		emit_signal("reload", self, false)
 	
 func _process(delta):
 	if is_instance_valid(projectile_fired):

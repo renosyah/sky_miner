@@ -165,6 +165,11 @@ _global_script_classes=[ {
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
 "base": "Spatial",
+"class": "InventoryItem",
+"language": "GDScript",
+"path": "res://entity/inventory_item/inventory_item.gd"
+}, {
+"base": "Spatial",
 "class": "LandingZoneValidator",
 "language": "GDScript",
 "path": "res://assets/utils/landing_zone_validator/landing_zone_validator.gd"
@@ -306,6 +311,7 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"InventoryItem": "",
 "LandingZoneValidator": "",
 "LevelSystem": "",
 "Map": "",

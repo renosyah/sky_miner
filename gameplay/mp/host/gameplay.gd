@@ -36,6 +36,13 @@ func on_map_ready():
 	
 	enemy_airship_patrol.start()
 	
+	for i in 45:
+		var pos :Vector3 = _map.get_random_island().get_random_position()
+		var coin = preload("res://entity/inventory_item/coin/coin.tscn").instance()
+		add_child(coin)
+		coin.translation = pos
+		coin.translation.y += 0.6
+	
 func spawn_player_heroes():
 	var heroes :Array = []
 	var index :int = 10
@@ -155,6 +162,10 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMar
 	
 func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
 	.on_hero_dead(_unit, hp_bar)
+	
+	for i in _unit.inventories:
+		if i is InventoryItem:
+			i.drop(self)
 	
 	yield(get_tree().create_timer(5), "timeout")
 	

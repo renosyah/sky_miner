@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 entity_name = "88 Gun"
 entity_icon = "res://assets/ui/icons/turret/cannon.png"
+description = "Powerfull 88mm multipurpose cannon"
 node_name = ""
 scene_path = "res://entity/turret/cannon/cannon.tscn"
 position = Vector3( 0, 0, 0 )

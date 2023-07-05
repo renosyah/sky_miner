@@ -8,9 +8,7 @@ onready var _missiles = [
 onready var from = $body/gun/from
 onready var laser = $body/gun/laser
 onready var laser_pointing = $body/gun/laser_pointing
-
 onready var laser_mesh = laser.mesh.duplicate() as CylinderMesh
-
 onready var guided_timeout = $guided_timeout
 
 var projectile_fired :Projectile
@@ -39,12 +37,11 @@ func firing(_projectile :Projectile, _target :BaseUnit):
 	_sound.stream = launch
 	_sound.play()
 	
-	if ammo <= 4:
-		for i in _missiles:
-			if i.visible:
-				i.visible = false
-				return
-
+	for i in _missiles:
+		if i.visible:
+			i.visible = false
+			return
+	
 func _process(delta):
 	if is_instance_valid(projectile_fired):
 		projectile_fired.guided_direction = laser_pointing.global_transform.origin

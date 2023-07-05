@@ -3,6 +3,7 @@ class_name TurretData
 
 export var entity_name :String
 export var entity_icon :String
+export var description :String
 
 export var node_name :String
 export var scene_path :String
@@ -15,7 +16,8 @@ func from_dictionary(data : Dictionary):
 	
 	entity_name = data["entity_name"]
 	entity_icon = data["entity_icon"]
-	
+	description = data["description"]
+		
 	node_name = data["node_name"]
 	scene_path = data["scene_path"]
 	position = data["position"]
@@ -27,6 +29,7 @@ func to_dictionary() -> Dictionary :
 	
 	data["entity_name"] = entity_name
 	data["entity_icon"] = entity_icon
+	data["description"] = description
 	
 	data["node_name"] = node_name
 	data["scene_path"] = scene_path

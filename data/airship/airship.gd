@@ -3,6 +3,7 @@ class_name AirshipData
 
 export var entity_name :String
 export var entity_icon :String
+export var description :String
 
 export var node_name :String
 export var network_id :int
@@ -21,6 +22,7 @@ func from_dictionary(data : Dictionary):
 	
 	entity_name = data["entity_name"]
 	entity_icon = data["entity_icon"]
+	description = data["description"]
 	
 	node_name = data["node_name"]
 	network_id = data["network_id"]
@@ -44,6 +46,7 @@ func to_dictionary() -> Dictionary :
 	
 	data["entity_name"] = entity_name
 	data["entity_icon"] = entity_icon
+	data["description"] = description
 	
 	data["node_name"] = node_name
 	data["network_id"] = network_id

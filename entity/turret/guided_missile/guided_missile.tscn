@@ -75,6 +75,7 @@ material/0 = SubResource( 13 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0516439, 0.116657, -0.34869 )
 
 [node name="guided_timeout" type="Timer" parent="."]
+wait_time = 3.0
 one_shot = true
 
 [connection signal="timeout" from="guided_timeout" to="." method="_on_guided_timeout_timeout"]

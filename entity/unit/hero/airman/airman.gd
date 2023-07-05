@@ -3,6 +3,22 @@ extends Hero
 onready var _upper_body_animation_tree = $pivot/AnimationTree.get("parameters/playback")
 onready var _body_animation_tree = $BodyAnimationTree.get("parameters/playback")
 
+onready var _mesh_instance = $pivot/MeshInstance
+onready var _others = [$pivot/arms_l, $pivot/arms_r,$pivot/legs_l,$pivot/legs_r]
+
+
+onready var _body_material :SpatialMaterial = $pivot/MeshInstance.get_surface_material(2).duplicate()
+onready var _arms_material :SpatialMaterial = $pivot/arms_l.get_surface_material(0).duplicate()
+
+func _ready():
+	_body_material.albedo_color = color_coat
+	_arms_material.albedo_color = color_coat
+	
+	_mesh_instance.set_surface_material(2, _body_material)
+	
+	for i in _others:
+		i.set_surface_material(0, _arms_material)
+
 remotesync func _dead():
 	._dead()
 	_animation_states["upper_body"] = "idle"

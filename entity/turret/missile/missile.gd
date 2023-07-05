@@ -27,8 +27,7 @@ func firing(_projectile :Projectile, _target :BaseUnit):
 	_sound.stream = launch
 	_sound.play()
 	
-	if ammo <= 4:
-		for i in _missiles:
-			if i.visible:
-				i.visible = false
-				return
+	for i in _missiles:
+		if i.visible:
+			i.visible = false
+			return

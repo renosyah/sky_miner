@@ -6,6 +6,7 @@
 script = ExtResource( 2 )
 entity_name = "Turrets Platform"
 entity_icon = "res://assets/ui/icons/emplacement/turret_platform.png"
+description = "Triple Defence"
 node_name = ""
 network_id = 0
 scene_path = "res://entity/unit/emplacement/turret_platform/turret_platform.tscn"

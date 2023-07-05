@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 entity_name = "Airman"
 entity_icon = ""
+description = "Basic training airman"
 node_name = ""
 network_id = 0
 scene_path = "res://entity/unit/hero/airman/airman.tscn"

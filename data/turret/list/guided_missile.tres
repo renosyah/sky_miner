@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 entity_name = "Guided Missile"
 entity_icon = "res://assets/ui/icons/turret/guided_missile.png"
+description = "Powerfull laser guided missile"
 node_name = ""
 scene_path = "res://entity/turret/guided_missile/guided_missile.tscn"
 position = Vector3( 0, 0, 0 )

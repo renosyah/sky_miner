@@ -6,6 +6,7 @@
 script = ExtResource( 1 )
 entity_name = "C.I.W.I.S"
 entity_icon = "res://assets/ui/icons/turret/ciwis.png"
+description = "Rapid fire gatling weapon system"
 node_name = ""
 scene_path = "res://entity/turret/ciwis/ciwis.tscn"
 position = Vector3( 0, 0, 0 )

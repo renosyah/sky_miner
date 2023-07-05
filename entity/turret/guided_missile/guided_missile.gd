@@ -37,11 +37,6 @@ func firing(_projectile :Projectile, _target :BaseUnit):
 	
 	missile.visible = false
 	
-	if ammo < 1:
-		_reload_timer.wait_time = rand_range(reload_time * 0.5, reload_time)
-		_reload_timer.start()
-		emit_signal("reload", self, false)
-	
 func _process(delta):
 	if is_instance_valid(projectile_fired):
 		projectile_fired.guided_direction = laser_pointing.global_transform.origin

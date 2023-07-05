@@ -144,12 +144,6 @@ func _align_aim(_target :BaseUnit):
 	if not _reload_timer.is_stopped():
 		return
 		
-	if ammo < 1:
-		_reload_timer.wait_time = rand_range(reload_time * 0.5, reload_time)
-		_reload_timer.start()
-		emit_signal("reload", self, false)
-		return
-		
 	if not is_align(_target.global_transform.origin):
 		return
 		
@@ -190,6 +184,11 @@ func _firing(_target :BaseUnit):
 	_projectile.target = _target
 	_projectile.launch()
 	
+	if ammo < 1:
+		_reload_timer.wait_time = rand_range(reload_time * 0.5, reload_time)
+		_reload_timer.start()
+		emit_signal("reload", self, false)
+		
 	
 func firing(_projectile :Projectile, _target :BaseUnit):
 	emit_signal("fired", self)

@@ -867,6 +867,7 @@ anims/walk = SubResource( 32 )
 [node name="AnimationTree" type="AnimationTree" parent="pivot"]
 tree_root = SubResource( 42 )
 anim_player = NodePath("../UpperBodyAnimationPlayer")
+active = true
 parameters/playback = SubResource( 43 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

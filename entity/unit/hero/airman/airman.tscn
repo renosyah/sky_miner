@@ -1,10 +1,9 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://entity/unit/hero/airman/airman.gd" type="Script" id=1]
 [ext_resource path="res://entity/unit/hero/airman/body_head.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://entity/unit/hero/airman/arm.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://entity/unit/hero/airman/leg.obj" type="ArrayMesh" id=4]
-[ext_resource path="res://entity/inventory_item/axe/axe.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.705882, 0.466667, 0.196078, 1 )
@@ -134,6 +133,18 @@ tracks/3/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 67.394 ), Vector3( 0, 66.497, 67.394 ), Vector3( -1.44455e-06, 125.84, 67.394 ), Vector3( 0, 94.38, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/arms_r/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -90, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=51]
@@ -829,8 +840,6 @@ material/1 = SubResource( 3 )
 
 [node name="item_equip" type="Spatial" parent="pivot/arms_r"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.49012e-08, -0.400001, 0 )
-
-[node name="axe" parent="pivot/arms_r/item_equip" instance=ExtResource( 5 )]
 
 [node name="legs_l" type="MeshInstance" parent="pivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.112816, -0.331669, 0.0361156 )

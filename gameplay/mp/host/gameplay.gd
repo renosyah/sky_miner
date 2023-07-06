@@ -30,18 +30,12 @@ func on_map_ready():
 	spawn_player_airship()
 	spawn_bot_airship()
 	spawn_defence_bot()
+	spawn_coins()
 	
 	.spawn_airships(airships_to_spawn)
 	.spawn_emplacements(defences_to_spawn)
 	
 	enemy_airship_patrol.start()
-	
-	for i in 45:
-		var pos :Vector3 = _map.get_random_island().get_random_position()
-		var coin = preload("res://entity/inventory_item/coin/coin.tscn").instance()
-		add_child(coin)
-		coin.translation = pos
-		coin.translation.y += 0.6
 	
 func spawn_player_heroes():
 	var heroes :Array = []
@@ -56,9 +50,33 @@ func spawn_player_heroes():
 		hero.level = 1
 		hero.team = player_team 
 		hero.color_coat = Color.green
-		index += 10
+		hero.inventories = []
+		
+		for i in 5:
+			var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
+			coin.node_name = "%s_coin_%s" % [hero.node_name, i]
+			coin.network_id = Network.PLAYER_HOST_ID
+			coin.position = Vector3.ZERO
+			coin.enable_pickup = false
+			hero.inventories.append(coin)
+			
+		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
+		axe.node_name = "%s_axe_%s" % [hero.node_name, 1]
+		axe.network_id = Network.PLAYER_HOST_ID
+		axe.position = Vector3.ZERO
+		axe.enable_pickup = false
+		hero.inventories.append(axe)
+		
+		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
+		pickaxe.node_name = "%s_pickaxe_%s" % [hero.node_name, 1]
+		pickaxe.network_id = Network.PLAYER_HOST_ID
+		pickaxe.position = Vector3.ZERO
+		pickaxe.enable_pickup = false
+		hero.inventories.append(pickaxe)
+		
 		heroes.append(hero)
-	
+		index += 10
+		
 	.spawn_heroes(heroes)
 	
 func spawn_player_airship():
@@ -69,7 +87,7 @@ func spawn_player_airship():
 		airship.entity_name = player.player_name
 		airship.node_name = "player_%s" % player.player_network_unique_id
 		airship.network_id = player.player_network_unique_id
-		airship.position = _map.get_entry_points(player_index)[1]
+		airship.position = _map.get_entry_points(player_index)[1] + Vector3(10,0,0)
 		airship.level = 1
 		airship.team = player_team 
 		airship.color_coat = Color.green
@@ -87,15 +105,18 @@ func spawn_player_airship():
 func spawn_bot_airship():
 	var teams = {1 : 2, 2: 2}
 	for key in teams.keys():
-		for i in teams[key]:
+		var player_index :int = 10
+		var team :int = key
+		var count :int = teams[key]
+		for i in range(count):
 			var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
 			airship.entity_name = "%s (Bot)" % RandomNameGenerator.generate()
-			airship.node_name = "airship_%s_%s" % [key, i]
+			airship.node_name = "airship_%s_%s" % [team, i]
 			airship.network_id = Network.PLAYER_HOST_ID
 			airship.level = 1
-			airship.position = islands[i].get_random_position()
-			airship.team = key
-			airship.color_coat = Color.red if key == 2 else Color.green
+			airship.position = _map.get_entry_points(player_index)[team]
+			airship.team = team
+			airship.color_coat = Color.red if team == 2 else Color.green
 			
 			airship.turrets = []
 			for index in airship.turrets_count:
@@ -105,7 +126,8 @@ func spawn_bot_airship():
 				airship.turrets.append(t)
 				
 			airships_to_spawn.append(airship)
-		
+			player_index += 10
+			
 func spawn_defence_bot():
 	for i in 2:
 		var defence :EmplacementData = preload("res://data/emplacement/list/turret_platform.tres").duplicate()
@@ -125,6 +147,20 @@ func spawn_defence_bot():
 			defence.turrets.append(t)
 			
 		defences_to_spawn.append(defence)
+	
+func spawn_coins():
+	var coins :Array = []
+	for i in 25:
+		var pos :Vector3 = _map.get_random_island().get_random_position()
+		var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
+		coin.node_name = "world_coin_%s" % i
+		coin.network_id = Network.PLAYER_HOST_ID
+		coin.position = pos + Vector3(0, 0.60, 0)
+		coin.enable_pickup = true
+		coins.append(coin)
+		
+	.spawn_items(coins)
+	
 	
 func _process(_delta):
 	# assign target bot to unit

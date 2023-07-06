@@ -4,18 +4,8 @@ class_name InventoryItem
 signal picked_up(_item)
 signal droped(_item)
 
-enum inventory_item_type { 
-	item,
-	melee_weapon,
-	range_weapon,
-	gathering_tool,
-	armor,
-	helm,
-	backpack 
-}
-
-export(inventory_item_type) var item_type := inventory_item_type.item
 export var item_name :String
+export var enable_pickup :bool
 
 var _pickup_area :Area
 var _collision :CollisionShape
@@ -23,9 +13,10 @@ var _interact_tween :Tween
 var _sound :AudioStreamPlayer3D
 
 func _ready():
-	set_as_toplevel(true)
+	set_as_toplevel(enable_pickup)
 	
 	_pickup_area = Area.new()
+	_pickup_area.monitoring = enable_pickup
 	_pickup_area.monitorable = false
 	_pickup_area.connect("body_entered", self, "_body_entered")
 	add_child(_pickup_area)
@@ -44,6 +35,8 @@ func _ready():
 	_sound.unit_size = Global.sound_amplified
 	add_child(_sound)
 	
+	set_process(enable_pickup)
+	
 func _process(delta):
 	rotate_y(4 * delta)
 	
@@ -57,7 +50,10 @@ func unequip():
 	visible = false
 	
 func pickup(_by :BaseUnit):
-	if not _by is Hero:
+	if not is_instance_valid(_by):
+		return
+		
+	if _by.get("inventories") == null:
 		return
 		
 	if _by.is_dead:
@@ -92,14 +88,14 @@ func picked_up():
 	
 	
 func drop(_to :Node):
-	if not get_parent() is Hero:
+	var parent = get_parent()
+	if parent.get("inventories") == null:
 		return
-	
+		
 	var _pos :Vector3 = global_transform.origin
 	
 	yield(get_tree(), "idle_frame")
 	
-	var parent :Hero = get_parent()
 	parent.inventories.erase(self)
 	set_as_toplevel(true)
 	parent.remove_child(self)
@@ -123,13 +119,3 @@ func droped():
 	emit_signal("droped", self)
 	
 	
-
-
-
-
-
-
-
-
-
-

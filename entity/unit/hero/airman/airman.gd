@@ -6,7 +6,6 @@ onready var _body_animation_tree = $BodyAnimationTree.get("parameters/playback")
 onready var _mesh_instance = $pivot/MeshInstance
 onready var _others = [$pivot/arms_l, $pivot/arms_r,$pivot/legs_l,$pivot/legs_r]
 
-
 onready var _body_material :SpatialMaterial = $pivot/MeshInstance.get_surface_material(2).duplicate()
 onready var _arms_material :SpatialMaterial = $pivot/arms_l.get_surface_material(0).duplicate()
 
@@ -18,6 +17,9 @@ func _ready():
 	
 	for i in _others:
 		i.set_surface_material(0, _arms_material)
+		
+		
+	equip_parent = $pivot/arms_r/item_equip
 
 remotesync func _dead():
 	._dead()
@@ -49,9 +51,13 @@ func moving(delta :float) -> void:
 	if _animation_states.has("upper_body"):
 		_upper_body_animation_tree.travel(_animation_states["upper_body"])
 	
-	
 func perform_attack():
 	.perform_attack()
+	
+	if is_instance_valid(equiped_item):
+		_animation_states["upper_body"] = equiped_item.animation
+		return
+	
 	_animation_states["upper_body"] = "attack_punch"
 
 

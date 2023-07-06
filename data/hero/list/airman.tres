@@ -17,3 +17,4 @@ color_coat = Color( 0, 0, 0, 1 )
 attack_damage = 1
 attack_delay = 1.0
 attack_range = 3.0
+inventories = [  ]

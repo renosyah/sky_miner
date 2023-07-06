@@ -391,6 +391,37 @@ func on_bot_spawned(_bot :Bot):
 	pass
 	
 ################################################################
+# items spawner
+func spawn_items(_items :Array, _parent :Node = self):
+	var _data_dicts :Array = []
+	for i in _items:
+		var _item :InventoryItemData = i
+		_data_dicts.append(_item.to_dictionary())
+		
+	rpc("_spawn_items", _data_dicts, _parent.get_path())
+	
+remotesync func _spawn_items(_datas :Array, _parent_path :NodePath):
+	for i in _datas:
+		_spawn_item(i, _parent_path)
+	
+func spawn_item(_item :InventoryItemData, _parent :Node = self):
+	rpc("_spawn_item", _item.to_dictionary(), _parent.get_path())
+	
+remotesync func _spawn_item(_data :Dictionary, _parent_path :NodePath):
+	var _item_data :InventoryItemData = InventoryItemData.new()
+	_item_data.from_dictionary(_data)
+	
+	var _parent = get_node_or_null(_parent_path)
+	if not is_instance_valid(_parent):
+		return
+		
+	var _item :InventoryItem = _item_data.spawn_item(_parent)
+	item_spawned(_item_data, _item)
+	
+func item_spawned(_data :InventoryItemData, _item :InventoryItem):
+	pass
+	
+################################################################
 # unit signals handler
 func on_unit_take_damage(_unit :BaseUnit, _damage :int, hp_bar :HpBar3D):
 	hp_bar.update_bar(_unit.hp, _unit.max_hp)

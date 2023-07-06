@@ -4,7 +4,7 @@
 [ext_resource path="res://entity/inventory_item/coin/coin.gd" type="Script" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
-flags_unshaded = true
+flags_vertex_lighting = true
 albedo_color = Color( 0.882353, 0.709804, 0, 1 )
 
 [node name="coin" type="Spatial"]

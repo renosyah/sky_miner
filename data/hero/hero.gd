@@ -18,6 +18,8 @@ export var attack_damage :int
 export var attack_delay :float
 export var attack_range :float
 
+export var inventories :Array
+
 func from_dictionary(data : Dictionary):
 	.from_dictionary(data)
 	
@@ -37,7 +39,13 @@ func from_dictionary(data : Dictionary):
 	attack_damage = data["attack_damage"]
 	attack_delay = data["attack_delay"]
 	attack_range = data["attack_range"]
-
+	
+	inventories = []
+	for turret in data["inventories"]:
+		var item :InventoryItemData = InventoryItemData.new()
+		item.from_dictionary(turret)
+		inventories.append(item)
+		
 func to_dictionary() -> Dictionary :
 	var data = .to_dictionary()
 	
@@ -57,6 +65,12 @@ func to_dictionary() -> Dictionary :
 	data["attack_damage"] = attack_damage
 	data["attack_delay"] = attack_delay
 	data["attack_range"] = attack_range
+	
+	data["inventories"] = []
+	for inventory in inventories:
+		var item :InventoryItemData = inventory
+		data["inventories"].append(item.to_dictionary())
+	
 	return data
 	
 func spawn_hero(parent :Node) -> Hero:
@@ -74,6 +88,12 @@ func spawn_hero(parent :Node) -> Hero:
 	parent.add_child(hero)
 	hero.translation = position
 	hero.visible = false
+	
+	for inventory in inventories:
+		var item :InventoryItemData = inventory
+		var item_spawn :InventoryItem = item.spawn_item(hero)
+		hero.inventories.append(item_spawn)
+		
 	return hero
 	
 

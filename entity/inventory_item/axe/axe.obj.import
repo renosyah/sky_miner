@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/axe.obj-7501c67f8af2975ec665f1fb1ed95908.mesh"
+
+[deps]
+
+files=[ "res://.import/axe.obj-7501c67f8af2975ec665f1fb1ed95908.mesh" ]
+
+source_file="res://entity/inventory_item/axe/axe.obj"
+dest_files=[ "res://.import/axe.obj-7501c67f8af2975ec665f1fb1ed95908.mesh", "res://.import/axe.obj-7501c67f8af2975ec665f1fb1ed95908.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

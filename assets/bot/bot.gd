@@ -69,6 +69,9 @@ func _chase_target():
 	if not is_instance_valid(_target):
 		return
 		
+	if _target.is_dead:
+		return
+		
 	_unit.is_moving = true
 	_unit.move_to = _get_rand_pos(_target.global_transform.origin, chase_offset)
 	

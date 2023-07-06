@@ -31,7 +31,7 @@ func _on_exit_enter_pressed():
 	if not button_cooldown.is_stopped() or not enable:
 		return
 		
-	tween.interpolate_property(self,"rect_scale",Vector2.ONE * 0.6, Vector2.ONE,0.12,Tween.TRANS_BOUNCE)
+	tween.interpolate_property(self, "rect_scale",Vector2.ONE * 0.8, Vector2.ONE, 0.43, Tween.TRANS_BOUNCE)
 	tween.start()
 	
 	emit_signal("press")

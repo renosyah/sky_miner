@@ -24,9 +24,13 @@ func _network_timmer_timeout() -> void:
 	if not _is_master or not _is_online:
 		return
 		
+	var _target_path :NodePath
+	
 	if is_instance_valid(target):
-		rset_unreliable("_puppet_target", target.get_path())
-		rset_unreliable("_puppet_animation_states", _animation_states)
+		_target_path = target.get_path()
+		
+	rset_unreliable("_puppet_target", _target_path)
+	rset_unreliable("_puppet_animation_states", _animation_states)
 		
 # multiplayer func
 puppet var _puppet_target :NodePath
@@ -139,19 +143,27 @@ func perform_attack():
 			target.take_damage(attack_damage)
 	
 func _check_target():
+	target = null
+	
 	if _hero_spotter.targets.empty():
 		return
 		
 	var from :Vector3 = global_transform.origin
-	var default = _hero_spotter.targets[0]
-	for i in _hero_spotter.targets:
-		var dis_1 = from.distance_squared_to(default.global_transform.origin)
-		var dis_2 = from.distance_squared_to(i.global_transform.origin)
+	var final_target = _hero_spotter.targets[0]
+	for new_target in _hero_spotter.targets:
+		if new_target.is_dead:
+			continue
+			
+		var dis_1 = from.distance_squared_to(final_target.global_transform.origin)
+		var dis_2 = from.distance_squared_to(new_target.global_transform.origin)
 		
 		if dis_2 < dis_1:
-			default = i
+			final_target = new_target
 		
-	target = default
+	if final_target.is_dead:
+		return
+		
+	target = final_target
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)

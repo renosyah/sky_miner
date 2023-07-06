@@ -1,9 +1,10 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://entity/unit/hero/airman/airman.gd" type="Script" id=1]
 [ext_resource path="res://entity/unit/hero/airman/body_head.obj" type="ArrayMesh" id=2]
 [ext_resource path="res://entity/unit/hero/airman/arm.obj" type="ArrayMesh" id=3]
 [ext_resource path="res://entity/unit/hero/airman/leg.obj" type="ArrayMesh" id=4]
+[ext_resource path="res://entity/inventory_item/axe/axe.tscn" type="PackedScene" id=5]
 
 [sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.705882, 0.466667, 0.196078, 1 )
@@ -70,6 +71,18 @@ tracks/3/keys = {
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/arms_r/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -90, 0, 0 ) ]
+}
 
 [sub_resource type="Animation" id=30]
 resource_name = "attack_punch"
@@ -123,8 +136,8 @@ tracks/3/keys = {
 "values": [ Vector3( 0, 0, 67.394 ), Vector3( 0, 66.497, 67.394 ), Vector3( -1.44455e-06, 125.84, 67.394 ), Vector3( 0, 94.38, 0 ) ]
 }
 
-[sub_resource type="Animation" id=45]
-resource_name = "gather_wood"
+[sub_resource type="Animation" id=51]
+resource_name = "gather_stone"
 length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("pivot/arms_l:translation")
@@ -173,6 +186,82 @@ tracks/3/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 149.976, 0, 0 ), Vector3( 56.53, 0, 0 ), Vector3( 56.53, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/arms_r/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -90, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=45]
+resource_name = "gather_wood"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/arms_l:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.30009, 0.0821473, 0.117671 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/arms_l:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/arms_r:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.298458, 0.0821473, 0.11545 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/arms_r:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 20.81, -180, -89.769 ), Vector3( 20.81, -64.134, -89.769 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/arms_r/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.4, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -90, 0, 0 ), Vector3( -47.0463, 159.275, -159.105 ), Vector3( -90, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=31]
@@ -224,6 +313,18 @@ tracks/3/keys = {
 "transitions": PoolRealArray( 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/arms_r/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -90, 0, 0 ) ]
 }
 
 [sub_resource type="Animation" id=32]
@@ -277,9 +378,24 @@ tracks/3/keys = {
 "update": 0,
 "values": [ Vector3( -0.30009, 0.0821473, 0.117671 ) ]
 }
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/arms_r/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -90, 0, 0 ) ]
+}
 
 [sub_resource type="AnimationNodeAnimation" id=33]
 animation = "attack_punch"
+
+[sub_resource type="AnimationNodeAnimation" id=52]
+animation = "gather_stone"
 
 [sub_resource type="AnimationNodeAnimation" id=46]
 animation = "gather_wood"
@@ -314,16 +430,28 @@ switch_mode = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id=50]
 switch_mode = 2
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=53]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=54]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=55]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=56]
+switch_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id=42]
 states/attack_punch/node = SubResource( 33 )
 states/attack_punch/position = Vector2( 586.667, 75.5555 )
+states/gather_stone/node = SubResource( 52 )
+states/gather_stone/position = Vector2( 587.752, 212.333 )
 states/gather_wood/node = SubResource( 46 )
 states/gather_wood/position = Vector2( 587.642, 140.333 )
 states/idle/node = SubResource( 34 )
 states/idle/position = Vector2( 205.667, 262.667 )
 states/walk/node = SubResource( 35 )
 states/walk/position = Vector2( 205.333, 76 )
-transitions = [ "idle", "walk", SubResource( 36 ), "walk", "idle", SubResource( 37 ), "walk", "attack_punch", SubResource( 38 ), "idle", "attack_punch", SubResource( 39 ), "attack_punch", "idle", SubResource( 40 ), "attack_punch", "walk", SubResource( 41 ), "idle", "gather_wood", SubResource( 47 ), "gather_wood", "idle", SubResource( 48 ), "walk", "gather_wood", SubResource( 49 ), "gather_wood", "walk", SubResource( 50 ) ]
+transitions = [ "idle", "walk", SubResource( 36 ), "walk", "idle", SubResource( 37 ), "walk", "attack_punch", SubResource( 38 ), "idle", "attack_punch", SubResource( 39 ), "attack_punch", "idle", SubResource( 40 ), "attack_punch", "walk", SubResource( 41 ), "idle", "gather_wood", SubResource( 47 ), "gather_wood", "idle", SubResource( 48 ), "walk", "gather_wood", SubResource( 49 ), "gather_wood", "walk", SubResource( 50 ), "walk", "gather_stone", SubResource( 53 ), "gather_stone", "walk", SubResource( 54 ), "idle", "gather_stone", SubResource( 55 ), "gather_stone", "idle", SubResource( 56 ) ]
 start_node = "idle"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=43]
@@ -700,7 +828,9 @@ material/0 = SubResource( 5 )
 material/1 = SubResource( 3 )
 
 [node name="item_equip" type="Spatial" parent="pivot/arms_r"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.4, -7.45058e-09 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -1.49012e-08, -0.400001, 0 )
+
+[node name="axe" parent="pivot/arms_r/item_equip" instance=ExtResource( 5 )]
 
 [node name="legs_l" type="MeshInstance" parent="pivot"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.112816, -0.331669, 0.0361156 )
@@ -720,6 +850,7 @@ material/1 = SubResource( 44 )
 root_node = NodePath("../..")
 anims/RESET = SubResource( 29 )
 anims/attack_punch = SubResource( 30 )
+anims/gather_stone = SubResource( 51 )
 anims/gather_wood = SubResource( 45 )
 anims/idle = SubResource( 31 )
 anims/walk = SubResource( 32 )
@@ -727,7 +858,6 @@ anims/walk = SubResource( 32 )
 [node name="AnimationTree" type="AnimationTree" parent="pivot"]
 tree_root = SubResource( 42 )
 anim_player = NodePath("../UpperBodyAnimationPlayer")
-active = true
 parameters/playback = SubResource( 43 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

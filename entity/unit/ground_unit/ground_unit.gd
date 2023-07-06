@@ -7,6 +7,8 @@ export var attack_range :float
 export var color_coat :Color
 
 var target # BaseUnit or BaseResources
+var final_attack_damage :int
+var final_attack_range :float
 
 var _attack_delay_timer :Timer
 var _hit_particle :HitParticle
@@ -110,7 +112,7 @@ func moving(delta :float) -> void:
 	var pos :Vector3 = global_transform.origin
 	var target_pos :Vector3 = target.global_transform.origin
 	
-	if pos.distance_to(target_pos) > attack_range:
+	if pos.distance_to(target_pos) > final_attack_range:
 		return
 		
 	if not _is_align(target_pos):
@@ -136,11 +138,11 @@ func _is_align(_target_pos :Vector3) -> bool:
 func perform_attack():
 	if target is BaseUnit:
 		if _is_master:
-			target.take_damage(attack_damage)
+			target.take_damage(final_attack_damage)
 		
 	elif target is BaseResources:
 		if _is_master:
-			target.take_damage(attack_damage)
+			target.take_damage(final_attack_damage)
 	
 func _check_target():
 	target = null

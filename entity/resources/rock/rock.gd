@@ -14,4 +14,4 @@ func _ready():
 	_mesh_instance.rotation_degrees.y = rotate_value
 	_mesh_instance.software_skinning_transform_normals = false
 	
-	._create_collision_shape(_mesh_instance)
+	#._create_collision_shape(_mesh_instance)

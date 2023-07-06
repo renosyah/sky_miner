@@ -47,32 +47,32 @@ func spawn_player_heroes():
 		hero.node_name = "player_%s" % player.player_network_unique_id
 		hero.network_id = player.player_network_unique_id
 		hero.position = Vector3(index, 150, index)
-		hero.level = 1
+		hero.level = 100
 		hero.team = player_team 
 		hero.color_coat = Color.green
 		hero.inventories = []
 		
-		for i in 5:
-			var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
-			coin.node_name = "%s_coin_%s" % [hero.node_name, i]
-			coin.network_id = Network.PLAYER_HOST_ID
-			coin.position = Vector3.ZERO
-			coin.enable_pickup = false
-			hero.inventories.append(coin)
+#		for i in 5:
+#			var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
+#			coin.node_name = "%s_coin_%s" % [hero.node_name, i]
+#			coin.network_id = Network.PLAYER_HOST_ID
+#			coin.position = Vector3.ZERO
+#			coin.enable_pickup = false
+#			hero.inventories.append(coin)
 			
-		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
-		axe.node_name = "%s_axe_%s" % [hero.node_name, 1]
-		axe.network_id = Network.PLAYER_HOST_ID
-		axe.position = Vector3.ZERO
-		axe.enable_pickup = false
-		hero.inventories.append(axe)
-		
-		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
-		pickaxe.node_name = "%s_pickaxe_%s" % [hero.node_name, 1]
-		pickaxe.network_id = Network.PLAYER_HOST_ID
-		pickaxe.position = Vector3.ZERO
-		pickaxe.enable_pickup = false
-		hero.inventories.append(pickaxe)
+#		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
+#		axe.node_name = "%s_axe_%s" % [hero.node_name, 1]
+#		axe.network_id = Network.PLAYER_HOST_ID
+#		axe.position = Vector3.ZERO
+#		axe.enable_pickup = false
+#		hero.inventories.append(axe)
+#
+#		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
+#		pickaxe.node_name = "%s_pickaxe_%s" % [hero.node_name, 1]
+#		pickaxe.network_id = Network.PLAYER_HOST_ID
+#		pickaxe.position = Vector3.ZERO
+#		pickaxe.enable_pickup = false
+#		hero.inventories.append(pickaxe)
 		
 		heroes.append(hero)
 		index += 10
@@ -88,7 +88,7 @@ func spawn_player_airship():
 		airship.node_name = "player_%s" % player.player_network_unique_id
 		airship.network_id = player.player_network_unique_id
 		airship.position = _map.get_entry_points(player_index)[1] + Vector3(10,0,0)
-		airship.level = 1
+		airship.level = 100
 		airship.team = player_team 
 		airship.color_coat = Color.green
 		
@@ -159,7 +159,19 @@ func spawn_coins():
 		coin.enable_pickup = true
 		coins.append(coin)
 		
-	.spawn_items(coins)
+	var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
+	axe.node_name = "world_axe_%s" % 1
+	axe.network_id = Network.PLAYER_HOST_ID
+	axe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
+	axe.enable_pickup = true
+	
+	var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
+	pickaxe.node_name = "world_pickaxe_%s" % 1
+	pickaxe.network_id = Network.PLAYER_HOST_ID
+	pickaxe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
+	pickaxe.enable_pickup = true
+	
+	.spawn_items(coins + [axe, pickaxe])
 	
 	
 func _process(_delta):

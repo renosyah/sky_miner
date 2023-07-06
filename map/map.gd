@@ -53,7 +53,7 @@ func get_entry_points(z_offset :float = 0) -> Array:
 	for i in _entry_points:
 		var pos :Vector3 = i.global_transform.origin
 		var dir_to_center :Vector3 = pos.direction_to(center_point)
-		points.append(pos + (dir_to_center * 20) + Vector3(0, 0, z_offset))
+		points.append(pos + (dir_to_center * 20) + Vector3(0, 0, -z_offset))
 		
 	return points
 	
@@ -86,6 +86,8 @@ func spawn_islands():
 		resource.set_network_master(Network.PLAYER_HOST_ID)
 		resource.resource_mesh_path = tree["mesh_path"]
 		resource.rotate_value = tree["rotate"]
+		resource.hp = 100
+		resource.max_hp = 100
 		resource.connect("take_damage", self, "_resource_take_damage")
 		resource.connect("dead", self, "_resource_dead")
 		resource.connect("reset", self, "_resource_reset")
@@ -98,6 +100,8 @@ func spawn_islands():
 		resource.set_network_master(Network.PLAYER_HOST_ID)
 		resource.resource_mesh_path = ore["mesh_path"]
 		resource.rotate_value = ore["rotate"]
+		resource.hp = 100
+		resource.max_hp = 100
 		resource.connect("take_damage", self, "_resource_take_damage")
 		resource.connect("dead", self, "_resource_dead")
 		resource.connect("reset", self, "_resource_reset")

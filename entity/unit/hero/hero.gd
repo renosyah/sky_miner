@@ -57,10 +57,12 @@ func moving(delta :float) -> void:
 					if equiped_item is Axe:
 						return
 						
-				_unequip_item()
+					else:
+						_unequip_item()
+						
 				equiped_item = item.duplicate()
-				equiped_item.visible = true
 				equip_parent.add_child(equiped_item)
+				equiped_item.visible = true
 				return
 				
 			if is_stone and (item is PickAxe):
@@ -68,13 +70,17 @@ func moving(delta :float) -> void:
 					if equiped_item is PickAxe:
 						return
 						
-				_unequip_item()
+					else:
+						_unequip_item()
+						
 				equiped_item = item.duplicate()
-				equiped_item.visible = true
 				equip_parent.add_child(equiped_item)
+				equiped_item.visible = true
 				return
 			
-			
+		if currently_equip:
+			_unequip_item()
+		
 func perform_attack():
 	final_attack_damage = attack_damage
 	

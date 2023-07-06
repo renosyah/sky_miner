@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://entity/resources/trees/trees.gd" type="Script" id=3]
+
+[sub_resource type="CylinderShape" id=1]
+height = 3.98087
+radius = 1.03511
 
 [node name="trees" type="StaticBody"]
 script = ExtResource( 3 )
@@ -8,3 +12,7 @@ type_resource = 1
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 software_skinning_transform_normals = false
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.94455, 0 )
+shape = SubResource( 1 )

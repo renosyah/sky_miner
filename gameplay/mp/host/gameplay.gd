@@ -98,7 +98,7 @@ func spawn_player_airship():
 			t.node_name = "%s_turret_%s" % [airship.node_name, index]
 			t.level = airship.level
 			airship.turrets.append(t)
-
+			
 		airships_to_spawn.append(airship)
 		player_index += 10
 		
@@ -153,6 +153,7 @@ func spawn_coins():
 	for i in 25:
 		var pos :Vector3 = _map.get_random_island().get_random_position()
 		var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
+		coin.item_id = "item_coin"
 		coin.node_name = "world_coin_%s" % i
 		coin.network_id = Network.PLAYER_HOST_ID
 		coin.position = pos + Vector3(0, 0.60, 0)
@@ -160,12 +161,14 @@ func spawn_coins():
 		coins.append(coin)
 		
 	var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
+	axe.item_id = "item_axe"
 	axe.node_name = "world_axe_%s" % 1
 	axe.network_id = Network.PLAYER_HOST_ID
 	axe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
 	axe.enable_pickup = true
 	
 	var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
+	axe.item_id = "item_pickaxe"
 	pickaxe.node_name = "world_pickaxe_%s" % 1
 	pickaxe.network_id = Network.PLAYER_HOST_ID
 	pickaxe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()

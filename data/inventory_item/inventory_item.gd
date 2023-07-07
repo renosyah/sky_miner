@@ -10,6 +10,7 @@ export var network_id :int
 export var scene_path :String
 export var position :Vector3
 
+export var item_id :String
 export var enable_pickup :bool
 
 func from_dictionary(data : Dictionary):
@@ -24,6 +25,7 @@ func from_dictionary(data : Dictionary):
 	scene_path = data["scene_path"]
 	position = data["position"]
 	
+	item_id = data["item_id"]
 	enable_pickup = data["enable_pickup"]
 
 func to_dictionary() -> Dictionary :
@@ -38,6 +40,7 @@ func to_dictionary() -> Dictionary :
 	data["scene_path"] = scene_path
 	data["position"] = position
 	
+	data["item_id"] = item_id
 	data["enable_pickup"] = enable_pickup
 	
 	return data
@@ -45,6 +48,7 @@ func to_dictionary() -> Dictionary :
 func spawn_item(parent :Node) -> InventoryItem:
 	var item :InventoryItem = load(scene_path).instance()
 	item.name = node_name
+	item.item_id = item_id
 	item.item_name = entity_name
 	item.enable_pickup = enable_pickup
 	item.set_network_master(network_id)

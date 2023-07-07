@@ -4,6 +4,7 @@ class_name InventoryItem
 signal picked_up(_item)
 signal droped(_item)
 
+export var item_id :String
 export var item_name :String
 export var enable_pickup :bool
 

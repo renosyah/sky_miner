@@ -55,7 +55,7 @@ func perform_attack():
 	.perform_attack()
 	
 	if is_instance_valid(equiped_item):
-		_animation_states["upper_body"] = equiped_item.animation
+		_animation_states["upper_body"] = equiped_item.attack_animation
 		return
 		
 	_animation_states["upper_body"] = "attack_punch"

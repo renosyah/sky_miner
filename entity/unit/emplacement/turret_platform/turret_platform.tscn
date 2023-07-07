@@ -12,7 +12,7 @@ albedo_color = Color( 0.576471, 0.352941, 0.156863, 1 )
 
 [sub_resource type="CylinderShape" id=3]
 height = 0.595659
-radius = 2.05855
+radius = 0.635387
 
 [sub_resource type="CylinderMesh" id=4]
 top_radius = 0.06
@@ -48,7 +48,15 @@ material/0 = SubResource( 1 )
 material/1 = SubResource( 2 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.226368, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12458, 0.226368, -0.9334 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0562277, 0.226368, 1.39448 )
+shape = SubResource( 3 )
+
+[node name="CollisionShape3" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0571, 0.226368, -0.910909 )
 shape = SubResource( 3 )
 
 [node name="flagpole" type="MeshInstance" parent="."]

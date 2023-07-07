@@ -8,9 +8,13 @@ const hit_melee_sounds = [
 	preload("res://assets/sounds/hero/hit_melee_2.wav"), 
 	preload("res://assets/sounds/hero/hit_melee_3.wav")
 ]
-
-const woods = [BaseResources.type_resource_enum.wood]
-const stones = [BaseResources.type_resource_enum.iron, BaseResources.type_resource_enum.coal]
+const woods = [
+	BaseResources.type_resource_enum.wood
+]
+const stones = [
+	BaseResources.type_resource_enum.iron,
+	BaseResources.type_resource_enum.coal
+]
 
 var equiped_item :InventoryItem
 var equip_parent :Spatial
@@ -28,10 +32,12 @@ func _unequip_item():
 func moving(delta :float) -> void:
 	.moving(delta)
 	
-	final_attack_range = attack_range
-	
 	if not is_instance_valid(equip_parent):
 		return
+		
+	var currently_equip :bool = is_instance_valid(equiped_item)
+	if not currently_equip:
+		final_attack_range = attack_range
 		
 	if not is_instance_valid(target):
 		_unequip_item()
@@ -48,7 +54,6 @@ func moving(delta :float) -> void:
 	elif target is BaseResources:
 		var is_wood :bool = target.type_resource in woods
 		var is_stone :bool = target.type_resource in stones
-		var currently_equip :bool = is_instance_valid(equiped_item)
 		
 		for i in inventories:
 			var item :InventoryItem = i
@@ -62,7 +67,8 @@ func moving(delta :float) -> void:
 						
 				equiped_item = item.duplicate()
 				equip_parent.add_child(equiped_item)
-				equiped_item.visible = true
+				equiped_item.equip()
+				final_attack_range = equiped_item.attack_range
 				return
 				
 			if is_stone and (item is PickAxe):
@@ -75,7 +81,8 @@ func moving(delta :float) -> void:
 						
 				equiped_item = item.duplicate()
 				equip_parent.add_child(equiped_item)
-				equiped_item.visible = true
+				equiped_item.equip()
+				final_attack_range = equiped_item.attack_range
 				return
 			
 		if currently_equip:

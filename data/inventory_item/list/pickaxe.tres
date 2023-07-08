@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 entity_name = "Pickaxe"
-entity_icon = ""
+entity_icon = "res://assets/ui/icons/item/pickaxe.png"
 description = "For gathering coal or iron"
 node_name = ""
 network_id = 0

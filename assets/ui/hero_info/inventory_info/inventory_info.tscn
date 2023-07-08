@@ -1,11 +1,11 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://assets/ui/bar/circle_fill.png" type="Texture" id=1]
-[ext_resource path="res://assets/ui/fonts/montserrat_eb_16.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/ui/fonts/montserrat_eb_16.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/ui/bar/circle_fill.png" type="Texture" id=2]
 [ext_resource path="res://assets/ui/bar/circle.png" type="Texture" id=3]
-[ext_resource path="res://assets/ui/airship_info/turret_info/turret_potrait.gd" type="Script" id=4]
+[ext_resource path="res://assets/ui/hero_info/inventory_info/inventory_info.gd" type="Script" id=4]
 
-[node name="turret_potrait" type="MarginContainer"]
+[node name="inventory_info" type="MarginContainer"]
 margin_right = 80.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 80, 80 )
@@ -15,7 +15,7 @@ script = ExtResource( 4 )
 [node name="bg" type="NinePatchRect" parent="."]
 margin_right = 80.0
 margin_bottom = 80.0
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 patch_margin_left = 32
 patch_margin_top = 32
 patch_margin_right = 32
@@ -25,7 +25,7 @@ patch_margin_bottom = 32
 modulate = Color( 0.239216, 0.239216, 0.239216, 0.733333 )
 margin_right = 80.0
 margin_bottom = 80.0
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 patch_margin_left = 32
 patch_margin_top = 32
 patch_margin_right = 32
@@ -45,32 +45,7 @@ patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
-[node name="fire_rate" type="TextureProgress" parent="."]
-margin_right = 80.0
-margin_bottom = 80.0
-max_value = 1.0
-step = 0.01
-value = 0.25
-texture_progress = ExtResource( 1 )
-fill_mode = 5
-tint_progress = Color( 1, 1, 1, 0.494118 )
-nine_patch_stretch = true
-stretch_margin_left = 32
-stretch_margin_right = 32
-
-[node name="reload" type="TextureProgress" parent="."]
-margin_right = 80.0
-margin_bottom = 80.0
-max_value = 1.0
-step = 0.01
-value = 0.25
-texture_progress = ExtResource( 1 )
-tint_progress = Color( 1, 1, 1, 0.494118 )
-nine_patch_stretch = true
-stretch_margin_left = 32
-stretch_margin_right = 32
-
-[node name="ammo" type="Label" parent="."]
+[node name="total" type="Label" parent="."]
 margin_left = 35.0
 margin_top = 34.0
 margin_right = 44.0
@@ -84,9 +59,7 @@ custom_constants/shadow_offset_x = 1
 custom_constants/line_spacing = 1
 custom_constants/shadow_offset_y = 1
 custom_constants/shadow_as_outline = 1
-custom_fonts/font = ExtResource( 2 )
+custom_fonts/font = ExtResource( 1 )
 text = "1"
 align = 1
 valign = 1
-
-[node name="Tween" type="Tween" parent="."]

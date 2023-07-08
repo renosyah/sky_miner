@@ -7,6 +7,9 @@ onready var _pivot = $pivot
 func set_distance(_distance :float):
 	_camera.translation.z = clamp(_distance, 10, 25)
 	
+func interpolate_translation(to :Vector3, delta :float):
+	translation = translation.linear_interpolate(to, 5 * delta)
+	
 func set_angle(_angle :float):
 	_pivot.rotation_degrees.x = clamp(_angle, -60, -15)
 	

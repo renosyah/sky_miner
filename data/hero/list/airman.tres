@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 entity_name = "Airman"
-entity_icon = ""
+entity_icon = "res://assets/ui/icons/hero/airman.png"
 description = "Basic training airman"
 node_name = ""
 network_id = 0

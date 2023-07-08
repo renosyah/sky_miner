@@ -43,6 +43,12 @@ func setup_camera():
 # sounds
 var _sound :AudioStreamPlayer
 
+const pickup_item_sounds = [
+	preload("res://assets/sounds/coin/coin_1.wav"),
+	preload("res://assets/sounds/coin/coin_2.wav"),
+	preload("res://assets/sounds/coin/coin_3.wav")
+]
+
 func setup_sound():
 	_sound = AudioStreamPlayer.new()
 	add_child(_sound)
@@ -209,15 +215,22 @@ remotesync func _spawn_hero(_data :Dictionary, _parent_path :NodePath):
 		return
 		
 	var hero :Hero = _hero_data.spawn_hero(_parent)
+	
+	for inventory in _hero_data.inventories:
+		var item :InventoryItemData = inventory
+		var item_spawn :InventoryItem = item.spawn_item(hero)
+		hero.inventories.append(item_spawn)
+		item_spawned(item, item_spawn)
+	
 	on_hero_spawned(_hero_data, hero)
 	
-func on_hero_spawned(_data :HeroData, hero :Hero):
-	var is_player = (_data.node_name == "player_%s" % NetworkLobbyManager.get_id())
+func on_hero_spawned(data :HeroData, hero :Hero):
+	var is_player = (data.node_name == "player_%s" % NetworkLobbyManager.get_id())
 	var is_same_team = (hero.team == player_team)
 	
 	var hp_bar = preload("res://assets/bar-3d/hp_bar_3d.tscn").instance()
-	hp_bar.tag_name = _data.entity_name
-	hp_bar.level = _data.level
+	hp_bar.tag_name = data.entity_name
+	hp_bar.level = data.level
 	hp_bar.enable_label = true
 	hp_bar.color = Color.green if is_player else (Color.blue if is_same_team else Color.red)
 	hp_bar.attach_to = hero.get_path()
@@ -236,6 +249,9 @@ func on_hero_spawned(_data :HeroData, hero :Hero):
 		player_hero.connect("take_damage", self, "on_player_hero_take_damage")
 		player_hero.connect("dead", self, "on_player_hero_dead")
 		player_hero.connect("reset", self, "on_player_hero_reset")
+		
+		_ui.hero_info.display_info(data.entity_name, data.entity_icon, data.color_coat)
+		_ui.hero_info.display_inventory(player_hero.inventories, data.color_coat)
 		
 ################################################################
 # airship spawner
@@ -315,13 +331,13 @@ func on_airship_spawned(data :AirshipData, airship :AirShip):
 		player_airship.connect("dead", self, "on_player_airship_dead")
 		player_airship.connect("reset", self, "on_player_airship_reset")
 		
-		_ui.airship_info.display_info(data.entity_name, data.entity_icon, data.color_coat)
-		_ui.airship_info.display_turrets(data, airship, data.color_coat)
-		
 		landing_zone_validator = preload("res://assets/utils/landing_zone_validator/landing_zone_validator.tscn").instance()
 		landing_zone_validator.enable = true
 		landing_zone_validator.follow_body = player_airship.get_path()
 		add_child(landing_zone_validator)
+		
+		_ui.airship_info.display_info(data.entity_name, data.entity_icon, data.color_coat)
+		_ui.airship_info.display_turrets(data, airship, data.color_coat)
 	
 func _on_player_airship_bot_enemy_lose():
 	pass
@@ -419,7 +435,9 @@ remotesync func _spawn_item(_data :Dictionary, _parent_path :NodePath):
 	item_spawned(_item_data, _item)
 	
 func item_spawned(_data :InventoryItemData, _item :InventoryItem):
-	pass
+	_item.connect("picked_up",self, "on_item_picked_up", [_data])
+	_item.connect("droped", self, "on_item_dropped", [_data])
+	
 	
 ################################################################
 # unit signals handler
@@ -459,9 +477,7 @@ func on_player_airship_take_damage(unit :BaseUnit, _damage :int):
 	_ui.hurt_indicator.show_hurt()
 	
 func on_player_airship_dead(_unit :AirShip):
-	if _unit == player_airship:
-		_ui.airship_info.repawn_indicator.start("Respawn", 15)
-		
+	_ui.airship_info.repawn_indicator.start("Respawn", 15)
 	_ui.hurt_indicator.hide_hurt()
 	
 func on_player_airship_reset(_unit :AirShip):
@@ -471,7 +487,7 @@ func on_player_hero_take_damage(_unit :BaseUnit, _damage :int):
 	pass
 	
 func on_player_hero_dead(_unit :AirShip):
-	pass
+	_ui.hero_info.repawn_indicator.start("Respawn", 15)
 	
 func on_player_hero_reset(_unit :AirShip):
 	on_enter_airship()
@@ -480,7 +496,17 @@ func on_player_hero_reset(_unit :AirShip):
 	_ui.exit_enter.wait_time = 30
 	_ui.exit_enter.start()
 	
+func on_item_picked_up(_item :InventoryItem, _by :Hero, _item_data :InventoryItemData):
+	if _by == player_hero:
+		_sound.stream = pickup_item_sounds[rand_range(0, pickup_item_sounds.size())]
+		_sound.play()
+		
+		_ui.hero_info.display_inventory(player_hero.inventories, _by.color_coat)
 	
+func on_item_dropped(_item :InventoryItem, _from :Hero, _item_data :InventoryItemData):
+	if _from == player_hero:
+		_ui.hero_info.display_inventory(player_hero.inventories, _from.color_coat)
+		
 ################################################################
 # airships bot
 func enable_airship_bot(_bot :Bot, _val :bool):
@@ -526,7 +552,7 @@ func hero_updated(_hero :Hero):
 	
 ################################################################
 # proccess
-func _process(_delta):
+func _process(delta):
 	if not is_all_valid():
 		return
 		
@@ -536,12 +562,11 @@ func _process(_delta):
 	
 	match (control_mode):
 		controlFocus.airship:
-			player_input_airship_control()
+			player_input_airship_control(delta)
 			validate_landing_zone()
 			
 		controlFocus.hero:
-			player_input_hero_control()
-			
+			player_input_hero_control(delta)
 	
 func is_all_valid() -> bool:
 	var _valid_objects :Array = [
@@ -553,14 +578,14 @@ func is_all_valid() -> bool:
 	return not _valid_objects.has(false)
 	
 # player control airship
-func player_input_airship_control():
+func player_input_airship_control(delta :float):
 	player_airship.move_direction = _ui.get_joystick_direction()
-	_camera.translation = player_airship.translation
+	_camera.interpolate_translation(player_airship.translation, delta)
 	_camera.set_distance(player_airship.throttle * player_airship.speed)
 	_camera.set_angle(-60)
 	
 # player control hero
-func player_input_hero_control():
+func player_input_hero_control(delta :float):
 	player_hero.move_direction = _ui.get_joystick_direction()
 	var post_to_follow :Vector3 = player_hero.translation 
 	post_to_follow.y = player_airship.translation.y
@@ -570,11 +595,14 @@ func player_input_hero_control():
 		player_airship_bot.move_to(post_to_follow, 10, true)
 	
 	if is_in_area and not player_airship.is_dead:
-		_camera.translation = get_avg_position([player_hero.translation, player_airship.translation], 15)
+		_camera.interpolate_translation(get_avg_position(
+			[player_hero.translation, player_airship.translation], 15),
+			delta
+		)
 		_camera.set_distance(12)
 		
 	else:
-		_camera.translation = player_hero.translation
+		_camera.interpolate_translation(player_hero.translation, delta)
 		_camera.set_distance(10)
 		
 	_camera.set_angle(-55)

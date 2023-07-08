@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://entity/inventory_item/coin/coin.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://entity/inventory_item/coin/coin.gd" type="Script" id=2]
@@ -7,6 +7,13 @@
 flags_vertex_lighting = true
 albedo_color = Color( 0.882353, 0.709804, 0, 1 )
 
+[sub_resource type="SphereMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_transparent = true
+flags_vertex_lighting = true
+albedo_color = Color( 0.65098, 0.321569, 0, 0.501961 )
+
 [node name="coin" type="Spatial"]
 script = ExtResource( 2 )
 
@@ -14,3 +21,10 @@ script = ExtResource( 2 )
 mesh = ExtResource( 1 )
 software_skinning_transform_normals = false
 material/0 = SubResource( 1 )
+
+[node name="glowing" type="MeshInstance" parent="."]
+visible = false
+cast_shadow = 0
+mesh = SubResource( 4 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 3 )

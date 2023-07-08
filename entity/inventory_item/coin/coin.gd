@@ -1,14 +1,17 @@
 extends InventoryItem
 
-const coins = [
-	preload("res://assets/sounds/coin/coin_1.wav"),
-	preload("res://assets/sounds/coin/coin_2.wav"),
-	preload("res://assets/sounds/coin/coin_3.wav")
-]
+onready var glowing = $glowing
 
-func picked_up():
-	.picked_up()
-	_sound.stream = coins[rand_range(0, coins.size())]
-	_sound.play()
+func _ready():
+	glowing.visible = enable_pickup
+
+func picked_up(_by):
+	.picked_up(_by)
 	
+	glowing.visible = false
+	
+func drop(_to :Node):
+	.drop(_to)
+	
+	glowing.visible = true
 	

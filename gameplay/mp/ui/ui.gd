@@ -5,6 +5,8 @@ signal exit_airship
 signal enter_airship
 
 onready var airship_info = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer/airship_info
+onready var hero_info = $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer2/hero_info
+
 onready var virtual_joystick =  $CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/virtual_joystick
 onready var hurt_indicator = $CanvasLayer/Control/hurt
 

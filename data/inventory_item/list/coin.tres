@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource( 1 )
 entity_name = "Coin"
-entity_icon = ""
+entity_icon = "res://assets/ui/icons/item/coin.png"
 description = "Main currency"
 node_name = ""
 network_id = 0

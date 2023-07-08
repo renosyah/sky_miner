@@ -124,6 +124,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://data/hero/hero.gd"
 }, {
+"base": "HBoxContainer",
+"class": "HeroInfo",
+"language": "GDScript",
+"path": "res://assets/ui/hero_info/hero_info.gd"
+}, {
 "base": "Area",
 "class": "HeroSpotter",
 "language": "GDScript",
@@ -168,6 +173,11 @@ _global_script_classes=[ {
 "class": "InputEventSingleScreenTouch",
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
+}, {
+"base": "MarginContainer",
+"class": "InventoryInfo",
+"language": "GDScript",
+"path": "res://assets/ui/hero_info/inventory_info/inventory_info.gd"
 }, {
 "base": "Spatial",
 "class": "InventoryItem",
@@ -318,6 +328,7 @@ _global_script_class_icons={
 "GroundUnit": "",
 "Hero": "",
 "HeroData": "",
+"HeroInfo": "",
 "HeroSpotter": "",
 "HitParticle": "",
 "HpBar3D": "",
@@ -327,6 +338,7 @@ _global_script_class_icons={
 "InputEventSingleScreenDrag": "",
 "InputEventSingleScreenTap": "",
 "InputEventSingleScreenTouch": "",
+"InventoryInfo": "",
 "InventoryItem": "",
 "InventoryItemData": "",
 "LandingZoneValidator": "",

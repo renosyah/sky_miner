@@ -1,17 +1,17 @@
 extends Spatial
 class_name InventoryItem
 
-signal picked_up(_item)
-signal droped(_item)
+signal picked_up(_item, _by)
+signal droped(_item, _from)
 
 export var item_id :String
 export var item_name :String
+export var icon :String
 export var enable_pickup :bool
 
 var _pickup_area :Area
 var _collision :CollisionShape
 var _interact_tween :Tween
-var _sound :AudioStreamPlayer3D
 
 func _ready():
 	_pickup_area = Area.new()
@@ -29,10 +29,6 @@ func _ready():
 	
 	_interact_tween = Tween.new()
 	add_child(_interact_tween)
-	
-	_sound = AudioStreamPlayer3D.new()
-	_sound.unit_size = Global.sound_amplified
-	add_child(_sound)
 	
 	_reset()
 	
@@ -68,11 +64,11 @@ func pickup(_by :BaseUnit):
 	_by.add_child(self)
 	_by.inventories.append(self)
 	
-	picked_up()
+	picked_up(_by)
 	_reset()
 	
-func picked_up():
-	emit_signal("picked_up", self)
+func picked_up(_by):
+	emit_signal("picked_up", self, _by)
 	
 	
 func drop(_to :Node):
@@ -89,13 +85,13 @@ func drop(_to :Node):
 	_to.add_child(self)
 	_parent.inventories.erase(self)
 	
-	droped()
+	droped(_parent)
 	
 	_reset()
-	translation = _parent.global_transform.origin
+	translation = _get_rand_pos(_parent.global_transform.origin)
 	
-func droped():
-	emit_signal("droped", self)
+func droped(_from):
+	emit_signal("droped", self, _from)
 	
 func _reset():
 	translation = Vector3.ZERO
@@ -105,3 +101,17 @@ func _reset():
 	set_as_toplevel(enable_pickup)
 	set_process(enable_pickup)
 	
+func _get_rand_pos(from :Vector3) -> Vector3:
+	var angle := rand_range(0, TAU)
+	var distance := rand_range(1, 3)
+	var posv2 = polar2cartesian(distance, angle)
+	var posv3 = from + Vector3(posv2.x, 0, posv2.y)
+	return posv3
+
+
+
+
+
+
+
+

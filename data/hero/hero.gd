@@ -88,12 +88,6 @@ func spawn_hero(parent :Node) -> Hero:
 	parent.add_child(hero)
 	hero.translation = position
 	hero.visible = false
-	
-	for inventory in inventories:
-		var item :InventoryItemData = inventory
-		var item_spawn :InventoryItem = item.spawn_item(hero)
-		hero.inventories.append(item_spawn)
-		
 	return hero
 	
 

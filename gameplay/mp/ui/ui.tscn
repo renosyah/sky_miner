@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://gameplay/mp/ui/ui.gd" type="Script" id=1]
 [ext_resource path="res://addons/SafeArea/SafeArea.gd" type="Script" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/ui/hurt/hurt.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/ui/airship_info/airship_info.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/ui/button/exit_enter.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/ui/hero_info/hero_info.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/ui/loading/action_delay.tscn" type="PackedScene" id=12]
 
 [node name="ui" type="Control"]
@@ -69,8 +70,22 @@ margin_right = 588.0
 margin_bottom = 128.0
 size_flags_horizontal = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
 margin_top = 138.0
+margin_right = 588.0
+margin_bottom = 266.0
+
+[node name="hero_info" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 8 )]
+margin_bottom = 128.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer2"]
+margin_left = 386.0
+margin_right = 588.0
+margin_bottom = 128.0
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
+margin_top = 270.0
 margin_right = 588.0
 margin_bottom = 491.0
 mouse_filter = 2

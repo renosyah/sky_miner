@@ -50,6 +50,7 @@ func spawn_item(parent :Node) -> InventoryItem:
 	item.name = node_name
 	item.item_id = item_id
 	item.item_name = entity_name
+	item.icon = entity_icon
 	item.enable_pickup = enable_pickup
 	item.set_network_master(network_id)
 	parent.add_child(item)

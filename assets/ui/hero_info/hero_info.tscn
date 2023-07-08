@@ -1,74 +1,86 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://addons/server-browser/font/montserrat_eb_32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/ui/fonts/montserrat_eb_16.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/ui/bar/circle_fill.png" type="Texture" id=2]
 [ext_resource path="res://assets/ui/bar/circle.png" type="Texture" id=3]
-[ext_resource path="res://assets/ui/loading/action_delay.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/ui/hero_info/hero_info.gd" type="Script" id=6]
 
 [node name="hero_info" type="HBoxContainer"]
-margin_right = 382.0
-margin_bottom = 88.0
-rect_min_size = Vector2( 128, 128 )
+margin_right = 354.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 0, 108 )
 mouse_filter = 2
 script = ExtResource( 6 )
 
-[node name="airship_potrait" type="MarginContainer" parent="."]
-margin_right = 128.0
-margin_bottom = 128.0
-rect_min_size = Vector2( 128, 128 )
+[node name="hero_potrait" type="MarginContainer" parent="."]
+margin_right = 100.0
+margin_bottom = 108.0
+rect_min_size = Vector2( 100, 80 )
 
-[node name="bg" type="NinePatchRect" parent="airship_potrait"]
-margin_right = 128.0
-margin_bottom = 128.0
+[node name="bg" type="NinePatchRect" parent="hero_potrait"]
+margin_right = 100.0
+margin_bottom = 108.0
 texture = ExtResource( 2 )
 patch_margin_left = 32
 patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="airship_potrait"]
+[node name="NinePatchRect2" type="NinePatchRect" parent="hero_potrait"]
 modulate = Color( 0.239216, 0.239216, 0.239216, 0.733333 )
-margin_right = 128.0
-margin_bottom = 128.0
+margin_right = 100.0
+margin_bottom = 108.0
 texture = ExtResource( 2 )
 patch_margin_left = 32
 patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
-[node name="icon" type="TextureRect" parent="airship_potrait"]
-margin_right = 128.0
-margin_bottom = 120.0
-rect_min_size = Vector2( 0, 120 )
-size_flags_vertical = 0
+[node name="VBoxContainer" type="VBoxContainer" parent="hero_potrait"]
+margin_right = 100.0
+margin_bottom = 108.0
+
+[node name="icon" type="TextureRect" parent="hero_potrait/VBoxContainer"]
+margin_right = 100.0
+margin_bottom = 99.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 expand = true
 
-[node name="repawn" parent="airship_potrait" instance=ExtResource( 4 )]
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_left = 14.0
-margin_top = 14.0
-margin_right = 114.0
-margin_bottom = 114.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
+[node name="MarginContainer" type="MarginContainer" parent="hero_potrait/VBoxContainer"]
+margin_top = 103.0
+margin_right = 100.0
+margin_bottom = 108.0
+rect_min_size = Vector2( 0, 5 )
 
-[node name="border" type="NinePatchRect" parent="airship_potrait"]
-margin_right = 128.0
-margin_bottom = 128.0
+[node name="border" type="NinePatchRect" parent="hero_potrait"]
+margin_right = 100.0
+margin_bottom = 108.0
 texture = ExtResource( 3 )
 patch_margin_left = 32
 patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
+[node name="respawn_indicator" type="TextureProgress" parent="hero_potrait"]
+margin_right = 100.0
+margin_bottom = 108.0
+max_value = 1.0
+step = 0.01
+texture_progress = ExtResource( 2 )
+fill_mode = 3
+tint_progress = Color( 1, 1, 1, 0.494118 )
+nine_patch_stretch = true
+stretch_margin_left = 32
+stretch_margin_right = 32
+
+[node name="respawn_timer" type="Timer" parent="hero_potrait"]
+one_shot = true
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 132.0
-margin_right = 382.0
-margin_bottom = 128.0
+margin_left = 104.0
+margin_right = 354.0
+margin_bottom = 108.0
 
 [node name="name" type="Label" parent="VBoxContainer"]
 margin_right = 250.0
@@ -84,5 +96,5 @@ valign = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 44.0
 margin_right = 250.0
-margin_bottom = 128.0
+margin_bottom = 108.0
 size_flags_vertical = 3

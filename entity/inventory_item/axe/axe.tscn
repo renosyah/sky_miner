@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://entity/inventory_item/axe/axe.gd" type="Script" id=1]
 [ext_resource path="res://entity/inventory_item/axe/axe.obj" type="ArrayMesh" id=2]
@@ -11,10 +11,21 @@ albedo_color = Color( 0.470588, 0.223529, 0, 1 )
 
 [sub_resource type="SphereMesh" id=4]
 
+[sub_resource type="Gradient" id=6]
+interpolation_mode = 2
+colors = PoolColorArray( 1, 1, 1, 0.243137, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture2D" id=3]
+flags = 3
+gradient = SubResource( 6 )
+fill_from = Vector2( 0.5, 0.5 )
+fill_to = Vector2( 0.5, 0 )
+
 [sub_resource type="SpatialMaterial" id=5]
 flags_transparent = true
 flags_vertex_lighting = true
-albedo_color = Color( 0, 0.45, 0.02, 0.5 )
+albedo_color = Color( 0, 0.45, 0.02, 0.35 )
+albedo_texture = SubResource( 3 )
 
 [node name="axe" type="Spatial"]
 script = ExtResource( 1 )
@@ -26,7 +37,6 @@ material/0 = SubResource( 1 )
 material/1 = SubResource( 2 )
 
 [node name="glowing" type="MeshInstance" parent="."]
-visible = false
 cast_shadow = 0
 mesh = SubResource( 4 )
 software_skinning_transform_normals = false

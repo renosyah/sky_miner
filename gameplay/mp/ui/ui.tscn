@@ -58,34 +58,33 @@ mouse_filter = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
 margin_top = 6.0
 margin_right = 588.0
-margin_bottom = 134.0
+margin_bottom = 114.0
 
 [node name="airship_info" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 6 )]
-margin_top = 0.0
-margin_bottom = 128.0
+margin_bottom = 108.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 386.0
+margin_left = 358.0
 margin_right = 588.0
-margin_bottom = 128.0
+margin_bottom = 108.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
-margin_top = 138.0
+margin_top = 118.0
 margin_right = 588.0
-margin_bottom = 266.0
+margin_bottom = 226.0
 
 [node name="hero_info" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 8 )]
-margin_bottom = 128.0
+margin_bottom = 108.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 386.0
+margin_left = 358.0
 margin_right = 588.0
-margin_bottom = 128.0
+margin_bottom = 108.0
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
-margin_top = 270.0
+margin_top = 230.0
 margin_right = 588.0
 margin_bottom = 491.0
 mouse_filter = 2
@@ -134,6 +133,14 @@ rect_min_size = Vector2( 2, 0 )
 mouse_filter = 2
 
 [node name="action_delay" parent="CanvasLayer/Control" instance=ExtResource( 12 )]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -64.0
+margin_top = -64.0
+margin_right = 64.0
+margin_bottom = 64.0
 
 [connection signal="enter" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_enter"]
 [connection signal="exit" from="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/Control/exit_enter" to="." method="_on_exit_enter_exit"]

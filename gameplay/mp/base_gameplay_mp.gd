@@ -97,22 +97,19 @@ func setup_ui():
 	add_child(_ui)
 	
 func on_exit_airship():
-	if not is_instance_valid(landing_zone_validator):
-		return
-		
-	landing_zone_validator.enable = false
-	enable_airship_bot(player_airship_bot, true)
+	if is_instance_valid(landing_zone_validator):
+		landing_zone_validator.enable = false
+		last_landing_spot = landing_zone_validator.position + Vector3(0,8,0)
 	
-	last_landing_spot = landing_zone_validator.position + Vector3(0,8,0)
+	enable_airship_bot(player_airship_bot, true)
 	enable_hero(player_hero, true, last_landing_spot)
 	
 	control_mode = controlFocus.hero
 	
 func on_enter_airship():
-	if not is_instance_valid(landing_zone_validator):
-		return
+	if is_instance_valid(landing_zone_validator):
+		landing_zone_validator.enable = true
 		
-	landing_zone_validator.enable = true
 	enable_airship_bot(player_airship_bot, false)
 	enable_hero(player_hero, false, player_hero_spawn_pos)
 	
@@ -477,7 +474,7 @@ func on_player_airship_take_damage(unit :BaseUnit, _damage :int):
 	_ui.hurt_indicator.show_hurt()
 	
 func on_player_airship_dead(_unit :AirShip):
-	_ui.airship_info.repawn_indicator.start("Respawn", 15)
+	_ui.airship_info.display_respawn_cooldown(15)
 	_ui.hurt_indicator.hide_hurt()
 	
 func on_player_airship_reset(_unit :AirShip):
@@ -487,7 +484,7 @@ func on_player_hero_take_damage(_unit :BaseUnit, _damage :int):
 	pass
 	
 func on_player_hero_dead(_unit :AirShip):
-	_ui.hero_info.repawn_indicator.start("Respawn", 15)
+	_ui.hero_info.display_respawn_cooldown(5)
 	
 func on_player_hero_reset(_unit :AirShip):
 	on_enter_airship()
@@ -545,11 +542,6 @@ remotesync func _enable_hero(_hero_path :NodePath, _val :bool, _position :Vector
 		
 	_unit.translation = _position
 	
-	hero_updated(_unit)
-	
-func hero_updated(_hero :Hero):
-	pass
-	
 ################################################################
 # proccess
 func _process(delta):
@@ -590,8 +582,12 @@ func player_input_hero_control(delta :float):
 	var post_to_follow :Vector3 = player_hero.translation 
 	post_to_follow.y = player_airship.translation.y
 	
-	var is_in_area :bool = player_airship.translation.distance_to(post_to_follow) < 15
-	if not is_in_area:
+	var dist :float = player_airship.translation.distance_to(post_to_follow)
+	
+	var is_in_range :bool = dist < 5
+	var is_in_area :bool = dist < 15
+	
+	if not is_in_range:
 		player_airship_bot.move_to(post_to_follow, 10, true)
 	
 	if is_in_area and not player_airship.is_dead:

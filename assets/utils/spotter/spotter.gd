@@ -29,9 +29,6 @@ func _on_spotter_body_entered(body):
 	if not body is BaseUnit:
 		return
 		
-	if body.is_dead:
-		return
-		
 	if body.team == team:
 		return
 		

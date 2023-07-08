@@ -27,9 +27,6 @@ func _check_is_unit(body):
 	if not body is BaseUnit:
 		return
 		
-	if body.is_dead:
-		return
-		
 	if body.team == team:
 		return
 		
@@ -37,9 +34,6 @@ func _check_is_unit(body):
 	
 func _check_is_resource(body):
 	if not body is BaseResources:
-		return
-		
-	if body.is_dead:
 		return
 		
 	targets.append(body)

@@ -171,7 +171,7 @@ func spawn_coins():
 	axe.enable_pickup = true
 	
 	var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
-	axe.item_id = "item_pickaxe"
+	pickaxe.item_id = "item_pickaxe"
 	pickaxe.node_name = "world_pickaxe_%s" % 1
 	pickaxe.network_id = Network.PLAYER_HOST_ID
 	pickaxe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()

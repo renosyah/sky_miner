@@ -3,14 +3,25 @@ class_name HeroInfo
 
 const inventory_info_scene = preload("res://assets/ui/hero_info/inventory_info/inventory_info.tscn")
 
-onready var _icon = $airship_potrait/icon
+onready var _icon = $hero_potrait/VBoxContainer/icon
 onready var _name = $VBoxContainer/name
 
-onready var _border = $airship_potrait/border
+onready var _border = $hero_potrait/border
 onready var _inventories_holder = $VBoxContainer/HBoxContainer
 
-onready var repawn_indicator = $airship_potrait/repawn
+onready var respawn_indicator = $hero_potrait/respawn_indicator
+onready var respawn_timer = $hero_potrait/respawn_timer
 
+func display_respawn_cooldown(time :float):
+	respawn_indicator.value = time
+	respawn_indicator.max_value = time
+	respawn_timer.wait_time = time
+	respawn_timer.start()
+	set_process(true)
+	
+func _process(delta):
+	respawn_indicator.value = respawn_timer.time_left
+	
 func display_info(_nm :String, _ic :String, _val :Color):
 	_icon.texture = load(_ic)
 	_name.text = _nm

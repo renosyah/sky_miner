@@ -9,8 +9,23 @@ onready var _name = $VBoxContainer/name
 onready var _border = $airship_potrait/border
 onready var _turret_holder = $VBoxContainer/HBoxContainer
 
-onready var repawn_indicator = $airship_potrait/repawn
+onready var respawn_indicator = $airship_potrait/respawn_indicator
+onready var respawn_timer = $airship_potrait/respawn_timer
 
+
+func display_respawn_cooldown(time :float):
+	respawn_indicator.value = time
+	respawn_indicator.max_value = time
+	respawn_timer.wait_time = time
+	respawn_timer.start()
+	set_process(true)
+	
+func _process(delta):
+	respawn_indicator.value = respawn_timer.time_left
+	
+func _on_respawn_timer_timeout():
+	set_process(false)
+	
 func display_info(_nm :String, _ic :String, _val :Color):
 	_icon.texture = load(_ic)
 	_name.text = _nm
@@ -34,6 +49,9 @@ func display_turrets(data, airship, _val :Color):
 		turret.turret_path = i["turret_path"]
 		turret.color = _val
 		_turret_holder.add_child(turret)
+
+
+
 
 
 

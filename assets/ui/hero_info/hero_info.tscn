@@ -96,5 +96,4 @@ valign = 1
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 44.0
 margin_right = 250.0
-margin_bottom = 108.0
-size_flags_vertical = 3
+margin_bottom = 44.0

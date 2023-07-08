@@ -435,15 +435,28 @@ func item_spawned(_data :InventoryItemData, _item :InventoryItem):
 	_item.connect("picked_up",self, "on_item_picked_up", [_data])
 	_item.connect("droped", self, "on_item_dropped", [_data])
 	
+func sync_dropped_item_position(item :InventoryItem):
+	rpc("_sync_dropped_item_position", item.get_path(), item.translation)
+	
+remotesync func _sync_dropped_item_position(item_path :NodePath, to :Vector3):
+	var item :InventoryItem = get_node_or_null(item_path)
+	if not is_instance_valid(item):
+		return
+		
+	item.translation = to
 	
 ################################################################
 # unit signals handler
 func on_unit_take_damage(_unit :BaseUnit, _damage :int, hp_bar :HpBar3D):
 	hp_bar.update_bar(_unit.hp, _unit.max_hp)
 	
-func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
-	hp_bar.update_bar(0, _unit.max_hp)
+func on_hero_dead(unit :Hero, hp_bar :HpBar3D):
+	hp_bar.update_bar(0, unit.max_hp)
 	hp_bar.visible = false
+	
+	for item in unit.inventories:
+		if item is InventoryItem:
+			item.drop(self)
 	
 func on_hero_reset(unit :Hero, hp_bar :HpBar3D):
 	hp_bar.update_bar(unit.hp, unit.max_hp)
@@ -493,16 +506,17 @@ func on_player_hero_reset(_unit :AirShip):
 	_ui.exit_enter.wait_time = 30
 	_ui.exit_enter.start()
 	
-func on_item_picked_up(_item :InventoryItem, _by :Hero, _item_data :InventoryItemData):
-	if _by == player_hero:
+func on_item_picked_up(_item :InventoryItem, by :Hero, item_data :InventoryItemData):
+	if by == player_hero:
 		_sound.stream = pickup_item_sounds[rand_range(0, pickup_item_sounds.size())]
 		_sound.play()
 		
-		_ui.hero_info.display_inventory(player_hero.inventories, _by.color_coat)
+		_ui.hero_info.display_inventory(player_hero.inventories, player_hero.color_coat)
 	
-func on_item_dropped(_item :InventoryItem, _from :Hero, _item_data :InventoryItemData):
-	if _from == player_hero:
-		_ui.hero_info.display_inventory(player_hero.inventories, _from.color_coat)
+func on_item_dropped(item :InventoryItem, from :Hero, _item_data :InventoryItemData):
+	if from == player_hero:
+		_ui.hero_info.display_inventory(player_hero.inventories, player_hero.color_coat)
+		sync_dropped_item_position(item)
 		
 ################################################################
 # airships bot

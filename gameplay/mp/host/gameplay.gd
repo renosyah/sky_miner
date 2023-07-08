@@ -219,10 +219,6 @@ func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMar
 func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
 	.on_hero_dead(_unit, hp_bar)
 	
-	for i in _unit.inventories:
-		if i is InventoryItem:
-			i.drop(self)
-	
 	yield(get_tree().create_timer(5), "timeout")
 	
 	_unit.reset()

@@ -45,6 +45,8 @@ func unequip():
 	visible = false
 	
 func pickup(_by :BaseUnit):
+	var _parent = get_parent()
+	
 	if not is_instance_valid(_by):
 		return
 		
@@ -54,13 +56,12 @@ func pickup(_by :BaseUnit):
 	if _by.is_dead:
 		return
 		
-	var _parent = get_parent()
 	enable_pickup = false
 	
 	_pickup_area.set_deferred("monitoring", false)
-	_parent.call_deferred("remove_child", self)
 	yield(get_tree(), "idle_frame")
 	
+	_parent.remove_child(self)
 	_by.add_child(self)
 	_by.inventories.append(self)
 	
@@ -78,17 +79,18 @@ func drop(_to :Node):
 		return
 		
 	enable_pickup = true
+	
 	_pickup_area.set_deferred("monitoring", true)
-	_parent.call_deferred("remove_child", self)
 	yield(get_tree(), "idle_frame")
 	
+	_parent.remove_child(self)
 	_to.add_child(self)
 	_parent.inventories.erase(self)
 	
-	droped(_parent)
-	
 	_reset()
 	translation = _get_rand_pos(_parent.global_transform.origin)
+	
+	droped(_parent)
 	
 func droped(_from):
 	emit_signal("droped", self, _from)

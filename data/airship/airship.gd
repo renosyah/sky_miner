@@ -88,6 +88,7 @@ func spawn_airship(parent :Node) -> AirShip:
 		var turret_data :TurretData = data
 		var turret :Turret = load(turret_data.scene_path).instance()
 		turret.name = turret_data.node_name
+		turret.icon = turret_data.entity_icon
 		turret.ignore_body = airship.get_path()
 		turret.attack_damage = LevelSystem.get_value(turret_data.level, turret.attack_damage)
 		turret.max_ammo = LevelSystem.get_value(turret_data.level, turret.max_ammo)

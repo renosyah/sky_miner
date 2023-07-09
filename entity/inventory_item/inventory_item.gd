@@ -10,6 +10,9 @@ export var icon :String
 export var enable_pickup :bool
 export var color_highlight :Color
 
+export var can_stack :bool = true
+export var stack_total :int = 1
+
 var _pickup_area :Area
 var _collision :CollisionShape
 var _interact_tween :Tween
@@ -67,6 +70,14 @@ func pickup(_by :BaseUnit):
 	_pickup_area.set_deferred("monitoring", false)
 	yield(get_tree(), "idle_frame")
 	
+	var checks :Array = have_same_item(_by)
+	if checks[1] and can_stack:
+		checks[0].stack_total += stack_total
+		yield(get_tree(), "idle_frame")
+		picked_up(_by)
+		queue_free()
+		return
+	
 	_parent.remove_child(self)
 	_by.add_child(self)
 	_by.inventories.append(self)
@@ -76,6 +87,13 @@ func pickup(_by :BaseUnit):
 	
 func picked_up(_by):
 	emit_signal("picked_up", self, _by)
+	
+func have_same_item(_by) -> Array:
+	for i in _by.inventories:
+		if i.item_id == item_id:
+			return [i, true]
+			
+	return [null, false]
 	
 	
 func drop(_to :Node):

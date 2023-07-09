@@ -13,7 +13,7 @@ onready var guided_timeout = $guided_timeout
 var projectile_fired :Projectile
 
 func _ready():
-	max_ammo = clamp(max_ammo, 0 ,1)
+	max_ammo = clamp(max_ammo, 0, 1)
 	ammo = max_ammo
 	
 	laser.visible = false

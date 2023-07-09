@@ -20,14 +20,14 @@ func _notification(what):
 			return
 		
 func _disconnected():
-	get_tree().change_scene("res://menu/main_menu/main_menu.tscn")
+	Global.change_scene("res://menu/main_menu/main_menu.tscn")
 
 func _on_back_pressed():
 	Network.disconnect_from_server()
 
 # test
 func _on_play_pressed():
-	get_tree().change_scene("res://gameplay/mp/host/gameplay.tscn")
+	Global.change_scene("res://gameplay/mp/host/gameplay.tscn")
 	
 func _on_host_ready():
-	get_tree().change_scene("res://gameplay/mp/client/gameplay.tscn")
+	Global.change_scene("res://gameplay/mp/client/gameplay.tscn")

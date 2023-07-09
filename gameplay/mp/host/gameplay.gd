@@ -52,26 +52,28 @@ func spawn_player_heroes():
 		hero.color_coat = Color.green
 		hero.inventories = []
 		
-		for i in 5:
-			var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
-			coin.node_name = "%s_coin_%s" % [hero.node_name, i]
-			coin.network_id = Network.PLAYER_HOST_ID
-			coin.position = Vector3.ZERO
-			coin.enable_pickup = false
-			hero.inventories.append(coin)
-
+		var coin :InventoryItemData = preload("res://data/inventory_item/list/coin.tres").duplicate()
+		coin.node_name = "%s_coins"
+		coin.network_id = Network.PLAYER_HOST_ID
+		coin.position = Vector3.ZERO
+		coin.enable_pickup = false
+		coin.stack_total = 5
+		hero.inventories.append(coin)
+	
 		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
 		axe.node_name = "%s_axe_%s" % [hero.node_name, 1]
 		axe.network_id = Network.PLAYER_HOST_ID
 		axe.position = Vector3.ZERO
 		axe.enable_pickup = false
+		axe.stack_total = 1
 		hero.inventories.append(axe)
-
+	
 		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
 		pickaxe.node_name = "%s_pickaxe_%s" % [hero.node_name, 1]
 		pickaxe.network_id = Network.PLAYER_HOST_ID
 		pickaxe.position = Vector3.ZERO
 		pickaxe.enable_pickup = false
+		pickaxe.stack_total = 1
 		hero.inventories.append(pickaxe)
 		
 		heroes.append(hero)
@@ -156,6 +158,7 @@ func spawn_pickable_items():
 		coin.node_name = "world_coin_%s" % i
 		coin.network_id = Network.PLAYER_HOST_ID
 		coin.position = pos + Vector3(0, 0.60, 0)
+		coin.stack_total = 1
 		coin.enable_pickup = true
 		coins.append(coin)
 		
@@ -163,12 +166,14 @@ func spawn_pickable_items():
 	axe.node_name = "world_axe_%s" % 1
 	axe.network_id = Network.PLAYER_HOST_ID
 	axe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
+	axe.stack_total = 1
 	axe.enable_pickup = true
 	
 	var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
 	pickaxe.node_name = "world_pickaxe_%s" % 1
 	pickaxe.network_id = Network.PLAYER_HOST_ID
 	pickaxe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
+	pickaxe.stack_total = 1
 	pickaxe.enable_pickup = true
 	
 	.spawn_items(coins + [axe, pickaxe])
@@ -239,6 +244,7 @@ func resource_dead(resource :BaseResources):
 	item.network_id = Network.PLAYER_HOST_ID
 	item.position = resource.translation
 	item.enable_pickup = true
+	item.stack_total = int(rand_range(10,20))
 	
 	.spawn_item(item)
 	

@@ -5,13 +5,20 @@
 [ext_resource path="res://assets/ui/bar/circle_thin.png" type="Texture" id=3]
 [ext_resource path="res://assets/ui/airship_info/turret_info/turret_potrait.gd" type="Script" id=4]
 
-[node name="turret_potrait" type="MarginContainer"]
-margin_right = 64.0
-margin_bottom = 64.0
-size_flags_vertical = 8
+[node name="turret_potrait" type="Control"]
+margin_right = 32.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_vertical = 4
 script = ExtResource( 4 )
 
-[node name="bg" type="NinePatchRect" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_top = -32.0
+margin_right = 64.0
+margin_bottom = 32.0
+
+[node name="bg" type="NinePatchRect" parent="MarginContainer"]
 margin_right = 64.0
 margin_bottom = 64.0
 texture = ExtResource( 1 )
@@ -20,7 +27,7 @@ patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
-[node name="NinePatchRect2" type="NinePatchRect" parent="."]
+[node name="NinePatchRect2" type="NinePatchRect" parent="MarginContainer"]
 modulate = Color( 0.239216, 0.239216, 0.239216, 0.733333 )
 margin_right = 64.0
 margin_bottom = 64.0
@@ -30,12 +37,12 @@ patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
-[node name="icon" type="TextureRect" parent="."]
+[node name="icon" type="TextureRect" parent="MarginContainer"]
 margin_right = 64.0
 margin_bottom = 64.0
 expand = true
 
-[node name="border" type="NinePatchRect" parent="."]
+[node name="border" type="NinePatchRect" parent="MarginContainer"]
 margin_right = 64.0
 margin_bottom = 64.0
 texture = ExtResource( 3 )
@@ -44,7 +51,7 @@ patch_margin_top = 32
 patch_margin_right = 32
 patch_margin_bottom = 32
 
-[node name="fire_rate" type="TextureProgress" parent="."]
+[node name="fire_rate" type="TextureProgress" parent="MarginContainer"]
 margin_right = 64.0
 margin_bottom = 64.0
 max_value = 1.0
@@ -57,7 +64,7 @@ nine_patch_stretch = true
 stretch_margin_left = 32
 stretch_margin_right = 32
 
-[node name="reload" type="TextureProgress" parent="."]
+[node name="reload" type="TextureProgress" parent="MarginContainer"]
 margin_right = 64.0
 margin_bottom = 64.0
 max_value = 1.0
@@ -69,7 +76,7 @@ nine_patch_stretch = true
 stretch_margin_left = 32
 stretch_margin_right = 32
 
-[node name="ammo" type="Label" parent="."]
+[node name="ammo" type="Label" parent="MarginContainer"]
 margin_left = 29.0
 margin_top = 40.0
 margin_right = 34.0

@@ -247,7 +247,7 @@ func on_hero_spawned(data :HeroData, hero :Hero):
 		player_hero.connect("dead", self, "on_player_hero_dead")
 		player_hero.connect("reset", self, "on_player_hero_reset")
 		
-		_ui.hero_info.display_info(data.entity_name, data.entity_icon, data.color_coat)
+		_ui.hero_info.display_info(data.entity_icon, data.color_coat)
 		_ui.hero_info.display_inventory(player_hero.inventories, data.color_coat)
 		
 ################################################################
@@ -333,8 +333,8 @@ func on_airship_spawned(data :AirshipData, airship :AirShip):
 		landing_zone_validator.follow_body = player_airship.get_path()
 		add_child(landing_zone_validator)
 		
-		_ui.airship_info.display_info(data.entity_name, data.entity_icon, data.color_coat)
-		_ui.airship_info.display_turrets(data, airship, data.color_coat)
+		_ui.airship_info.display_info(data.entity_icon, data.color_coat)
+		_ui.airship_info.display_turrets(airship, data.color_coat)
 	
 func _on_player_airship_bot_enemy_lose():
 	pass
@@ -506,7 +506,7 @@ func on_player_hero_reset(_unit :AirShip):
 	_ui.exit_enter.wait_time = 30
 	_ui.exit_enter.start()
 	
-func on_item_picked_up(_item :InventoryItem, by :Hero, item_data :InventoryItemData):
+func on_item_picked_up(_item :InventoryItem, by :Hero, _item_data :InventoryItemData):
 	if by == player_hero:
 		_sound.stream = pickup_item_sounds[rand_range(0, pickup_item_sounds.size())]
 		_sound.play()
@@ -635,7 +635,7 @@ func on_exit_game_session():
 	Network.disconnect_from_server()
 	
 func to_main_menu():
-	get_tree().change_scene("res://menu/main_menu/main_menu.tscn")
+	Global.change_scene("res://menu/main_menu/main_menu.tscn")
 	
 ################################################################
 # utils code

@@ -9,6 +9,7 @@ export var target :NodePath
 export var aiming_speed :float
 export var ignore_body :NodePath
 
+export var icon :String
 export var projectile :PackedScene
 export var attack_damage :int
 export var ammo :int
@@ -99,6 +100,7 @@ func _idle(_target :BaseUnit, _delta :float):
 		
 	_pivot.rotation_degrees.y = rand_range(0, 360)
 	_pivot.rotation_degrees.x = rand_range(-25, 25)
+	_iddle_timer.wait_time = rand_range(1,3)
 	_iddle_timer.start()
 	
 func _aiming(_target :BaseUnit, delta :float):

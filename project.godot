@@ -174,7 +174,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/Godot-Touch-Input-Manager/CustomInputEvents/InputEventSingleScreenTouch.gd"
 }, {
-"base": "MarginContainer",
+"base": "Control",
 "class": "InventoryInfo",
 "language": "GDScript",
 "path": "res://assets/ui/hero_info/inventory_info/inventory_info.gd"
@@ -284,7 +284,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://data/turret/turret.gd"
 }, {
-"base": "MarginContainer",
+"base": "Control",
 "class": "TurretPotrait",
 "language": "GDScript",
 "path": "res://assets/ui/airship_info/turret_info/turret_potrait.gd"

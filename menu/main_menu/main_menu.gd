@@ -29,10 +29,10 @@ func _on_play_pressed():
 
 func _on_player_connected():
 	if quick_play:
-		get_tree().change_scene("res://gameplay/mp/host/gameplay.tscn")
+		Global.change_scene("res://gameplay/mp/host/gameplay.tscn")
 		return
 		
-	get_tree().change_scene("res://menu/lobby/lobby.tscn")
+	Global.change_scene("res://menu/lobby/lobby.tscn")
 	
 func _on_host_pressed():
 	NetworkLobbyManager.player_name = Global.player.player_name

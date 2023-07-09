@@ -1,4 +1,4 @@
-extends MarginContainer
+extends Control
 class_name TurretPotrait
 
 export var icon :String
@@ -6,12 +6,12 @@ export var turret_path :NodePath
 export var color :Color
 
 onready var _turret :Turret = get_node_or_null(turret_path)
-onready var _icon = $icon
-onready var _fire_rate = $fire_rate
-onready var _reload = $reload
-onready var _ammo = $ammo
+onready var _icon = $MarginContainer/icon
+onready var _fire_rate = $MarginContainer/fire_rate
+onready var _reload = $MarginContainer/reload
+onready var _ammo = $MarginContainer/ammo
 
-onready var _border = $border
+onready var _border = $MarginContainer/border
 onready var _tween = $Tween
 
 func _ready():

@@ -14,3 +14,4 @@ position = Vector3( 0, 0, 0 )
 item_id = "item_iron"
 enable_pickup = false
 color_highlight = Color( 0.611765, 0.611765, 0.611765, 1 )
+stack_total = 1

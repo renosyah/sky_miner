@@ -14,3 +14,4 @@ position = Vector3( 0, 0, 0 )
 item_id = "item_coin"
 enable_pickup = false
 color_highlight = Color( 0.992157, 1, 0, 1 )
+stack_total = 1

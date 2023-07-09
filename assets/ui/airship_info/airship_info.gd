@@ -19,7 +19,7 @@ func display_respawn_cooldown(time :float):
 	respawn_timer.start()
 	set_process(true)
 	
-func _process(delta):
+func _process(_delta):
 	respawn_indicator.value = respawn_timer.time_left
 	
 func _on_respawn_timer_timeout():

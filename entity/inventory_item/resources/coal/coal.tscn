@@ -1,0 +1,27 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://entity/inventory_item/resources/coal/coal.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://entity/inventory_item/inventory_item.gd" type="Script" id=2]
+
+[node name="coal" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.837488, 0, 0.821068 )
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+
+[node name="MeshInstance4" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0656872, 1.47792, -0.0328425 )
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.73896 )
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.755382, 0, 0.936016 )
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false

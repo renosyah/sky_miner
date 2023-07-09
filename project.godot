@@ -27,7 +27,7 @@ _global_script_classes=[ {
 "base": "InventoryItem",
 "class": "Axe",
 "language": "GDScript",
-"path": "res://entity/inventory_item/axe/axe.gd"
+"path": "res://entity/inventory_item/tools/axe/axe.gd"
 }, {
 "base": "CPUParticles",
 "class": "BaseCustomParticle",
@@ -232,7 +232,7 @@ _global_script_classes=[ {
 "base": "InventoryItem",
 "class": "PickAxe",
 "language": "GDScript",
-"path": "res://entity/inventory_item/pickaxe/pickaxe.gd"
+"path": "res://entity/inventory_item/tools/pickaxe/pickaxe.gd"
 }, {
 "base": "BaseData",
 "class": "PlayerData",

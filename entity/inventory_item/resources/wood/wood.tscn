@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://entity/inventory_item/resources/wood/wood.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://entity/inventory_item/inventory_item.gd" type="Script" id=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.384314, 0.172549, 0, 1 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.25098, 0.113725, 0, 1 )
+
+[node name="wood" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.909251, -0.416249, 0, 0.416249, 0.909251, 0, 0, 0, 1, 0, 0.42738, 0 )
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.246566, -0.0328754, 0 )
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.267113, -0.0205471, 0 )
+mesh = ExtResource( 1 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 1 )
+material/1 = SubResource( 2 )

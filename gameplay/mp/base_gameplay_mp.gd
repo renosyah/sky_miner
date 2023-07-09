@@ -60,9 +60,9 @@ var _map :Map
 func setup_map():
 	_map = preload("res://map/map.tscn").instance()
 	_map.connect("on_map_ready", self, "on_map_ready")
-	_map.connect("resource_take_damage", self, "_resource_take_damage")
-	_map.connect("resource_dead", self, "_resource_dead")
-	_map.connect("resource_reset", self, "_resource_reset")
+	_map.connect("resource_take_damage", self, "resource_take_damage")
+	_map.connect("resource_dead", self, "resource_dead")
+	_map.connect("resource_reset", self, "resource_reset")
 	add_child(_map)
 	
 	if is_server():
@@ -77,13 +77,13 @@ func _generate_island():
 	_map.map_data = NetworkLobbyManager.argument["map_data"]
 	_map.spawn_islands()
 	
-func _resource_take_damage(_resource :BaseResources, _damage :int):
+func resource_take_damage(_resource :BaseResources, _damage :int):
 	pass
 	
-func _resource_dead(_resource :BaseResources):
-	_resource.queue_free()
+func resource_dead(resource :BaseResources):
+	resource.queue_free()
 	
-func _resource_reset(_resource :BaseResources):
+func resource_reset(_resource :BaseResources):
 	pass
 	
 ################################################################

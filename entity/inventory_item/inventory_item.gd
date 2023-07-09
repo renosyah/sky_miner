@@ -8,10 +8,12 @@ export var item_id :String
 export var item_name :String
 export var icon :String
 export var enable_pickup :bool
+export var color_highlight :Color
 
 var _pickup_area :Area
 var _collision :CollisionShape
 var _interact_tween :Tween
+var _highlight :MeshInstance
 
 func _ready():
 	_pickup_area = Area.new()
@@ -29,6 +31,10 @@ func _ready():
 	
 	_interact_tween = Tween.new()
 	add_child(_interact_tween)
+	
+	_highlight = preload("res://entity/inventory_item/item_highlight/item_highlight.tscn").instance()
+	_highlight.color_highlight = color_highlight
+	add_child(_highlight)
 	
 	_reset()
 	
@@ -99,6 +105,7 @@ func _reset():
 	translation = Vector3.ZERO
 	rotation_degrees = Vector3.ZERO
 	visible = enable_pickup
+	_highlight.visible = enable_pickup
 	
 	set_as_toplevel(enable_pickup)
 	set_process(enable_pickup)

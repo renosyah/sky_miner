@@ -4,13 +4,13 @@
 
 [resource]
 script = ExtResource( 1 )
-entity_name = "Coin"
-entity_icon = "res://assets/ui/icons/item/coin.png"
-description = "Main currency"
+entity_name = "Iron"
+entity_icon = "res://assets/ui/icons/resources/iron.png"
+description = "Iron"
 node_name = ""
 network_id = 0
-scene_path = "res://entity/inventory_item/resources/coin/coin.tscn"
+scene_path = "res://entity/inventory_item/resources/iron/iron.tscn"
 position = Vector3( 0, 0, 0 )
-item_id = "item_coin"
+item_id = "item_iron"
 enable_pickup = false
-color_highlight = Color( 0.992157, 1, 0, 1 )
+color_highlight = Color( 0.611765, 0.611765, 0.611765, 1 )

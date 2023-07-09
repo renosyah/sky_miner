@@ -30,7 +30,7 @@ func on_map_ready():
 	spawn_player_airship()
 	spawn_bot_airship()
 	spawn_defence_bot()
-	spawn_coins()
+	spawn_pickable_items()
 	
 	.spawn_airships(airships_to_spawn)
 	.spawn_emplacements(defences_to_spawn)
@@ -54,7 +54,6 @@ func spawn_player_heroes():
 		
 		for i in 5:
 			var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
-			coin.item_id = "item_coin"
 			coin.node_name = "%s_coin_%s" % [hero.node_name, i]
 			coin.network_id = Network.PLAYER_HOST_ID
 			coin.position = Vector3.ZERO
@@ -62,7 +61,6 @@ func spawn_player_heroes():
 			hero.inventories.append(coin)
 
 		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
-		axe.item_id = "item_axe"
 		axe.node_name = "%s_axe_%s" % [hero.node_name, 1]
 		axe.network_id = Network.PLAYER_HOST_ID
 		axe.position = Vector3.ZERO
@@ -70,7 +68,6 @@ func spawn_player_heroes():
 		hero.inventories.append(axe)
 
 		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
-		pickaxe.item_id = "item_pickaxe"
 		pickaxe.node_name = "%s_pickaxe_%s" % [hero.node_name, 1]
 		pickaxe.network_id = Network.PLAYER_HOST_ID
 		pickaxe.position = Vector3.ZERO
@@ -151,12 +148,11 @@ func spawn_defence_bot():
 			
 		defences_to_spawn.append(defence)
 	
-func spawn_coins():
+func spawn_pickable_items():
 	var coins :Array = []
 	for i in 25:
 		var pos :Vector3 = _map.get_random_island().get_random_position()
 		var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
-		coin.item_id = "item_coin"
 		coin.node_name = "world_coin_%s" % i
 		coin.network_id = Network.PLAYER_HOST_ID
 		coin.position = pos + Vector3(0, 0.60, 0)
@@ -164,21 +160,18 @@ func spawn_coins():
 		coins.append(coin)
 		
 	var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
-	axe.item_id = "item_axe"
 	axe.node_name = "world_axe_%s" % 1
 	axe.network_id = Network.PLAYER_HOST_ID
 	axe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
 	axe.enable_pickup = true
 	
 	var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
-	pickaxe.item_id = "item_pickaxe"
 	pickaxe.node_name = "world_pickaxe_%s" % 1
 	pickaxe.network_id = Network.PLAYER_HOST_ID
 	pickaxe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
 	pickaxe.enable_pickup = true
 	
 	.spawn_items(coins + [axe, pickaxe])
-	
 	
 func _process(_delta):
 	# assign target bot to unit
@@ -222,4 +215,32 @@ func on_hero_dead(_unit :Hero, hp_bar :HpBar3D):
 	yield(get_tree().create_timer(5), "timeout")
 	
 	_unit.reset()
-
+	
+func resource_dead(resource :BaseResources):
+	.resource_dead(resource)
+	
+	var item :InventoryItemData
+	
+	match (resource.type_resource):
+		BaseResources.type_resource_enum.wood:
+			item = preload("res://data/inventory_item/list/wood.tres").duplicate()
+			
+		BaseResources.type_resource_enum.iron:
+			item = preload("res://data/inventory_item/list/iron.tres").duplicate()
+			
+		BaseResources.type_resource_enum.coal:
+			item = preload("res://data/inventory_item/list/coal.tres").duplicate()
+			
+		BaseResources.type_resource_enum.food:
+			return
+			
+	
+	item.node_name = "world_droped_item_%s" % resource.name
+	item.network_id = Network.PLAYER_HOST_ID
+	item.position = resource.translation
+	item.enable_pickup = true
+	
+	.spawn_item(item)
+	
+	
+	

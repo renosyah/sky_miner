@@ -12,6 +12,7 @@ export var position :Vector3
 
 export var item_id :String
 export var enable_pickup :bool
+export var color_highlight :Color
 
 func from_dictionary(data : Dictionary):
 	.from_dictionary(data)
@@ -27,6 +28,7 @@ func from_dictionary(data : Dictionary):
 	
 	item_id = data["item_id"]
 	enable_pickup = data["enable_pickup"]
+	color_highlight = data["color_highlight"]
 
 func to_dictionary() -> Dictionary :
 	var data = .to_dictionary()
@@ -42,6 +44,7 @@ func to_dictionary() -> Dictionary :
 	
 	data["item_id"] = item_id
 	data["enable_pickup"] = enable_pickup
+	data["color_highlight"] = color_highlight
 	
 	return data
 	
@@ -52,6 +55,7 @@ func spawn_item(parent :Node) -> InventoryItem:
 	item.item_name = entity_name
 	item.icon = entity_icon
 	item.enable_pickup = enable_pickup
+	item.color_highlight = color_highlight
 	item.set_network_master(network_id)
 	parent.add_child(item)
 	item.translation = position

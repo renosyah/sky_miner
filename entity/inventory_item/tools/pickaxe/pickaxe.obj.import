@@ -1,0 +1,20 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/pickaxe.obj-9d0baae051c1731c41f4245522e33a32.mesh"
+
+[deps]
+
+files=[ "res://.import/pickaxe.obj-9d0baae051c1731c41f4245522e33a32.mesh" ]
+
+source_file="res://entity/inventory_item/tools/pickaxe/pickaxe.obj"
+dest_files=[ "res://.import/pickaxe.obj-9d0baae051c1731c41f4245522e33a32.mesh", "res://.import/pickaxe.obj-9d0baae051c1731c41f4245522e33a32.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+octahedral_compression=true
+optimize_mesh_flags=4286

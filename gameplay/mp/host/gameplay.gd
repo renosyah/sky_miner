@@ -21,8 +21,8 @@ func _ready():
 	player_team = 1
 
 # test
-func on_map_ready():
-	.on_map_ready()
+func all_player_ready():
+	.all_player_ready()
 	
 	islands = _map.get_islands()
 	

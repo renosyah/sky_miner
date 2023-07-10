@@ -16,8 +16,6 @@ func _ready():
 	setup_ui()
 	setup_parents()
 	
-	NetworkLobbyManager.set_ready()
-	
 func _notification(what):
 	match what:
 		MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
@@ -69,22 +67,15 @@ func setup_map():
 		_map.generate_islands()
 		NetworkLobbyManager.argument["map_data"] = _map.map_data
 		NetworkLobbyManager.set_host_ready()
+		
+	generate_island()
 	
 func on_map_ready():
-	_ui.make_ready()
+	NetworkLobbyManager.set_ready()
 	
-func _generate_island():
+func generate_island():
 	_map.map_data = NetworkLobbyManager.argument["map_data"]
 	_map.spawn_islands()
-	
-func resource_take_damage(_resource :BaseResources, _damage :int):
-	pass
-	
-func resource_dead(resource :BaseResources):
-	resource.queue_free()
-	
-func resource_reset(_resource :BaseResources):
-	pass
 	
 ################################################################
 # ui
@@ -134,7 +125,8 @@ func on_host_disconnected():
 	to_main_menu()
 	
 func all_player_ready():
-	_generate_island()
+	Global.dismiss_transition()
+	_ui.make_ready()
 	
 ################################################################
 # holders
@@ -517,7 +509,16 @@ func on_item_dropped(item :InventoryItem, from :Hero, _item_data :InventoryItemD
 	if from == player_hero:
 		_ui.hero_info.display_inventory(player_hero.inventories, player_hero.color_coat)
 		sync_dropped_item_position(item)
-		
+	
+func resource_take_damage(_resource :BaseResources, _damage :int):
+	pass
+	
+func resource_dead(resource :BaseResources):
+	resource.queue_free()
+	
+func resource_reset(_resource :BaseResources):
+	pass
+	
 ################################################################
 # airships bot
 func enable_airship_bot(_bot :Bot, _val :bool):
@@ -573,6 +574,7 @@ func _process(delta):
 			
 		controlFocus.hero:
 			player_input_hero_control(delta)
+			validate_pickup_zone()
 	
 func is_all_valid() -> bool:
 	var _valid_objects :Array = [
@@ -623,6 +625,22 @@ func validate_landing_zone():
 		landing_zone_validator.is_valid,
 		not player_airship.is_dead,
 		not player_hero.is_dead
+	]
+	
+	_ui.show_exit_button(
+		not _valid_objects.has(false)
+	)
+	
+func validate_pickup_zone():
+	var post_to_follow :Vector3 = player_hero.translation 
+	post_to_follow.y = player_airship.translation.y
+	
+	var dist :float = player_airship.translation.distance_to(post_to_follow)
+	
+	var _valid_objects :Array = [
+		not player_airship.is_dead,
+		not player_hero.is_dead,
+		dist < 5,
 	]
 	
 	_ui.show_exit_button(

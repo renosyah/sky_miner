@@ -109,6 +109,7 @@ func spawn_islands():
 		resource.translation = ore["position"]
 		
 	yield(get_tree(),"idle_frame")
+	yield(get_tree().create_timer(2),"timeout")
 	
 	emit_signal("on_map_ready")
 	

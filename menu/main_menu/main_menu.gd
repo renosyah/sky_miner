@@ -29,7 +29,7 @@ func _on_play_pressed():
 
 func _on_player_connected():
 	if quick_play:
-		Global.change_scene("res://gameplay/mp/host/gameplay.tscn")
+		Global.change_scene("res://gameplay/mp/host/gameplay.tscn", false)
 		return
 		
 	Global.change_scene("res://menu/lobby/lobby.tscn")

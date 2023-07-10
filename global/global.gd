@@ -21,8 +21,11 @@ func setup_transition():
 	transition = preload("res://assets/ui/loading/scene_transition.tscn").instance()
 	add_child(transition)
 
-func change_scene(scene :String):
-	transition.change_scene(scene)
+func change_scene(scene :String, auto_dismiss :bool = true):
+	transition.change_scene(scene, auto_dismiss)
+
+func dismiss_transition():
+	transition.dismiss()
 
 ################################################################
 # player

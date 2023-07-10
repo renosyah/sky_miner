@@ -27,7 +27,7 @@ func _on_back_pressed():
 
 # test
 func _on_play_pressed():
-	Global.change_scene("res://gameplay/mp/host/gameplay.tscn")
+	Global.change_scene("res://gameplay/mp/host/gameplay.tscn", false)
 	
 func _on_host_ready():
-	Global.change_scene("res://gameplay/mp/client/gameplay.tscn")
+	Global.change_scene("res://gameplay/mp/client/gameplay.tscn", false)

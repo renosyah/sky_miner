@@ -242,6 +242,10 @@ func on_hero_spawned(data :HeroData, hero :Hero):
 		_ui.hero_info.display_info(data.entity_icon, data.color_coat)
 		_ui.hero_info.display_inventory(player_hero.inventories, data.color_coat)
 		
+		var _highlight = preload("res://assets/unit_highlight/unit_highlight.tscn").instance()
+		player_hero.add_child(_highlight)
+		_highlight.translation.y = -0.5
+		
 ################################################################
 # airship spawner
 func spawn_airships(_datas :Array, _parent :Node = _airship_parent):

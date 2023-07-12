@@ -182,6 +182,9 @@ var control_mode = controlFocus.airship
 ################################################################
 # hero spawner
 func spawn_heroes(_datas :Array, _parent :Node = _hero_parent):
+	if not is_server():
+		return
+		
 	var _datas_dicts :Array = []
 	for i in _datas:
 		_datas_dicts.append(i.to_dictionary())
@@ -193,6 +196,9 @@ remotesync func _spawn_heroes(_datas :Array, _parent_path :NodePath):
 		_spawn_hero(data, _parent_path)
 	
 func spawn_hero(_data :HeroData, _parent :Node = _hero_parent):
+	if not is_server():
+		return
+		
 	rpc("_spawn_hero", _data, _parent.get_path())
 	
 remotesync func _spawn_hero(_data :Dictionary, _parent_path :NodePath):
@@ -244,11 +250,15 @@ func on_hero_spawned(data :HeroData, hero :Hero):
 		
 		var _highlight = preload("res://assets/unit_highlight/unit_highlight.tscn").instance()
 		player_hero.add_child(_highlight)
+		_highlight.scale = Vector3(1.5, 1, 1.5)
 		_highlight.translation.y = -0.5
 		
 ################################################################
 # airship spawner
 func spawn_airships(_datas :Array, _parent :Node = _airship_parent):
+	if not is_server():
+		return
+		
 	var _datas_dicts :Array = []
 	for i in _datas:
 		_datas_dicts.append(i.to_dictionary())
@@ -260,6 +270,9 @@ remotesync func _spawn_airships(_datas :Array, _parent_path :NodePath):
 		_spawn_airship(data, _parent_path)
 
 func spawn_airship(_data :AirshipData, _parent :Node = self):
+	if not is_server():
+		return
+		
 	rpc("_spawn_airship", _data.to_dictionary(), _parent.get_path())
 
 remotesync func _spawn_airship(_data :Dictionary, _parent_path :NodePath):
@@ -341,6 +354,9 @@ func _on_player_airship_bot_enemy_detected():
 ################################################################
 # emplacement spawner
 func spawn_emplacements(_datas :Array, _parent :Node = _defence_parent):
+	if not is_server():
+		return
+		
 	var _datas_dicts :Array = []
 	for i in _datas:
 		_datas_dicts.append(i.to_dictionary())
@@ -352,6 +368,9 @@ remotesync func _spawn_emplacements(_datas :Array, _parent_path :NodePath):
 		_spawn_emplacement(data, _parent_path)
 
 func spawn_emplacement(_data :EmplacementData, _parent :Node = self):
+	if not is_server():
+		return
+		
 	rpc("_spawn_emplacement", _data.to_dictionary(), _parent.get_path())
 
 remotesync func _spawn_emplacement(_data :Dictionary, _parent_path :NodePath):
@@ -402,6 +421,9 @@ func on_bot_spawned(_bot :Bot):
 ################################################################
 # items spawner
 func spawn_items(_items :Array, _parent :Node = self):
+	if not is_server():
+		return
+		
 	var _data_dicts :Array = []
 	for i in _items:
 		var _item :InventoryItemData = i
@@ -414,6 +436,9 @@ remotesync func _spawn_items(_datas :Array, _parent_path :NodePath):
 		_spawn_item(i, _parent_path)
 	
 func spawn_item(_item :InventoryItemData, _parent :Node = self):
+	if not is_server():
+		return
+		
 	rpc("_spawn_item", _item.to_dictionary(), _parent.get_path())
 	
 remotesync func _spawn_item(_data :Dictionary, _parent_path :NodePath):

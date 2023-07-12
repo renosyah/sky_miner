@@ -6,14 +6,21 @@
 [ext_resource path="res://assets/ui/airship_info/turret_info/turret_potrait.gd" type="Script" id=4]
 
 [node name="turret_potrait" type="Control"]
-margin_right = 32.0
-rect_min_size = Vector2( 80, 80 )
+margin_right = 60.0
+margin_bottom = 60.0
+rect_min_size = Vector2( 75, 75 )
 size_flags_vertical = 8
 script = ExtResource( 4 )
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_right = 80.0
-margin_bottom = 80.0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -40.0
+margin_top = -40.0
+margin_right = 40.0
+margin_bottom = 40.0
 rect_min_size = Vector2( 80, 80 )
 
 [node name="bg" type="NinePatchRect" parent="MarginContainer"]

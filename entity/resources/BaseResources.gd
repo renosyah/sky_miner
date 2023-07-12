@@ -8,6 +8,15 @@ const wood_icon = preload("res://assets/ui/icons/resources/wood.png")
 
 enum type_resource_enum { none,wood,food,iron,coal }
 
+const woods = [
+	type_resource_enum.wood
+]
+const stones = [
+	type_resource_enum.iron,
+	type_resource_enum.coal
+]
+
+
 signal take_damage(_resource, _damage)
 signal dead(_resource)
 signal reset(_resource)

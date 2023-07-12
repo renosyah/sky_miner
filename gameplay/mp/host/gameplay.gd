@@ -151,7 +151,7 @@ func spawn_defence_bot():
 		defences_to_spawn.append(defence)
 	
 func spawn_pickable_items():
-	var coins :Array = []
+	var items :Array = []
 	for i in 25:
 		var pos :Vector3 = _map.get_random_island().get_random_position()
 		var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
@@ -160,23 +160,29 @@ func spawn_pickable_items():
 		coin.position = pos + Vector3(0, 0.60, 0)
 		coin.stack_total = 1
 		coin.enable_pickup = true
-		coins.append(coin)
+		items.append(coin)
 		
-	var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
-	axe.node_name = "world_axe_%s" % 1
-	axe.network_id = Network.PLAYER_HOST_ID
-	axe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
-	axe.stack_total = 1
-	axe.enable_pickup = true
+	for i in 5:
+		var pos :Vector3 = _map.get_random_island().get_random_position()
+		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
+		axe.node_name = "world_axe_%s" % i
+		axe.network_id = Network.PLAYER_HOST_ID
+		axe.position = pos + Vector3(0, 0.60, 0)
+		axe.stack_total = 1
+		axe.enable_pickup = true
+		items.append(axe)
+		
+	for i in 5:
+		var pos :Vector3 = _map.get_random_island().get_random_position()
+		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
+		pickaxe.node_name = "world_pickaxe_%s" % i
+		pickaxe.network_id = Network.PLAYER_HOST_ID
+		pickaxe.position = pos + Vector3(0, 0.60, 0)
+		pickaxe.stack_total = 1
+		pickaxe.enable_pickup = true
+		items.append(pickaxe)
 	
-	var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
-	pickaxe.node_name = "world_pickaxe_%s" % 1
-	pickaxe.network_id = Network.PLAYER_HOST_ID
-	pickaxe.position = Vector3(0, 0.60, 0) + islands[0].get_random_position()
-	pickaxe.stack_total = 1
-	pickaxe.enable_pickup = true
-	
-	.spawn_items(coins + [axe, pickaxe])
+	.spawn_items(items)
 	
 func _process(_delta):
 	# assign target bot to unit
@@ -210,7 +216,7 @@ func on_airship_dead(_unit :AirShip, _hp_bar :HpBar3D, marker :ScreenMarker):
 func on_emplacement_dead(_unit :Emplacement, _hp_bar :HpBar3D, marker :ScreenMarker):
 	.on_emplacement_dead(_unit, _hp_bar, marker)
 	
-	yield(get_tree().create_timer(25), "timeout")
+	yield(get_tree().create_timer(125), "timeout")
 	
 	.respawn(_unit, _unit.translation)
 	

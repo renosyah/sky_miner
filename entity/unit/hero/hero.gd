@@ -8,13 +8,6 @@ const hit_melee_sounds = [
 	preload("res://assets/sounds/hero/hit_melee_2.wav"), 
 	preload("res://assets/sounds/hero/hit_melee_3.wav")
 ]
-const woods = [
-	BaseResources.type_resource_enum.wood
-]
-const stones = [
-	BaseResources.type_resource_enum.iron,
-	BaseResources.type_resource_enum.coal
-]
 
 var equiped_item :InventoryItem
 var equip_parent :Spatial
@@ -35,8 +28,8 @@ func moving(delta :float) -> void:
 	if not is_instance_valid(equip_parent):
 		return
 		
-	var currently_equip :bool = is_instance_valid(equiped_item)
-	if not currently_equip:
+	var _currently_equip :bool = is_instance_valid(equiped_item)
+	if not _currently_equip:
 		final_attack_range = attack_range
 		
 	if not is_instance_valid(target):
@@ -48,45 +41,10 @@ func moving(delta :float) -> void:
 		return
 		
 	if target is BaseUnit:
-		# equip weapon
-		pass
+		_equip_weapon(_currently_equip)
 		
 	elif target is BaseResources:
-		var is_wood :bool = target.type_resource in woods
-		var is_stone :bool = target.type_resource in stones
-		
-		for i in inventories:
-			var item :InventoryItem = i
-			if is_wood and (item is Axe):
-				if currently_equip:
-					if equiped_item is Axe:
-						return
-						
-					else:
-						_unequip_item()
-						
-				equiped_item = item.duplicate()
-				equip_parent.add_child(equiped_item)
-				equiped_item.equip()
-				final_attack_range = equiped_item.attack_range
-				return
-				
-			if is_stone and (item is PickAxe):
-				if currently_equip:
-					if equiped_item is PickAxe:
-						return
-						
-					else:
-						_unequip_item()
-						
-				equiped_item = item.duplicate()
-				equip_parent.add_child(equiped_item)
-				equiped_item.equip()
-				final_attack_range = equiped_item.attack_range
-				return
-			
-		if currently_equip:
-			_unequip_item()
+		_equip_tool(_currently_equip)
 		
 func perform_attack():
 	final_attack_damage = attack_damage
@@ -98,3 +56,47 @@ func perform_attack():
 	_sound.play()
 	
 	.perform_attack()
+	
+func _equip_weapon(_currently_equip: bool):
+	# equip weapon
+	
+	if _currently_equip:
+		_unequip_item()
+		
+func _equip_tool(_currently_equip: bool):
+	var is_wood :bool = target.type_resource in BaseResources.woods
+	var is_stone :bool = target.type_resource in BaseResources.stones
+	
+	for i in inventories:
+		var item :InventoryItem = i
+		if is_wood and (item is Axe):
+			if _currently_equip:
+				if equiped_item is Axe:
+					return
+					
+				else:
+					_unequip_item()
+					
+			equiped_item = item.duplicate()
+			equip_parent.add_child(equiped_item)
+			equiped_item.equip()
+			final_attack_range = equiped_item.attack_range
+			return
+			
+		if is_stone and (item is PickAxe):
+			if _currently_equip:
+				if equiped_item is PickAxe:
+					return
+					
+				else:
+					_unequip_item()
+					
+			equiped_item = item.duplicate()
+			equip_parent.add_child(equiped_item)
+			equiped_item.equip()
+			final_attack_range = equiped_item.attack_range
+			return
+		
+	if _currently_equip:
+		_unequip_item()
+		

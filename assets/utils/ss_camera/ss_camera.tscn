@@ -11,5 +11,5 @@ shadow_enabled = true
 directional_shadow_mode = 0
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( -0.750157, -0.23664, 0.617467, 0, 0.933774, 0.357863, -0.661259, 0.268453, -0.700478, 1.35319, 1.0985, -1.41245 )
+transform = Transform( -0.641958, -0.274387, 0.715962, 0, 0.933774, 0.357863, -0.766739, 0.229733, -0.599444, 1.35319, 1.0985, -1.41245 )
 environment = ExtResource( 1 )

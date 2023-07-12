@@ -28,7 +28,7 @@ func all_player_ready():
 	
 	spawn_player_heroes()
 	spawn_player_airship()
-	spawn_bot_airship()
+	#spawn_bot_airship()
 	spawn_defence_bot()
 	spawn_pickable_items()
 	
@@ -103,11 +103,11 @@ func spawn_player_airship():
 		airship.color_coat = Color.green
 		
 		airship.turrets = []
-		for index in airship.turrets_count:
-			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
-			t.node_name = "%s_turret_%s" % [airship.node_name, index]
-			t.level = airship.level
-			airship.turrets.append(t)
+#		for index in airship.turrets_count:
+#			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
+#			t.node_name = "%s_turret_%s" % [airship.node_name, index]
+#			t.level = airship.level
+#			airship.turrets.append(t)
 			
 		airships_to_spawn.append(airship)
 		player_index += 10
@@ -150,11 +150,11 @@ func spawn_defence_bot():
 		defence.color_coat = Color.orange
 		
 		defence.turrets = []
-		for index in defence.turrets_count:
-			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
-			t.node_name = "%s_turret_%s" % [defence.node_name, index]
-			t.level = defence.level
-			defence.turrets.append(t)
+#		for index in defence.turrets_count:
+#			var t :TurretData = turrets[rand_range(0, turrets.size())].duplicate()
+#			t.node_name = "%s_turret_%s" % [defence.node_name, index]
+#			t.level = defence.level
+#			defence.turrets.append(t)
 			
 		defences_to_spawn.append(defence)
 	

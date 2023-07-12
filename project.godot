@@ -252,7 +252,7 @@ _global_script_classes=[ {
 "base": "InventoryItem",
 "class": "RangeWeapon",
 "language": "GDScript",
-"path": "res://entity/inventory_item/weapons/ar/ar.gd"
+"path": "res://entity/inventory_item/weapons/assault_rifle/assault_rifle.gd"
 }, {
 "base": "Node",
 "class": "SaveLoad",

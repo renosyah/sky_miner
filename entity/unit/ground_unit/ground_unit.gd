@@ -12,8 +12,6 @@ var final_attack_range :float
 
 var _attack_delay_timer :Timer
 var _hit_particle :HitParticle
-var _hero_spotter :HeroSpotter
-var _gather_indicator :GatherIndicator
 
 var _animation_states :Dictionary = {}
 
@@ -48,7 +46,7 @@ func _ready():
 	enable_gravity = true
 	is_bot = true
 	is_moving = false
-	margin = attack_range
+	margin = 0.3
 	
 	_attack_delay_timer = Timer.new()
 	_attack_delay_timer.wait_time = attack_delay
@@ -60,16 +58,6 @@ func _ready():
 	add_child(_hit_particle)
 	_hit_particle.set_as_toplevel(true)
 	
-	_gather_indicator = preload("res://assets/gather_indicator/gather_indicator.tscn").instance()
-	add_child(_gather_indicator)
-	_gather_indicator.set_as_toplevel(true)
-	
-	if _check_is_master():
-		_hero_spotter = preload("res://assets/utils/spotter/hero_spotter.tscn").instance()
-		_hero_spotter.team = team
-		_hero_spotter.ignore_body = self
-		add_child(_hero_spotter)
-	
 func master_moving(delta :float) -> void:
 	if is_dead:
 		return
@@ -78,8 +66,6 @@ func master_moving(delta :float) -> void:
 		dead()
 		set_process(false)
 		return
-		
-	_check_target()
 		
 	var _input_power :float = move_direction.length()
 	var _is_moving :bool = _input_power > 0.1
@@ -100,9 +86,7 @@ func master_moving(delta :float) -> void:
 	
 func moving(delta :float) -> void:
 	.moving(delta)
-	
-	_gather_indicator.visible = false
-	
+
 	if is_dead:
 		return
 	
@@ -122,12 +106,7 @@ func moving(delta :float) -> void:
 		perform_attack()
 		_attack_delay_timer.start()
 		
-	if target is BaseResources:
-		_gather_indicator.update_indicator(target.hp, target.max_hp)
-		_gather_indicator.set_icon(target.get_resource_icon())
-		_gather_indicator.visible = true
-		_gather_indicator.translation = target_pos
-	
+		
 func _is_align(_target_pos :Vector3) -> bool:
 	var _from_pos :Vector3 = global_transform.origin
 	var _dist :float = _from_pos.distance_to(_target_pos)
@@ -143,37 +122,6 @@ func perform_attack():
 	elif target is BaseResources:
 		if _is_master:
 			target.take_damage(final_attack_damage)
-	
-func _check_target():
-	target = null
-	
-	if _hero_spotter.targets.empty():
-		return
-		
-	var from :Vector3 = global_transform.origin
-	var final_target = _hero_spotter.targets[0]
-	if final_target is BaseUnit:
-		target = final_target
-		return
-	
-	for new_target in _hero_spotter.targets:
-		if new_target.is_dead:
-			continue
-			
-		if new_target is BaseUnit:
-			target = final_target
-			return
-		
-		var dis_1 = from.distance_squared_to(final_target.global_transform.origin)
-		var dis_2 = from.distance_squared_to(new_target.global_transform.origin)
-		
-		if dis_2 < dis_1:
-			final_target = new_target
-		
-	if final_target.is_dead:
-		return
-		
-	target = final_target
 	
 func puppet_moving(delta :float) -> void:
 	.puppet_moving(delta)

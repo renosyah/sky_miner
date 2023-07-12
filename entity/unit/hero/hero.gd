@@ -15,15 +15,11 @@ var equip_parent :Spatial
 var _hero_spotter :HeroSpotter
 var _gather_indicator :GatherIndicator
 var _crosshair :Spatial
-var _tween :Tween
 
 func _ready():
 	_crosshair = preload("res://assets/crosshair/crosshair.tscn").instance()
 	add_child(_crosshair)
 	_crosshair.set_as_toplevel(true)
-	
-	_tween = Tween.new()
-	add_child(_tween)
 	
 	_gather_indicator = preload("res://assets/gather_indicator/gather_indicator.tscn").instance()
 	add_child(_gather_indicator)
@@ -75,14 +71,17 @@ func moving(delta :float) -> void:
 	
 	if target is BaseUnit:
 		_equip_weapon(is_currently_equip)
+		var aim_pos = target_pos
 		
-		var _from_pos :Vector3 = global_transform.origin
-		var _dist :float = _from_pos.distance_to(target_pos)
-		var _to_pos :Vector3 = _from_pos + -global_transform.basis.z * _dist
-		_to_pos.y = target_pos.y
+		if not is_align:
+			var _from_pos :Vector3 = global_transform.origin
+			var _dist :float = _from_pos.distance_to(target_pos)
+			var _to_pos :Vector3 = _from_pos + -global_transform.basis.z * _dist
+			_to_pos.y = target_pos.y
+			aim_pos = _to_pos
 		
 		_crosshair.visible = true
-		_crosshair.translation = _to_pos
+		_crosshair.translation = aim_pos
 		
 	elif target is BaseResources:
 		_equip_tool(is_currently_equip)
@@ -99,10 +98,6 @@ func perform_attack():
 	if is_instance_valid(equiped_item):
 		final_attack_damage += equiped_item.attack_bonus
 		
-		if _crosshair.visible:
-			_tween.interpolate_property(_crosshair,"scale", Vector3.ONE * 1.2, Vector3.ONE, 0.3, Tween.TRANS_BOUNCE)
-			_tween.start()
-			
 	_sound.stream = hit_melee_sounds[rand_range(0, 3)]
 	_sound.play()
 	

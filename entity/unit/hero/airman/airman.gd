@@ -53,6 +53,10 @@ func moving(delta :float) -> void:
 func perform_attack():
 	.perform_attack()
 	
+	if is_instance_valid(equiped_item):
+		if equiped_item is RangeWeapon:
+			equiped_item.fire()
+			
 	_animation_states["upper_body"] = _get_attack_animation()
 	
 func _get_attack_animation() -> String:

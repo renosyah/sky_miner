@@ -58,8 +58,22 @@ func perform_attack():
 	.perform_attack()
 	
 func _equip_weapon(_currently_equip: bool):
-	# equip weapon
-	
+	for i in inventories:
+		var item :InventoryItem = i
+		if item is RangeWeapon:
+			if _currently_equip:
+				if equiped_item is RangeWeapon:
+					return
+					
+				else:
+					_unequip_item()
+					
+			equiped_item = item.duplicate()
+			equip_parent.add_child(equiped_item)
+			equiped_item.equip()
+			final_attack_range = equiped_item.attack_range
+			return
+			
 	if _currently_equip:
 		_unequip_item()
 		

@@ -76,6 +76,14 @@ func spawn_player_heroes():
 		pickaxe.stack_total = 1
 		hero.inventories.append(pickaxe)
 		
+		var ar :InventoryItemData = preload("res://data/inventory_item/list/assault_rifle.tres").duplicate()
+		ar.node_name = "%s_ar_%s" % [hero.node_name, 1]
+		ar.network_id = Network.PLAYER_HOST_ID
+		ar.position = Vector3.ZERO
+		ar.enable_pickup = false
+		ar.stack_total = 1
+		hero.inventories.append(ar)
+		
 		heroes.append(hero)
 		index += 10
 		
@@ -131,7 +139,7 @@ func spawn_bot_airship():
 			player_index += 10
 			
 func spawn_defence_bot():
-	for i in 2:
+	for i in 4:
 		var defence :EmplacementData = preload("res://data/emplacement/list/turret_platform.tres").duplicate()
 		defence.entity_name = "Defence (Bot)"
 		defence.node_name = "defence_%s" % i

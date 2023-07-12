@@ -152,10 +152,18 @@ func _check_target():
 		
 	var from :Vector3 = global_transform.origin
 	var final_target = _hero_spotter.targets[0]
+	if final_target is BaseUnit:
+		target = final_target
+		return
+	
 	for new_target in _hero_spotter.targets:
 		if new_target.is_dead:
 			continue
 			
+		if new_target is BaseUnit:
+			target = final_target
+			return
+		
 		var dis_1 = from.distance_squared_to(final_target.global_transform.origin)
 		var dis_2 = from.distance_squared_to(new_target.global_transform.origin)
 		

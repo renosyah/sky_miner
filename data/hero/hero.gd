@@ -87,7 +87,6 @@ func spawn_hero(parent :Node) -> Hero:
 	hero.enable_network = false
 	parent.add_child(hero)
 	hero.translation = position
-	hero.visible = false
 	return hero
 	
 

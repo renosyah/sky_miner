@@ -58,24 +58,31 @@ var _map :Map
 func setup_map():
 	_map = preload("res://map/map.tscn").instance()
 	_map.connect("on_map_ready", self, "on_map_ready")
+	_map.connect("on_map_data_created", self, "on_map_data_created")
 	_map.connect("resource_take_damage", self, "resource_take_damage")
 	_map.connect("resource_dead", self, "resource_dead")
 	_map.connect("resource_reset", self, "resource_reset")
 	add_child(_map)
 	
+	# server generate map
+	# to create server map data
 	if is_server():
-		_map.generate_islands()
-		NetworkLobbyManager.argument["map_data"] = _map.map_data
-		NetworkLobbyManager.set_host_ready()
+		_map.map_seed = rand_range(-100, 100)
+		_map.generate_map()
+		return
 		
-	generate_island()
+	# client generate map
+	# using server map data
+	_map.set_map_data(NetworkLobbyManager.argument["map_data"])
+	_map.generate_map()
+	
+func on_map_data_created(_map_data :Dictionary):
+	if is_server():
+		NetworkLobbyManager.argument["map_data"] = _map_data
+		NetworkLobbyManager.set_host_ready()
 	
 func on_map_ready():
 	NetworkLobbyManager.set_ready()
-	
-func generate_island():
-	_map.map_data = NetworkLobbyManager.argument["map_data"]
-	_map.spawn_islands()
 	
 ################################################################
 # ui
@@ -240,6 +247,7 @@ func on_hero_spawned(data :HeroData, hero :Hero):
 	if is_player:
 		player_hero = hero
 		player_hero_spawn_pos = hero.translation
+		player_hero.visible = false
 		
 		player_hero.connect("take_damage", self, "on_player_hero_take_damage")
 		player_hero.connect("dead", self, "on_player_hero_dead")

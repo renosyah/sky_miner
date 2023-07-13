@@ -16,6 +16,8 @@ const turrets = [
 ]
 
 onready var enemy_airship_patrol = $enemy_airship_patrol
+var player_spawn_offset :float = 0
+
 
 func _ready():
 	player_team = 1
@@ -90,14 +92,13 @@ func spawn_player_heroes():
 	.spawn_heroes(heroes)
 	
 func spawn_player_airship():
-	var player_index :int = 10
 	for p in NetworkLobbyManager.get_players():
 		var player :NetworkPlayer = p
 		var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
 		airship.entity_name = player.player_name
 		airship.node_name = "player_%s" % player.player_network_unique_id
 		airship.network_id = player.player_network_unique_id
-		airship.position = _map.get_entry_points(player_index)[1] + Vector3(10,0,0)
+		airship.position = _map.get_entry_points(player_spawn_offset)[0]
 		airship.level = 10
 		airship.team = player_team 
 		airship.color_coat = Color.green
@@ -110,13 +111,12 @@ func spawn_player_airship():
 			airship.turrets.append(t)
 			
 		airships_to_spawn.append(airship)
-		player_index += 10
+		player_spawn_offset += 10
 		
 func spawn_bot_airship():
-	var teams = {1 : 2, 2: 2}
+	var teams = {0 : 2, 1: 2}
 	for key in teams.keys():
-		var player_index :int = 10
-		var team :int = key
+		var team :int = (key + 1)
 		var count :int = teams[key]
 		for i in range(count):
 			var airship :AirshipData = preload("res://data/airship/list/cruiser.tres").duplicate()
@@ -124,7 +124,7 @@ func spawn_bot_airship():
 			airship.node_name = "airship_%s_%s" % [team, i]
 			airship.network_id = Network.PLAYER_HOST_ID
 			airship.level = 1
-			airship.position = _map.get_entry_points(player_index)[team]
+			airship.position = _map.get_entry_points(player_spawn_offset)[key]
 			airship.team = team
 			airship.color_coat = Color.red if team == 2 else Color.green
 			
@@ -136,16 +136,16 @@ func spawn_bot_airship():
 				airship.turrets.append(t)
 				
 			airships_to_spawn.append(airship)
-			player_index += 10
+			player_spawn_offset += 10
 			
 func spawn_defence_bot():
-	for i in 4:
+	for i in 2:
 		var defence :EmplacementData = preload("res://data/emplacement/list/turret_platform.tres").duplicate()
 		defence.entity_name = "Defence (Bot)"
 		defence.node_name = "defence_%s" % i
 		defence.network_id = Network.PLAYER_HOST_ID
 		defence.position = islands[i].get_random_position()
-		defence.level = 50
+		defence.level = 1
 		defence.team = 2
 		defence.color_coat = Color.orange
 		

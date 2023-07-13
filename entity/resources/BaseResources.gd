@@ -16,7 +16,6 @@ const stones = [
 	type_resource_enum.coal
 ]
 
-
 signal take_damage(_resource, _damage)
 signal dead(_resource)
 signal reset(_resource)

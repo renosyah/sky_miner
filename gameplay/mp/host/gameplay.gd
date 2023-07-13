@@ -18,7 +18,6 @@ const turrets = [
 onready var enemy_airship_patrol = $enemy_airship_patrol
 var player_spawn_offset :float = 0
 
-
 func _ready():
 	player_team = 1
 
@@ -110,6 +109,7 @@ func spawn_player_airship():
 		player_spawn_offset += 10
 		
 func spawn_bot_airship():
+	# team : count 
 	var teams = {0 : 2, 1: 2}
 	for key in teams.keys():
 		var team :int = (key + 1)
@@ -247,21 +247,22 @@ func resource_dead(resource :BaseResources):
 	match (resource.type_resource):
 		BaseResources.type_resource_enum.wood:
 			item = preload("res://data/inventory_item/list/wood.tres").duplicate()
+			item.stack_total = int(rand_range(10,20))
 			
 		BaseResources.type_resource_enum.iron:
 			item = preload("res://data/inventory_item/list/iron.tres").duplicate()
+			item.stack_total = int(rand_range(4,12))
 			
 		BaseResources.type_resource_enum.coal:
 			item = preload("res://data/inventory_item/list/coal.tres").duplicate()
+			item.stack_total = int(rand_range(6,16))
 			
 		BaseResources.type_resource_enum.food:
 			return
 			
-	
 	item.node_name = "world_droped_item_%s" % resource.name
 	item.position = resource.translation
 	item.enable_pickup = true
-	item.stack_total = int(rand_range(10,20))
 	
 	.spawn_item(item)
 	

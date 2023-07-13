@@ -6,7 +6,6 @@ export var entity_icon :String
 export var description :String
 
 export var node_name :String
-export var network_id :int
 export var scene_path :String
 export var position :Vector3
 
@@ -23,7 +22,6 @@ func from_dictionary(data : Dictionary):
 	description = data["description"]
 	
 	node_name = data["node_name"]
-	network_id = data["network_id"]
 	scene_path = data["scene_path"]
 	position = data["position"]
 	
@@ -40,7 +38,6 @@ func to_dictionary() -> Dictionary :
 	data["description"] = description
 	
 	data["node_name"] = node_name
-	data["network_id"] = network_id
 	data["scene_path"] = scene_path
 	data["position"] = position
 	
@@ -60,7 +57,6 @@ func spawn_item(parent :Node) -> InventoryItem:
 	item.enable_pickup = enable_pickup
 	item.color_highlight = color_highlight
 	item.stack_total = stack_total
-	item.set_network_master(network_id)
 	parent.add_child(item)
 	item.translation = position
 	item.visible = enable_pickup

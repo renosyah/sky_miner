@@ -8,7 +8,6 @@ entity_name = "Coal"
 entity_icon = "res://assets/ui/icons/resources/coal.png"
 description = "Coal"
 node_name = ""
-network_id = 0
 scene_path = "res://entity/inventory_item/resources/coal/coal.tscn"
 position = Vector3( 0, 0, 0 )
 item_id = "item_coal"

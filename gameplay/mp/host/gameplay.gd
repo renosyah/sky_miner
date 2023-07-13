@@ -56,7 +56,6 @@ func spawn_player_heroes():
 		
 		var coin :InventoryItemData = preload("res://data/inventory_item/list/coin.tres").duplicate()
 		coin.node_name = "%s_coins"
-		coin.network_id = Network.PLAYER_HOST_ID
 		coin.position = Vector3.ZERO
 		coin.enable_pickup = false
 		coin.stack_total = 5
@@ -64,7 +63,6 @@ func spawn_player_heroes():
 	
 		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
 		axe.node_name = "%s_axe_%s" % [hero.node_name, 1]
-		axe.network_id = Network.PLAYER_HOST_ID
 		axe.position = Vector3.ZERO
 		axe.enable_pickup = false
 		axe.stack_total = 1
@@ -72,7 +70,6 @@ func spawn_player_heroes():
 	
 		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
 		pickaxe.node_name = "%s_pickaxe_%s" % [hero.node_name, 1]
-		pickaxe.network_id = Network.PLAYER_HOST_ID
 		pickaxe.position = Vector3.ZERO
 		pickaxe.enable_pickup = false
 		pickaxe.stack_total = 1
@@ -80,7 +77,6 @@ func spawn_player_heroes():
 		
 		var ar :InventoryItemData = preload("res://data/inventory_item/list/assault_rifle.tres").duplicate()
 		ar.node_name = "%s_ar_%s" % [hero.node_name, 1]
-		ar.network_id = Network.PLAYER_HOST_ID
 		ar.position = Vector3.ZERO
 		ar.enable_pickup = false
 		ar.stack_total = 1
@@ -164,7 +160,6 @@ func spawn_pickable_items():
 		var pos :Vector3 = _map.get_random_island().get_random_position()
 		var coin :InventoryItemData =  preload("res://data/inventory_item/list/coin.tres").duplicate()
 		coin.node_name = "world_coin_%s" % i
-		coin.network_id = Network.PLAYER_HOST_ID
 		coin.position = pos + Vector3(0, 0.60, 0)
 		coin.stack_total = 1
 		coin.enable_pickup = true
@@ -174,7 +169,6 @@ func spawn_pickable_items():
 		var pos :Vector3 = _map.get_random_island().get_random_position()
 		var axe :InventoryItemData = preload("res://data/inventory_item/list/axe.tres").duplicate()
 		axe.node_name = "world_axe_%s" % i
-		axe.network_id = Network.PLAYER_HOST_ID
 		axe.position = pos + Vector3(0, 0.60, 0)
 		axe.stack_total = 1
 		axe.enable_pickup = true
@@ -184,11 +178,21 @@ func spawn_pickable_items():
 		var pos :Vector3 = _map.get_random_island().get_random_position()
 		var pickaxe :InventoryItemData = preload("res://data/inventory_item/list/pickaxe.tres").duplicate()
 		pickaxe.node_name = "world_pickaxe_%s" % i
-		pickaxe.network_id = Network.PLAYER_HOST_ID
 		pickaxe.position = pos + Vector3(0, 0.60, 0)
 		pickaxe.stack_total = 1
 		pickaxe.enable_pickup = true
 		items.append(pickaxe)
+		
+	for i in 5:
+		var pos :Vector3 = _map.get_random_island().get_random_position()
+		var assault_rifle :InventoryItemData = preload("res://data/inventory_item/list/assault_rifle.tres").duplicate()
+		assault_rifle.node_name = "world_assault_rifle_%s" % i
+		assault_rifle.position = pos + Vector3(0, 0.60, 0)
+		assault_rifle.stack_total = 1
+		assault_rifle.enable_pickup = true
+		items.append(assault_rifle)
+		
+	items.shuffle()
 	
 	.spawn_items(items)
 	
@@ -255,7 +259,6 @@ func resource_dead(resource :BaseResources):
 			
 	
 	item.node_name = "world_droped_item_%s" % resource.name
-	item.network_id = Network.PLAYER_HOST_ID
 	item.position = resource.translation
 	item.enable_pickup = true
 	item.stack_total = int(rand_range(10,20))

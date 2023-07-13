@@ -8,7 +8,6 @@ entity_name = "Pickaxe"
 entity_icon = "res://assets/ui/icons/item/pickaxe.png"
 description = "For gathering coal or iron"
 node_name = ""
-network_id = 0
 scene_path = "res://entity/inventory_item/tools/pickaxe/pickaxe.tscn"
 position = Vector3( 0, 0, 0 )
 item_id = "item_pickaxe"

@@ -8,7 +8,6 @@ entity_name = "Assault Rifle"
 entity_icon = "res://assets/ui/icons/item/assault_rifle.png"
 description = "Assault Rifle"
 node_name = ""
-network_id = 0
 scene_path = "res://entity/inventory_item/weapons/assault_rifle/assault_rifle.tscn"
 position = Vector3( 0, 0, 0 )
 item_id = "item_weapon_ar"

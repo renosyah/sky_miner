@@ -58,33 +58,34 @@ mouse_filter = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
 margin_top = 6.0
 margin_right = 588.0
-margin_bottom = 114.0
+margin_bottom = 106.0
 
 [node name="airship_info" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer" instance=ExtResource( 6 )]
-margin_bottom = 108.0
+margin_right = 104.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer"]
-margin_left = 358.0
+margin_left = 108.0
 margin_right = 588.0
-margin_bottom = 108.0
+margin_bottom = 100.0
 size_flags_horizontal = 3
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
-margin_top = 118.0
+margin_top = 110.0
 margin_right = 588.0
-margin_bottom = 226.0
+margin_bottom = 210.0
 
 [node name="hero_info" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer2" instance=ExtResource( 8 )]
-margin_bottom = 108.0
+margin_right = 104.0
+margin_bottom = 100.0
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer/HBoxContainer2"]
-margin_left = 358.0
+margin_left = 108.0
 margin_right = 588.0
-margin_bottom = 108.0
+margin_bottom = 100.0
 size_flags_horizontal = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/Control/SafeArea/HBoxContainer/VBoxContainer"]
-margin_top = 230.0
+margin_top = 214.0
 margin_right = 588.0
 margin_bottom = 491.0
 mouse_filter = 2

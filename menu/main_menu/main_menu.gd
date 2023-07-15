@@ -1,6 +1,7 @@
 extends Control
 
 var quick_play :bool = false
+var showcase :bool = false
 onready var server_browser = $CanvasLayer/Control/server_browser
 
 func _ready():
@@ -32,6 +33,10 @@ func _on_player_connected():
 		Global.change_scene("res://gameplay/mp/host/gameplay.tscn", false)
 		return
 		
+	if showcase:
+		Global.change_scene("res://gameplay/showcase/host/gameplay.tscn", false)
+		return
+		
 	Global.change_scene("res://menu/lobby/lobby.tscn")
 	
 func _on_host_pressed():
@@ -52,3 +57,8 @@ func _on_server_browser_on_join(info):
 	NetworkLobbyManager.init_lobby()
 	
 	
+func _on_showcase_pressed():
+	showcase = true
+	_on_host_pressed()
+
+

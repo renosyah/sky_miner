@@ -70,6 +70,12 @@ func _check_is_master() -> bool:
 func is_master() -> bool:
 	return _check_is_master()
 	
+func set_enable_network(val :bool):
+	rpc("_set_enable_network", val)
+	
+remotesync func _set_enable_network(val :bool):
+	enable_network = val
+	
 func _setup_network_timer() -> void:
 	_is_online = _is_network_running()
 	_is_master = _check_is_master()

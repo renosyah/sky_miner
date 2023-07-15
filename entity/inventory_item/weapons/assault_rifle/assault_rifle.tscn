@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entity/inventory_item/weapons/assault_rifle/ar.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://entity/inventory_item/weapons/assault_rifle/assault_rifle.gd" type="Script" id=2]
@@ -36,6 +36,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id=11]
 resource_name = "firing"
+length = 0.7
 tracks/0/type = "value"
 tracks/0/path = NodePath("MeshInstance2:visible")
 tracks/0/interp = 1
@@ -43,11 +44,40 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 0.3, 0.5, 0.6, 0.7, 0.8 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ false, true, false, true, false, true, false ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.1, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "_firing"
+}, {
+"args": [  ],
+"method": "_firing"
+}, {
+"args": [  ],
+"method": "_firing"
+} ]
+}
+
+[sub_resource type="SpatialMaterial" id=14]
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id=15]
+material = SubResource( 14 )
+radius = 0.04
+height = 0.08
 
 [node name="ar" type="Spatial"]
 script = ExtResource( 2 )
@@ -60,7 +90,7 @@ material/0 = SubResource( 12 )
 material/1 = SubResource( 13 )
 
 [node name="MeshInstance2" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0369453, -0.753275 )
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.0369453, -0.753275 )
 visible = false
 mesh = SubResource( 9 )
 skeleton = NodePath("../..")
@@ -70,3 +100,19 @@ material/0 = SubResource( 6 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 10 )
 anims/firing = SubResource( 11 )
+
+[node name="CPUParticles" type="CPUParticles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.764529 )
+emitting = false
+one_shot = true
+explosiveness = 0.4
+randomness = 0.6
+local_coords = false
+mesh = SubResource( 15 )
+direction = Vector3( 0, 0, -1 )
+spread = 12.0
+gravity = Vector3( 0, 0, -1 )
+initial_velocity = 12.0
+color = Color( 1, 0.592157, 0, 1 )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]

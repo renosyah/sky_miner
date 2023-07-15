@@ -5,7 +5,6 @@ signal fired(_turret)
 signal reload(_turret, _finish)
 
 export var target :NodePath
-
 export var aiming_speed :float
 export var ignore_body :NodePath
 

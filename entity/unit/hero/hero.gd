@@ -2,6 +2,7 @@ extends GroundUnit
 class_name Hero
 
 var inventories :Array = []
+var enable_crosshair :bool = false
 
 const hit_melee_sounds = [
 	preload("res://assets/sounds/hero/hit_melee_1.wav"), 
@@ -56,6 +57,9 @@ func moving(delta :float) -> void:
 	_gather_indicator.visible = false
 	_crosshair.visible = false
 	
+	if is_dead:
+		return
+		
 	if not is_instance_valid(equip_parent):
 		return
 		
@@ -71,18 +75,21 @@ func moving(delta :float) -> void:
 	
 	if target is BaseUnit:
 		_equip_weapon(is_currently_equip)
-		var aim_pos = target_pos
 		
-		if not is_align:
-			var _from_pos :Vector3 = global_transform.origin
-			var _dist :float = _from_pos.distance_to(target_pos)
-			var _to_pos :Vector3 = _from_pos + -global_transform.basis.z * _dist
-			_to_pos.y = target_pos.y
-			aim_pos = _to_pos
+		if not enable_crosshair or final_attack_range < 5:
+			return
+			
+		var _from_pos :Vector3 = global_transform.origin
+		var _dist :float = _from_pos.distance_to(target_pos)
+		var _to_pos :Vector3 = _from_pos + -global_transform.basis.z * final_attack_range
+		_to_pos.y = target_pos.y
 		
 		_crosshair.visible = true
-		_crosshair.translation = aim_pos
+		_crosshair.translation = _to_pos
 		
+		if is_align and _dist < final_attack_range:
+			_crosshair.translation = target_pos
+			
 	elif target is BaseResources:
 		_equip_tool(is_currently_equip)
 		
@@ -93,13 +100,18 @@ func moving(delta :float) -> void:
 			_gather_indicator.translation = target_pos
 		
 func perform_attack():
+	var has_sound = false
 	final_attack_damage = attack_damage
 	
 	if is_instance_valid(equiped_item):
 		final_attack_damage += equiped_item.attack_bonus
 		
-	_sound.stream = hit_melee_sounds[rand_range(0, 3)]
-	_sound.play()
+		if equiped_item is RangeWeapon:
+			has_sound = true
+		
+	if not has_sound:
+		_sound.stream = hit_melee_sounds[rand_range(0, 3)]
+		_sound.play()
 	
 	.perform_attack()
 	

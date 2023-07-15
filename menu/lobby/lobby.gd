@@ -1,4 +1,6 @@
-extends Control
+extends Node
+
+onready var play = $SafeArea/VBoxContainer/CenterContainer/play
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -8,6 +10,8 @@ func _ready():
 	
 	get_tree().set_quit_on_go_back(false)
 	get_tree().set_auto_accept_quit(false)
+	
+	play.visible = NetworkLobbyManager.is_server()
 	
 func _notification(what):
 	match what:

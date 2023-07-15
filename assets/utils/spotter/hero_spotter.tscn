@@ -4,7 +4,7 @@
 
 [sub_resource type="CylinderShape" id=1]
 height = 3.0
-radius = 16.0
+radius = 10.0
 
 [node name="hero_spotter" type="Area"]
 monitorable = false

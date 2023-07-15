@@ -73,14 +73,40 @@ func all_player_ready():
 	.spawn_items(items)
 	
 func _on_resource_dead(_resource : BaseResources):
-	_resource.reset(false)
+	var item :InventoryItemData
+	
+	match (_resource.type_resource):
+		BaseResources.type_resource_enum.wood:
+			item = preload("res://data/inventory_item/list/wood.tres").duplicate()
+			item.stack_total = int(rand_range(10,20))
+			
+		BaseResources.type_resource_enum.iron:
+			item = preload("res://data/inventory_item/list/iron.tres").duplicate()
+			item.stack_total = int(rand_range(4,12))
+			
+		BaseResources.type_resource_enum.coal:
+			item = preload("res://data/inventory_item/list/coal.tres").duplicate()
+			item.stack_total = int(rand_range(6,16))
+			
+		BaseResources.type_resource_enum.food:
+			return
+			
+	item.node_name = "world_droped_item_%s" % _resource.name
+	item.position = _resource.translation + Vector3.BACK * 5
+	item.enable_pickup = true
+	
+	.spawn_item(item)
+	
+	yield(get_tree().create_timer(5),"timeout")
+	_resource.reset()
 	
 func _on_target_take_damage(_unit, _damage):
 	$hpBar.update_bar(_unit.hp, _unit.max_hp)
 	$hpBar.translation = _unit.global_transform.origin + Vector3(0, 3, 0)
 
 func _on_target_dead(_unit):
-	_unit.reset(false)
+	yield(get_tree().create_timer(5),"timeout")
+	_unit.reset()
 
 
 

@@ -59,6 +59,7 @@ func on_hero_spawned(data :HeroData, hero :Hero):
 	hp_bar.pos_offset = Vector3(0,3,0)
 	add_child(hp_bar)
 	hp_bar.update_bar(hero.hp, hero.max_hp)
+	hp_bar.visible = false
 	
 	hero.connect("take_damage", self, "on_unit_take_damage",[hp_bar])
 	hero.connect("dead", self, "on_hero_dead",[hp_bar])

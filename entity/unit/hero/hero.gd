@@ -41,7 +41,6 @@ func _unequip_item():
 		equip_parent.remove_child(equiped_item)
 		equiped_item.queue_free()
 		equiped_item = null
-		final_attack_range = attack_range
 		
 func master_moving(delta :float) -> void:
 	.master_moving(delta)
@@ -54,6 +53,7 @@ func master_moving(delta :float) -> void:
 func moving(delta :float) -> void:
 	.moving(delta)
 	
+	final_attack_range = attack_range
 	_gather_indicator.visible = false
 	_crosshair.visible = false
 	
@@ -90,6 +90,11 @@ func moving(delta :float) -> void:
 		if is_align and _dist < final_attack_range:
 			_crosshair.translation = target_pos
 			
+			_pivot.look_at(target_pos, Vector3.UP)
+			_pivot.rotation_degrees.y = wrapf(_pivot.rotation_degrees.y, 0.0, 360.0)
+			_pivot.rotation_degrees.x = clamp(_pivot.rotation_degrees.x, -45, 45)
+			rotation.y = lerp_angle(rotation.y, _pivot.rotation.y, 5 * delta)
+			
 	elif target is BaseResources:
 		_equip_tool(is_currently_equip)
 		
@@ -98,7 +103,7 @@ func moving(delta :float) -> void:
 			_gather_indicator.set_icon(target.get_resource_icon())
 			_gather_indicator.visible = true
 			_gather_indicator.translation = target_pos
-		
+			
 func perform_attack():
 	var has_sound = false
 	final_attack_damage = attack_damage
@@ -154,6 +159,7 @@ func _equip_weapon(_currently_equip: bool):
 		if item is RangeWeapon:
 			if _currently_equip:
 				if equiped_item is RangeWeapon:
+					final_attack_range = equiped_item.attack_range
 					return
 					
 				else:
@@ -177,6 +183,7 @@ func _equip_tool(_currently_equip: bool):
 		if is_wood and (item is Axe):
 			if _currently_equip:
 				if equiped_item is Axe:
+					final_attack_range = equiped_item.attack_range
 					return
 					
 				else:
@@ -191,6 +198,7 @@ func _equip_tool(_currently_equip: bool):
 		if is_stone and (item is PickAxe):
 			if _currently_equip:
 				if equiped_item is PickAxe:
+					final_attack_range = equiped_item.attack_range
 					return
 					
 				else:

@@ -74,7 +74,7 @@ func master_moving(delta :float) -> void:
 	_velocity = Vector3(_move.x, _velocity.y, _move.z)
 	
 	var _y_rotation :float = rotation_degrees.y
-	.turn_spatial_pivot_to_moving(self, 5, delta)
+	turn_spatial_pivot_to_moving(self, 5, delta)
 	
 	var _rotate_direction :float = clamp(rotation_degrees.y - _y_rotation, -1, 1)
 	var _roll_rotation_speed :float = _input_power if _is_moving else 1.0

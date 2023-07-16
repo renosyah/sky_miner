@@ -1,12 +1,12 @@
 extends InventoryItem
 class_name RangeWeapon
 
-const equip_animation_idle = "attack_range_weapon"
-const equip_animation_walk = "attack_range_weapon"
+const equip_animation_idle = "hold_range_weapon"
+const equip_animation_walk = "hold_range_weapon"
 
 const attack_animation = "attack_range_weapon"
-const attack_bonus = 5
-const attack_range = 6
+const attack_bonus = 45
+const attack_range = 8
 
 const firing_sounds = [
 	preload("res://assets/sounds/mg_firings/firing_1.wav"),

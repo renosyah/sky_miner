@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://gameplay/showcase/host/gameplay.gd" type="Script" id=1]
 [ext_resource path="res://map/water/water.tscn" type="PackedScene" id=2]
@@ -6,7 +6,92 @@
 [ext_resource path="res://entity/resources/trees/trees.tscn" type="PackedScene" id=4]
 [ext_resource path="res://entity/resources/rock/rock.tscn" type="PackedScene" id=5]
 [ext_resource path="res://entity/unit/misc/target_practice/target_practice.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/bar-3d/hp_bar_3d.tscn" type="PackedScene" id=7]
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("1:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 1.59876, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("2:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1.67228, 1.59876, 1.77236 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("3:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 3.52394, 1.59876, 3.73639 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "moving_target"
+length = 5.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("1:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.6, 3.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 1.59876, 0 ), Vector3( 0, 1.59876, 2.67237 ), Vector3( 0, 1.59876, 3.50073 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("2:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1.6, 3.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 1.67228, 1.59876, 1.77236 ), Vector3( 1.67228, 1.59876, 3.63979 ), Vector3( 1.67228, 1.59876, -1.86402 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("3:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.6, 3.5 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 3.52394, 1.59876, 3.73639 ), Vector3( 3.52394, 1.59876, -1.62002 ), Vector3( 3.52394, 1.59876, 2.52794 ) ]
+}
+
+[sub_resource type="CubeMesh" id=7]
+size = Vector3( 10, 2, 10 )
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0.298039, 0.298039, 0.298039, 1 )
 
 [sub_resource type="CubeMesh" id=2]
 size = Vector3( 50, 2, 50 )
@@ -16,6 +101,9 @@ albedo_color = Color( 0, 0.356863, 0.00392157, 1 )
 
 [sub_resource type="ConvexPolygonShape" id=4]
 points = PoolVector3Array( -25.2174, -1.21739, -25.2174, 25.2167, 1.3913, 25.2174, -25.2174, 1.3913, 25.2174, 25.2167, -1.21739, 25.2174, 25.2167, 1.3913, -25.2174, -25.2174, -1.21739, 25.2174, -25.2174, 1.3913, -25.2174, 25.2167, -1.21739, -25.2174 )
+
+[sub_resource type="ConvexPolygonShape" id=9]
+points = PoolVector3Array( 4.87582, 1, 4.87582, -4.74918, -1, -4.74918, -4.74918, -1, 4.74918, -4.87582, 1, -4.87582, 4.74918, -1, -4.74918, -4.87582, 1, 4.87582, 4.87582, 1, -4.87582, 4.74918, -1, 4.74918 )
 
 [node name="gameplay" type="Node"]
 script = ExtResource( 1 )
@@ -37,17 +125,26 @@ transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.59
 enable_gravity = false
 
 [node name="2" parent="target" instance=ExtResource( 6 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.59876, 1.77236 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1.67228, 1.59876, 1.77236 )
 enable_gravity = false
 
 [node name="3" parent="target" instance=ExtResource( 6 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.59876, 3.73639 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.52394, 1.59876, 3.73639 )
 enable_gravity = false
 
-[node name="hpBar" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0 )
-tag_name = "Target"
-color = Color( 1, 0, 0, 1 )
+[node name="AnimationPlayer" type="AnimationPlayer" parent="target"]
+autoplay = "moving_target"
+anims/RESET = SubResource( 5 )
+anims/moving_target = SubResource( 6 )
+
+[node name="Tween" type="Tween" parent="target"]
+
+[node name="MeshInstance" type="MeshInstance" parent="target"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.00512, 0.227844, 2.60839 )
+cast_shadow = 0
+mesh = SubResource( 7 )
+software_skinning_transform_normals = false
+material/0 = SubResource( 8 )
 
 [node name="trees" parent="." instance=ExtResource( 4 )]
 transform = Transform( 0.0441425, 0, 0.999025, 0, 1, 0, -0.999025, 0, 0.0441425, -7.185, 11.4356, -16.5327 )
@@ -81,6 +178,10 @@ material/0 = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.431196, 0 )
 shape = SubResource( 4 )
 
+[node name="CollisionShape2" type="CollisionShape" parent="land"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5459, 0.227844, 2.70266 )
+shape = SubResource( 9 )
+
 [node name="water" parent="." instance=ExtResource( 2 )]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
@@ -93,10 +194,13 @@ directional_shadow_mode = 0
 environment = ExtResource( 3 )
 
 [connection signal="dead" from="target/1" to="." method="_on_target_dead"]
+[connection signal="reset" from="target/1" to="." method="_on_target_reset"]
 [connection signal="take_damage" from="target/1" to="." method="_on_target_take_damage"]
 [connection signal="dead" from="target/2" to="." method="_on_target_dead"]
+[connection signal="reset" from="target/2" to="." method="_on_target_reset"]
 [connection signal="take_damage" from="target/2" to="." method="_on_target_take_damage"]
 [connection signal="dead" from="target/3" to="." method="_on_target_dead"]
+[connection signal="reset" from="target/3" to="." method="_on_target_reset"]
 [connection signal="take_damage" from="target/3" to="." method="_on_target_take_damage"]
 [connection signal="dead" from="trees" to="." method="_on_resource_dead"]
 [connection signal="dead" from="rock" to="." method="_on_resource_dead"]

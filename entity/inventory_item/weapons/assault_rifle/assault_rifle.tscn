@@ -107,6 +107,7 @@ emitting = false
 one_shot = true
 explosiveness = 0.4
 randomness = 0.6
+lifetime_randomness = 0.44
 local_coords = false
 mesh = SubResource( 15 )
 direction = Vector3( 0, 0, -1 )

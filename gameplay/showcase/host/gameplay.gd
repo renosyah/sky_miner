@@ -8,8 +8,8 @@ func all_player_ready():
 	
 	for p in NetworkLobbyManager.get_players():
 		var player :NetworkPlayer = p
-		var hero :HeroData = preload("res://data/hero/list/airman.tres").duplicate()
-		hero.entity_name = "Airman"
+		var hero :HeroData = preload("res://data/hero/list/crewman.tres").duplicate()
+		hero.entity_name = "man"
 		hero.node_name = "player_%s" % player.player_network_unique_id
 		hero.network_id = player.player_network_unique_id
 		hero.position = Vector3(index, 20, index)
@@ -101,12 +101,20 @@ func _on_resource_dead(_resource : BaseResources):
 	_resource.reset()
 	
 func _on_target_take_damage(_unit, _damage):
-	$hpBar.update_bar(_unit.hp, _unit.max_hp)
-	$hpBar.translation = _unit.global_transform.origin + Vector3(0, 3, 0)
+	pass
 
 func _on_target_dead(_unit):
+	$target/Tween.interpolate_property(_unit, "rotation_degrees:x", 0, 90, 0.5)
+	$target/Tween.start()
+	
 	yield(get_tree().create_timer(5),"timeout")
 	_unit.reset()
+	
+func _on_target_reset(_unit):
+	$target/Tween.interpolate_property(_unit, "rotation_degrees:x", 90, 0, 0.5)
+	$target/Tween.start()
+
+
 
 
 

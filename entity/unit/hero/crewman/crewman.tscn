@@ -1,0 +1,908 @@
+[gd_scene load_steps=54 format=2]
+
+[ext_resource path="res://entity/unit/hero/crewman/crewman.gd" type="Script" id=1]
+[ext_resource path="res://entity/unit/hero/crewman/human_small_rig.glb" type="PackedScene" id=2]
+
+[sub_resource type="CapsuleShape" id=75]
+radius = 0.359493
+
+[sub_resource type="Animation" id=29]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/arm_l:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.836766, 0.356214, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/arm_l:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 1.45594e-19, -180, -90 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/arm_r:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.753137, 0.347512, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/arm_r:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1.45594e-19, -180, 90 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/Armature/Skeleton/BoneAttachment/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 90, -2.50701e-06, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot/body:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 180, 0 ) ]
+}
+
+[sub_resource type="Animation" id=30]
+resource_name = "attack_punch"
+length = 0.7
+
+[sub_resource type="Animation" id=57]
+resource_name = "attack_range_weapon"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/arm_r:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.321548, -0.0513339, 0.211822 ), Vector3( 0.321548, -0.0513339, 0.316821 ), Vector3( 0.321548, -0.0513339, 0.211822 ), Vector3( 0.321548, -0.0513339, 0.316821 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/arm_r:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -86.058, 6.27907, -2.11106 ), Vector3( -86.058, 6.27907, -2.11106 ), Vector3( -86.058, 6.27907, -2.11106 ), Vector3( -86.058, 6.27907, -2.11106 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/arm_l:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -90, -53.2539, 0 ), Vector3( -90, -53.2539, 0 ), Vector3( -90, -53.2539, 0 ), Vector3( -90, -53.2539, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/arm_l:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.0288238, -0.0581331, -0.408026 ), Vector3( 0.0288238, -0.0581331, -0.303027 ), Vector3( 0.0288238, -0.0581331, -0.408026 ), Vector3( 0.0288238, -0.0581331, -0.303027 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/Armature/Skeleton/BoneAttachment/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 87.5558, -69.5757, -67.0648 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot/body:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.1, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 3.087, 180, 0 ), Vector3( -13.622, 180, 0 ), Vector3( 3.087, 180, 0 ), Vector3( -17.198, 180, 1.81783e-06 ), Vector3( 3.087, 180, 0 ) ]
+}
+
+[sub_resource type="Animation" id=51]
+resource_name = "gather_stone"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/arm_r:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -76.4326, 23.6083, 19.8433 ), Vector3( -69.4346, 15.5125, 28.2949 ), Vector3( -25.3809, 165.976, -137.305 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/arm_r:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.346444, 0.398228, -0.498956 ), Vector3( 0.346444, 0.653116, -0.498956 ), Vector3( 0.323155, -0.40642, -0.516958 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/arm_l:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -85.231, -42.7361, -0.0409297 ), Vector3( -61.9028, -6.88027, -36.6021 ), Vector3( -35.8484, -176.009, 134.982 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/arm_l:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.432675, 0.450258, -0.582875 ), Vector3( -0.432675, 0.638685, -0.582875 ), Vector3( -0.432675, -0.27417, -0.582875 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/Armature/Skeleton/BoneAttachment/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 46.2685, -90.4817, -85.2918 ) ]
+}
+
+[sub_resource type="Animation" id=45]
+resource_name = "gather_wood"
+length = 0.7
+
+[sub_resource type="Animation" id=76]
+resource_name = "hold_range_weapon"
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/arm_r:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.321548, -0.0513339, 0.211822 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/arm_r:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -86.058, 6.27907, -2.11106 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/arm_l:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -90, -53.2539, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/arm_l:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.0288238, -0.0581331, -0.408026 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/Armature/Skeleton/BoneAttachment/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 87.5558, -69.5757, -67.0648 ) ]
+}
+
+[sub_resource type="Animation" id=31]
+resource_name = "idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/arm_r:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -4.76847e-06, -180, 177.889 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/arm_r:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.499674, -0.01664, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/arm_l:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.575289, -0.121807, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/arm_l:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 5.00896e-06, 180, 179.959 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/Armature/Skeleton/BoneAttachment/item_equip:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 87.5558, -69.5757, -67.0648 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot/body:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 180, 0 ), Vector3( -6.726, 180, 0 ) ]
+}
+
+[sub_resource type="Animation" id=32]
+resource_name = "walk"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/arm_r:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -53.305, -180, -179.425 ), Vector3( -18.085, -180, -179.425 ), Vector3( 38.3251, -180, -179.425 ), Vector3( -7.48994, -180, -179.425 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/arm_r:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.412344, 0.014799, -0.317883 ), Vector3( 0.412344, -0.0620518, -0.0873306 ), Vector3( 0.412344, 0.0262767, 0.27297 ), Vector3( 0.412344, 0.0205378, -0.0224564 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/arm_l:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.575289, -0.0868748, 0.436652 ), Vector3( -0.575289, -0.0868748, -1.19209e-07 ), Vector3( -0.575289, -0.041463, -0.290935 ), Vector3( -0.575289, -0.0641689, 0.0728584 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/arm_l:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 34.504, -180, 179.959 ), Vector3( 13.179, -180, 179.959 ), Vector3( -51.0011, -180, 179.959 ), Vector3( -8.24856, -180, 179.959 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot/body:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 180, 0 ), Vector3( -4.609, 180, 0 ), Vector3( -3.073, 180, 0 ), Vector3( -1.5365, 180, 0 ) ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=33]
+animation = "attack_punch"
+
+[sub_resource type="AnimationNodeAnimation" id=60]
+animation = "attack_range_weapon"
+
+[sub_resource type="AnimationNodeAnimation" id=52]
+animation = "gather_stone"
+
+[sub_resource type="AnimationNodeAnimation" id=46]
+animation = "gather_wood"
+
+[sub_resource type="AnimationNodeAnimation" id=77]
+animation = "hold_range_weapon"
+
+[sub_resource type="AnimationNodeAnimation" id=34]
+animation = "idle"
+
+[sub_resource type="AnimationNodeAnimation" id=35]
+animation = "walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=36]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=37]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=38]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=39]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=40]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=41]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=47]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=48]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=49]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=50]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=53]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=54]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=55]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=56]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=78]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=79]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=80]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=81]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=82]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=83]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id=42]
+states/attack_punch/node = SubResource( 33 )
+states/attack_punch/position = Vector2( 1027.12, 45.9259 )
+states/attack_range_weapon/node = SubResource( 60 )
+states/attack_range_weapon/position = Vector2( 237.667, 192.333 )
+states/gather_stone/node = SubResource( 52 )
+states/gather_stone/position = Vector2( 1026.83, 349.666 )
+states/gather_wood/node = SubResource( 46 )
+states/gather_wood/position = Vector2( 1026.48, 192.333 )
+states/hold_range_weapon/node = SubResource( 77 )
+states/hold_range_weapon/position = Vector2( 237.667, 38.6667 )
+states/idle/node = SubResource( 34 )
+states/idle/position = Vector2( 601.815, 191.999 )
+states/walk/node = SubResource( 35 )
+states/walk/position = Vector2( 602.666, 38.6667 )
+transitions = [ "idle", "walk", SubResource( 36 ), "walk", "idle", SubResource( 37 ), "walk", "attack_punch", SubResource( 38 ), "idle", "attack_punch", SubResource( 39 ), "attack_punch", "idle", SubResource( 40 ), "attack_punch", "walk", SubResource( 41 ), "idle", "gather_wood", SubResource( 47 ), "gather_wood", "idle", SubResource( 48 ), "walk", "gather_wood", SubResource( 49 ), "gather_wood", "walk", SubResource( 50 ), "walk", "gather_stone", SubResource( 53 ), "gather_stone", "walk", SubResource( 54 ), "idle", "gather_stone", SubResource( 55 ), "gather_stone", "idle", SubResource( 56 ), "walk", "hold_range_weapon", SubResource( 78 ), "hold_range_weapon", "walk", SubResource( 79 ), "hold_range_weapon", "idle", SubResource( 80 ), "idle", "hold_range_weapon", SubResource( 81 ), "hold_range_weapon", "attack_range_weapon", SubResource( 82 ), "attack_range_weapon", "hold_range_weapon", SubResource( 83 ) ]
+start_node = "idle"
+graph_offset = Vector2( 23, -36 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=43]
+
+[sub_resource type="Animation" id=7]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/leg_l:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.162763, -0.791681, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/leg_l:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -4.9913e-06, 180, -175.187 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/leg_r:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.113844, -0.773652, -2.38419e-07 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/leg_r:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -4.98911e-06, -180, 174.898 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot:rotation_degrees")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot:translation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=24]
+resource_name = "dead"
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( -0.1, 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ), Vector3( 93.23, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot:translation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( -0.1, 0.1, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.486866, 0.415314 ), Vector3( 0, -0.28559, 0.190414 ) ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/leg_l:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -0.221399, -0.791682, 0.0578535 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/leg_l:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -4.9913e-06, -180, -175.187 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/leg_r:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0.191799, -0.773652, -0.218667 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/leg_r:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -4.98911e-06, 180, 174.898 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot:translation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=9]
+resource_name = "walk"
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("pivot/leg_l:translation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -0.162763, -0.630649, 0.37075 ), Vector3( -0.162763, -0.630649, -0.390184 ), Vector3( -0.162763, -0.486167, -0.458812 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("pivot/leg_l:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 28.844, -180, -175.187 ), Vector3( -19.517, -180, -175.187 ), Vector3( -28.4849, -180, -175.187 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("pivot/leg_r:rotation_degrees")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -31.654, 180, 174.898 ), Vector3( 16.894, 180, 174.898 ), Vector3( 49.752, 180, 174.898 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("pivot/leg_r:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0.113844, -0.57517, -0.614172 ), Vector3( 0.113844, -0.57517, 0.040809 ), Vector3( 0.113844, -0.501324, 0.188501 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("pivot:translation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("pivot:rotation_degrees")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="AnimationNodeAnimation" id=25]
+animation = "dead"
+
+[sub_resource type="AnimationNodeAnimation" id=10]
+animation = "idle"
+
+[sub_resource type="AnimationNodeAnimation" id=11]
+animation = "walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=12]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=13]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=26]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=28]
+
+[sub_resource type="AnimationNodeStateMachine" id=14]
+states/dead/node = SubResource( 25 )
+states/dead/position = Vector2( 241, 237 )
+states/idle/node = SubResource( 10 )
+states/idle/position = Vector2( 241, 91 )
+states/walk/node = SubResource( 11 )
+states/walk/position = Vector2( 499, 91 )
+transitions = [ "idle", "walk", SubResource( 12 ), "walk", "idle", SubResource( 13 ), "walk", "dead", SubResource( 26 ), "idle", "dead", SubResource( 28 ) ]
+start_node = "idle"
+graph_offset = Vector2( 4, 16.4917 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=15]
+
+[node name="crewman" type="KinematicBody"]
+script = ExtResource( 1 )
+speed = 3
+is_bot = true
+margin = 0.3
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
+shape = SubResource( 75 )
+
+[node name="pivot" parent="." instance=ExtResource( 2 )]
+
+[node name="Armature" parent="pivot" index="0"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+
+[node name="body" type="SkeletonIK" parent="pivot/Armature/Skeleton" index="1"]
+process_priority = 1
+root_bone = "root"
+tip_bone = "body"
+target_node = NodePath("../../../body")
+
+[node name="arm_l" type="SkeletonIK" parent="pivot/Armature/Skeleton" index="2"]
+process_priority = 1
+root_bone = "up_hand.l"
+tip_bone = "low_hand.l"
+target_node = NodePath("../../../arm_l")
+
+[node name="arm_r" type="SkeletonIK" parent="pivot/Armature/Skeleton" index="3"]
+process_priority = 1
+root_bone = "up_hand.r"
+tip_bone = "low_hand.r"
+target_node = NodePath("../../../arm_r")
+
+[node name="leg_l" type="SkeletonIK" parent="pivot/Armature/Skeleton" index="4"]
+process_priority = 1
+root_bone = "up_leg.l"
+tip_bone = "low_leg.l"
+target_node = NodePath("../../../leg_l")
+
+[node name="leg_r" type="SkeletonIK" parent="pivot/Armature/Skeleton" index="5"]
+process_priority = 1
+root_bone = "up_leg.r"
+tip_bone = "low_leg.r"
+target_node = NodePath("../../../leg_r")
+
+[node name="BoneAttachment" type="BoneAttachment" parent="pivot/Armature/Skeleton" index="6"]
+transform = Transform( -0.999378, -0.0368374, -1.74836e-07, 0.0368374, -0.999378, 8.32208e-08, -1.77793e-07, 7.67285e-08, 1, -0.426027, 0.078582, -0.00320261 )
+bone_name = "low_hand.r"
+
+[node name="item_equip" type="Spatial" parent="pivot/Armature/Skeleton/BoneAttachment"]
+transform = Transform( 0.999996, -4.37556e-08, 1.91262e-15, 0, -4.37114e-08, -1, 4.37554e-08, 1, -4.37114e-08, -0.00823152, 0.418217, 0.0458714 )
+
+[node name="UpperBodyAnimationPlayer" type="AnimationPlayer" parent="pivot"]
+root_node = NodePath("../..")
+anims/RESET = SubResource( 29 )
+anims/attack_punch = SubResource( 30 )
+anims/attack_range_weapon = SubResource( 57 )
+anims/gather_stone = SubResource( 51 )
+anims/gather_wood = SubResource( 45 )
+anims/hold_range_weapon = SubResource( 76 )
+anims/idle = SubResource( 31 )
+anims/walk = SubResource( 32 )
+
+[node name="AnimationTree" type="AnimationTree" parent="pivot"]
+tree_root = SubResource( 42 )
+anim_player = NodePath("../UpperBodyAnimationPlayer")
+active = true
+parameters/playback = SubResource( 43 )
+
+[node name="body" type="Position3D" parent="pivot"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.103359, 0.00585473 )
+
+[node name="arm_l" type="Position3D" parent="pivot"]
+transform = Transform( 4.37114e-08, -1, 8.74228e-08, -1, -4.37114e-08, -2.54109e-21, 3.82137e-15, -8.74228e-08, -1, -0.836766, 0.356214, 0 )
+
+[node name="arm_r" type="Position3D" parent="pivot"]
+transform = Transform( 4.37114e-08, 1, 8.74228e-08, 1, -4.37114e-08, 2.54109e-21, 3.82137e-15, 8.74228e-08, -1, 0.753137, 0.347512, 0 )
+
+[node name="leg_l" type="Position3D" parent="pivot"]
+transform = Transform( 0.996474, -0.0839039, -8.74228e-08, -0.0839039, -0.996474, 8.71146e-08, -9.44238e-08, -7.94723e-08, -1, -0.162763, -0.791681, 0 )
+
+[node name="leg_r" type="Position3D" parent="pivot"]
+transform = Transform( 0.996037, 0.0889292, 8.74228e-08, 0.0889292, -0.996037, 8.70764e-08, 9.48199e-08, -7.89569e-08, -1, 0.113844, -0.773652, -2.38419e-07 )
+
+[node name="BodyAnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 7 )
+anims/dead = SubResource( 24 )
+anims/idle = SubResource( 8 )
+anims/walk = SubResource( 9 )
+
+[node name="BodyAnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 14 )
+anim_player = NodePath("../BodyAnimationPlayer")
+active = true
+parameters/playback = SubResource( 15 )
+
+[editable path="pivot"]
